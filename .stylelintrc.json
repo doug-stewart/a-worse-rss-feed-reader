@@ -1,0 +1,12 @@
+{
+    "extends": ["stylelint-config-recommended", "stylelint-config-html"],
+    "plugins": ["stylelint-order", "stylelint-prettier"],
+    "rules": {
+        "selector-class-pattern": null,
+        "order/order": ["custom-properties", "declarations"],
+        "order/properties-alphabetical-order": true,
+        "no-descending-specificity": null,
+        "function-no-unknown": null,
+        "no-empty-source": null
+    }
+}

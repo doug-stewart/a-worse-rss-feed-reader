@@ -1,25 +1,26 @@
-import type { CategoryObj, FeedObj } from '../../types';
-import DOMPurify from 'dompurify';
-import { FeedSource } from '../feed-source/FeedSource';
-import { encodeStringForId } from '../../helpers';
+// import DOMPurify from 'dompurify';
 
-type FeedCategoryProps = { category: CategoryObj; feeds: Array<FeedObj> };
+// import type { CategoryObj, FeedObj } from '@/types';
+// import { FeedSource } from '../feed-source/FeedSource';
+// import { encodeStringForId } from '@/helpers';
 
-export const FeedCategory = ({ category, feeds }: FeedCategoryProps) => {
-  const { name, id } = category;
+// type FeedCategoryProps = { category: CategoryObj; feeds: Array<FeedObj> };
 
-  const encodedId = `${encodeStringForId(name)}-${id}`;
+// export const FeedCategory = ({ category, feeds }: FeedCategoryProps) => {
+//     const { name, id } = category;
 
-  return (
-    <section id={encodedId}>
-      <h2>
-        <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(name) }} />
-        <a href={`#${encodedId}`}>🔗</a>
-      </h2>
+//     const encodedId = `${encodeStringForId(name)}-${id}`;
 
-      {feeds.map((feed) => (
-        <FeedSource key={feed.title} source={feed} />
-      ))}
-    </section>
-  );
-};
+//     return (
+//         <section id={encodedId}>
+//             <h2>
+//                 <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(name) }} />
+//                 <a href={`#${encodedId}`}>🔗</a>
+//             </h2>
+
+//             {feeds.map((feed) => (
+//                 <FeedSource key={feed.title} source={feed} />
+//             ))}
+//         </section>
+//     );
+// };

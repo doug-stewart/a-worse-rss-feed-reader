@@ -7,6 +7,6 @@
   */
 
 export const encodeStringForId = (string: string) =>
-  encodeURIComponent(string.toLocaleLowerCase().replace(/ /g, '-'))
-    .replace(/%\w+/g, '')
-    .replace(/--/g, '-');
+    encodeURIComponent(string.toLocaleLowerCase().replace(/ /g, '-'))
+        .replace(/%\w+/g, '')
+        .replace(/--/g, '-');

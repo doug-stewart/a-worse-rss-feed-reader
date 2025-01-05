@@ -1,0 +1,58 @@
+.article {
+    background-color: rgb(255 255 255 / 5%);
+    display: grid;
+    grid-template:
+        'cover category category' auto
+        'cover title date' auto
+        'cover summary summary' auto
+        'cover read-more read-more' auto
+        / auto 1fr max-content;
+    margin-block-end: 1rem;
+    padding: 1rem;
+}
+
+.category {
+    grid-area: category;
+    max-width: min(20ch, 100%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.title {
+    grid-area: title;
+    margin-block-end: 0.5rem;
+
+    a {
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+}
+
+.date {
+    grid-area: date;
+}
+
+.cover {
+    background-color: rgb(255 255 255 / 5%);
+    display: block;
+    grid-area: cover;
+    height: 100%;
+    margin-inline-end: 1rem;
+    object-fit: cover;
+    width: 120px;
+}
+
+.summary {
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    grid-area: summary;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
+.more {
+    grid-area: read-more;
+}

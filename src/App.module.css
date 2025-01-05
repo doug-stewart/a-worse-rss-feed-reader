@@ -1,0 +1,14 @@
+.header {
+    container-type: inline-size;
+    grid-area: app-header;
+}
+
+.main {
+    container-type: inline-size;
+    grid-area: app-main;
+    overflow: auto;
+}
+
+.nav {
+    grid-area: app-nav;
+}
