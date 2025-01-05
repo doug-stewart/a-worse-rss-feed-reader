@@ -8,6 +8,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import pluginRouter from '@tanstack/eslint-plugin-router';
 
 export default tseslint.config(
     { ignores: ['dist'] },
@@ -18,6 +19,7 @@ export default tseslint.config(
             eslintConfigPrettier,
             eslintPluginPrettierRecommended,
             importPlugin.flatConfigs.recommended,
+            ...pluginRouter.configs['flat/recommended'],
         ],
         files: ['**/*.{js,jsx,ts,tsx}'],
         languageOptions: {

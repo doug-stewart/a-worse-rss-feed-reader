@@ -36,12 +36,13 @@
 }
 
 .cover {
+    aspect-ratio: 1 / 1;
     background-color: rgb(255 255 255 / 5%);
     display: block;
     grid-area: cover;
-    height: 100%;
     margin-inline-end: 1rem;
     object-fit: cover;
+    object-position: 50% 0;
     width: 120px;
 }
 

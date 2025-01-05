@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { useSelector } from '@xstate/store/react';
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
@@ -5,9 +6,9 @@ import DOMPurify from 'dompurify';
 import styles from './FeedsNavigation.module.css';
 
 import { feedStore } from '@/stores/feed.store';
+import type { CategoryObj, FeedObj } from '@/types';
 
 export const FeedsNavigation = ({ className }: { className: string }) => {
-    const articles = useSelector(feedStore, (state) => state.context.articles);
     const categories = useSelector(feedStore, (state) => state.context.categories);
     const feeds = useSelector(feedStore, (state) => state.context.feeds);
 
@@ -17,45 +18,32 @@ export const FeedsNavigation = ({ className }: { className: string }) => {
             <ol>
                 <li>
                     <strong>
-                        <a href="#">All</a>
+                        <Link to="/feeds">All</Link>
                     </strong>
                 </li>
                 <li>
                     <strong>
-                        <a href="#">Today</a>
+                        <Link to="/feeds" search={{ range: 'today' }}>
+                            Today
+                        </Link>
+                    </strong>
+                </li>
+                <li>
+                    <strong>
+                        <Link to="/feeds" search={{ range: 'week' }}>
+                            Last Week
+                        </Link>
                     </strong>
                 </li>
             </ol>
             <h3>Categories</h3>
             <ol>
                 {categories.map((category) => (
-                    <li key={category.id}>
-                        <strong>
-                            <a
-                                href="#"
-                                dangerouslySetInnerHTML={{
-                                    __html: DOMPurify.sanitize(category.name),
-                                }}
-                            />
-                        </strong>
-                        <ol>
-                            {feeds
-                                .filter((feed) => feed.category === category.id)
-                                .map((feed) => (
-                                    <li key={feed.id}>
-                                        <a href="#">
-                                            {feed.title} (
-                                            {
-                                                articles.filter(
-                                                    (article) => article.parent === feed.id,
-                                                ).length
-                                            }
-                                            )
-                                        </a>
-                                    </li>
-                                ))}
-                        </ol>
-                    </li>
+                    <NavigationCategory
+                        category={category}
+                        feeds={feeds.filter((feed) => feed.category === category.id)}
+                        key={category.id}
+                    />
                 ))}
             </ol>
             <footer className={styles.footer}>
@@ -63,5 +51,57 @@ export const FeedsNavigation = ({ className }: { className: string }) => {
                 <a href="#">Settings</a>
             </footer>
         </nav>
+    );
+};
+
+const NavigationCategory = ({
+    category,
+    feeds,
+}: {
+    category: CategoryObj;
+    feeds: Array<FeedObj>;
+}) => {
+    const articles = useSelector(feedStore, (state) => state.context.articles);
+    const articlesCount = feeds.reduce(
+        (count, feed) => count + articles.filter((article) => article.parent === feed.id).length,
+        0,
+    );
+
+    return (
+        <li key={category.id}>
+            <strong>
+                <Link to="/feeds" search={{ category: category.id }}>
+                    <span
+                        dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(category.name),
+                        }}
+                    />
+                    <span>({articlesCount})</span>
+                </Link>
+            </strong>
+            <ol>
+                {feeds.map((feed) => (
+                    <NavigationFeed key={feed.id} feed={feed} />
+                ))}
+            </ol>
+        </li>
+    );
+};
+
+const NavigationFeed = ({ feed }: { feed: FeedObj }) => {
+    const articles = useSelector(feedStore, (state) => state.context.articles);
+    const articlesCount = articles.filter((article) => article.parent === feed.id).length;
+
+    return (
+        <li key={feed.id}>
+            <Link to="/feeds" search={{ feed: feed.id }}>
+                <span
+                    dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(feed.title),
+                    }}
+                />
+                <span>({articlesCount})</span>
+            </Link>
+        </li>
     );
 };

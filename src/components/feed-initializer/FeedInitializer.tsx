@@ -1,17 +1,13 @@
+// This is a temp file until there's a better flow for this.
 import { useEffect } from 'react';
 
-import styles from './App.module.css';
-import { FeedArticleList } from './components/feed-article-list/FeedArticleList';
-import { FeedsNavigation } from './components/feeds-navigation/FeedsNavigation';
-import { parseFeedItem } from './helpers/parseFeedItem';
-import { FeedObj } from './types';
-
 import * as feedsData from '@/assets/feedsData.json';
+import { articleRegEx } from '@/helpers/articleRegEx';
+import { parseFeedItem } from '@/helpers/parseFeedItem';
 import { feedStore } from '@/stores/feed.store';
+import type { FeedObj } from '@/types';
 
-const articleSortRegEx = /^([T|t]he |[A|a] |[A|a]n )/;
-
-function App() {
+export const FeedInitializer = () => {
     useEffect(() => {
         const initialize = async () => {
             const orderedCategories = feedsData.categories.sort((catA, catB) => {
@@ -21,12 +17,12 @@ function App() {
             });
 
             const sortedFeeds = (feedsData.feeds as Array<FeedObj>).sort((feedA, feedB) => {
-                const titleA = feedA.title.replace(articleSortRegEx, '');
-                const titleB = feedB.title.replace(articleSortRegEx, '');
+                const titleA = feedA.title.replace(articleRegEx, '');
+                const titleB = feedB.title.replace(articleRegEx, '');
                 return titleA.localeCompare(titleB, 'en', { sensitivity: 'base' });
             });
 
-            const articles = [];
+            let articles = [];
 
             const promises = feedsData.feeds.map(async (feed) => ({
                 id: feed.id,
@@ -63,6 +59,8 @@ function App() {
                 }
             }
 
+            articles = articles.sort((articleA, articleB) => articleB.date - articleA.date);
+
             feedStore.send({
                 type: 'initialize',
                 data: {
@@ -77,17 +75,5 @@ function App() {
         initialize();
     }, []);
 
-    return (
-        <>
-            <header className={styles.header}>
-                <h1>What if your RSS feed reader was worse?</h1>
-            </header>
-            <FeedsNavigation className={styles.nav} />
-            <main className={styles.main}>
-                <FeedArticleList />
-            </main>
-        </>
-    );
-}
-
-export default App;
+    return <></>;
+};
