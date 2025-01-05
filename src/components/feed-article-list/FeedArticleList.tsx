@@ -16,7 +16,7 @@ export const FeedArticleList = ({ filters }: FeedArticleListProps) => {
     const feeds = useSelector(feedStore, (state) => state.context.feeds);
 
     const filteredArticles = articles.filter((article) => {
-        let include = false;
+        let include = true;
 
         if (filters.category) {
             const feed = feeds.find((feed) => feed.id === article.parent);
