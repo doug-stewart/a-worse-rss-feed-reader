@@ -5,7 +5,6 @@
         'cover category category' auto
         'cover title date' auto
         'cover summary summary' auto
-        'cover read-more read-more' auto
         / auto 1fr max-content;
     margin-block-end: 1rem;
     padding: 1rem;
@@ -52,8 +51,4 @@
     grid-area: summary;
     -webkit-line-clamp: 4;
     overflow: hidden;
-}
-
-.more {
-    grid-area: read-more;
 }
