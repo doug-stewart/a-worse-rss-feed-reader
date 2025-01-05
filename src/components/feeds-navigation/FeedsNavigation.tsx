@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { useSelector } from '@xstate/store/react';
 import clsx from 'clsx';
 import DOMPurify from 'dompurify';
+import { useState } from 'react';
 
 import styles from './FeedsNavigation.module.css';
 
@@ -67,6 +68,10 @@ const NavigationCategory = ({
         0,
     );
 
+    const [open, setOpen] = useState(false);
+
+    const toggleFeeds = () => setOpen(!open);
+
     return (
         <li key={category.id}>
             <strong>
@@ -78,12 +83,15 @@ const NavigationCategory = ({
                     />
                     <span>({articlesCount})</span>
                 </Link>
+                <button onClick={toggleFeeds}>{open ? '-' : '+'}</button>
             </strong>
-            <ol>
-                {feeds.map((feed) => (
-                    <NavigationFeed key={feed.id} feed={feed} />
-                ))}
-            </ol>
+            {open && (
+                <ol>
+                    {feeds.map((feed) => (
+                        <NavigationFeed key={feed.id} feed={feed} />
+                    ))}
+                </ol>
+            )}
         </li>
     );
 };
