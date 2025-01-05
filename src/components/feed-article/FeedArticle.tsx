@@ -35,10 +35,6 @@ export const FeedArticle = ({ article }: FeedArticleProps) => {
             )}
 
             {summary && <p className={styles.summary}>{summary}</p>}
-
-            <a className={styles.more} href={url}>
-                read more »
-            </a>
         </article>
     );
 };
