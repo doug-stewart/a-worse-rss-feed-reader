@@ -46,7 +46,6 @@ export const FeedArticleList = ({ filters }: FeedArticleListProps) => {
                     </li>
                 </menu>
             </header>
-
             {filteredArticles.map((article) => (
                 <FeedArticle key={article.id} article={article} />
             ))}

@@ -7,6 +7,7 @@
         'cover summary summary' auto
         / auto 1fr max-content;
     margin-block-end: 1rem;
+    min-height: max(var(--h), calc(120px + 2rem));
     padding: 1rem;
 }
 
@@ -52,3 +53,6 @@
     -webkit-line-clamp: 4;
     overflow: hidden;
 }
+
+/* .hidden {
+} */
