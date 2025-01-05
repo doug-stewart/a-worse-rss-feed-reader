@@ -22,3 +22,42 @@ want.
 | `npm run lint:js`  | Alert you of any JS linter errors and will automatically fix them.                       |
 | `npm run lint:ts`  | Alert you of any TypeScript errors and will automatically fix them.                      |
 | `npm run pretty`   | Will run through all compatible files and format them based on Prettier's configuration. |
+
+## To-Do's
+
+- [ ] Hit it with the pretty stick
+- [ ] Make publishable to somewhere
+- [ ] Add routes:
+    - [x] /
+    - [ ] /login
+    - [ ] /index
+    - [ ] /user
+    - [ ] /manage
+    - [ ] /add
+    - [ ] /edit
+    - [x] /feeds
+    - [x] /feeds?category=mep
+    - [x] /feeds?feed=mep
+- [ ] Add to the data:
+    - [ ] Categories and feeds need to know about layouts.
+    - [ ] The "all" views need to have a layout.
+    - [ ] Alls, categories, and feeds need a sort order.
+- [ ] Add basic functionality:
+    - [ ] Refresh.
+    - [ ] Mark all read.
+    - [ ] Mark older than 1 day read.
+    - [ ] Mark older than 1 week read.
+    - [ ] Mark as read on scroll.
+    - [ ] Mark as read on open.
+    - [ ] Can sort feed views independently.
+    - [ ] Can set layouts for feed views.
+    - [ ] Manage categories.
+        - [ ] Reorder
+        - [ ] Add
+        - [ ] Edit
+        - [ ] Delete
+    - [ ] Manage feeds.
+        - [ ] Add
+        - [ ] Edit
+        - [ ] Delete
+    - [ ] Can reorder categories in sidebar.
