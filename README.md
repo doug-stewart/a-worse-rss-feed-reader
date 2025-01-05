@@ -1,55 +1,24 @@
-# React + TypeScript + Vite
+# A Worse RSS Feed Reader
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+You know what the world needs? Another feed reader. Especially one made by a single developer. Look,
+I made this for myself and I'm sharing it with you. It's not perfect, but it's mine. Use it if you
+want.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
-  uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses
-  [SWC](https://swc.rs/) for Fast Refresh
+1. Install [NVM](https://github.com/nvm-sh/nvm).
+2. Run `nvm install` to install the appropriate version of Node.js.
+3. Run `npm i` to install relevant packages.
 
-## Expanding the ESLint configuration
+## Commands
 
-If you are developing a production application, we recommend updating the configuration to enable
-type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-    languageOptions: {
-        // other options...
-        parserOptions: {
-            project: ['./tsconfig.node.json', './tsconfig.app.json'],
-            tsconfigRootDir: import.meta.dirname,
-        },
-    },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or
-  `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the
-  config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
-
-export default tseslint.config({
-    // Set the react version
-    settings: { react: { version: '18.3' } },
-    plugins: {
-        // Add the react plugin
-        react,
-    },
-    rules: {
-        // other rules...
-        // Enable its recommended rules
-        ...react.configs.recommended.rules,
-        ...react.configs['jsx-runtime'].rules,
-    },
-});
-```
+| Command            | Description                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| `npm run dev`      | Start a local developer server that is accessible from http://localhost:5173/.           |
+| `npm run build`    | Build the site for production and place it in a `build` folder in the root directory.    |
+| `npm run test`     | Start the test server in your terminal.                                                  |
+| `npm run lint`     | Runs all lint commands in sequence: CSS, TS, JS.                                         |
+| `npm run lint:css` | Alert you of any SCSS linter errors and will automatically fix them.                     |
+| `npm run lint:js`  | Alert you of any JS linter errors and will automatically fix them.                       |
+| `npm run lint:ts`  | Alert you of any TypeScript errors and will automatically fix them.                      |
+| `npm run pretty`   | Will run through all compatible files and format them based on Prettier's configuration. |
