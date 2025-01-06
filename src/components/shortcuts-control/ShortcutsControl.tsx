@@ -10,8 +10,6 @@ export const ShortcutsControl = () => {
     const kbShortcuts = useSelector(shortcutStore, (state) => state.context.shortcuts);
     const dialog = useRef<HTMLDialogElement | null>(null);
 
-    console.log('current shortcuts inline', { kbShortcuts });
-
     // Register dialog shortcut
     useEffect(() => {
         shortcutStore.send({
@@ -26,7 +24,6 @@ export const ShortcutsControl = () => {
 
     // Listen for key presses and execute shortcuts when found
     useEffect(() => {
-        console.log('current shortcuts', { kbShortcuts });
         const handleKeyPress = (event: KeyboardEvent) => {
             // Ignore key presses inside form fields
             if (
@@ -39,7 +36,7 @@ export const ShortcutsControl = () => {
             // If we find a shortcut, execute its function
             kbShortcuts
                 .find((shortcut) => {
-                    let matches = shortcut.keyCode === event.key.toLowerCase();
+                    let matches = shortcut.keyCode.toLowerCase() === event.key.toLowerCase();
 
                     if (shortcut.modifier === 'shift') {
                         matches = matches && event.shiftKey;

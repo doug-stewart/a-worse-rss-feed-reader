@@ -15,19 +15,15 @@ export const shortcutStore = createStore({
                 ...(event.modifier && { modifier: event.modifier }),
             };
 
-            console.log({
-                existing: context.shortcuts,
-                new: shortcut,
-                combined: [...context.shortcuts, shortcut],
-            });
-
             return {
                 shortcuts: [...context.shortcuts, shortcut],
             };
         },
-        remove: (context, event: { keyCode: string | Array<string> }) => ({
+        remove: (context, event: { keyCode: ShortcutObj['keyCode'] }) => ({
             shortcuts: [
-                ...context.shortcuts.filter((shortcut) => shortcut.keyCode !== event.keyCode),
+                ...context.shortcuts.filter(
+                    (shortcut) => shortcut.keyCode.toLowerCase() !== event.keyCode.toLowerCase(),
+                ),
             ],
         }),
         reset: () => initial,

@@ -63,13 +63,13 @@ export const FeedArticleList = ({ filters }: FeedArticleListProps) => {
         });
         shortcutStore.send({
             type: 'add',
-            keyCode: 'delete',
+            keyCode: 'backspace',
             modifier: 'shift',
             description: 'Mark feeds as read',
             fn: () => console.log('Mark feeds as read'),
         });
         return () => {
-            shortcutStore.send({ type: 'remove', keyCode: 'delete' });
+            shortcutStore.send({ type: 'remove', keyCode: 'backspace' });
             shortcutStore.send({ type: 'remove', keyCode: 'l' });
             shortcutStore.send({ type: 'remove', keyCode: 'r' });
         };
