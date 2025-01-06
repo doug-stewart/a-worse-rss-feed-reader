@@ -40,9 +40,11 @@ export const FeedInitializer = () => {
                 const rssParser = new DOMParser();
                 const rssDoc = rssParser.parseFromString(feed.body, 'text/xml');
 
-                const rssDocDate = new Date(
-                    rssDoc.getElementsByTagName('lastBuildDate')[0]?.textContent || new Date(),
-                ).getTime();
+                const rssDocDateNode =
+                    rssDoc.getElementsByTagName('lastBuildDate')[0] ||
+                    rssDoc.getElementsByTagName('updated')[0] ||
+                    rssDoc.getElementsByTagName('pubDate')[0];
+                const rssDocDate = new Date(rssDocDateNode?.textContent || new Date()).getTime();
 
                 if (feed.type === 'atom') {
                     const rssRawItems = rssDoc.getElementsByTagName('entry');
