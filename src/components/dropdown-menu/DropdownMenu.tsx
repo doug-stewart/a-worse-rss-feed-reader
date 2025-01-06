@@ -30,7 +30,7 @@ export const DropdownMenu = ({ button, children, className }: DropdownProps) => 
             <button
                 popoverTarget={id}
                 className={clsx(styles.button, className)}
-                style={{ 'anchor-name': `--${id}` } as React.CSSProperties}
+                style={{ anchorName: `--${id}` } as React.CSSProperties}
             >
                 {button}
             </button>
@@ -39,7 +39,7 @@ export const DropdownMenu = ({ button, children, className }: DropdownProps) => 
                 popover=""
                 id={id}
                 className={styles.menu}
-                style={{ 'position-anchor': `--${id}` } as React.CSSProperties}
+                style={{ positionAnchor: `--${id}` } as React.CSSProperties}
             >
                 <menu>
                     {Children.map(children, (child: any, index: number) => {
