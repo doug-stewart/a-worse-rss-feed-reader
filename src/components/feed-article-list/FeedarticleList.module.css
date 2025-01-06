@@ -1,0 +1,26 @@
+.list {
+    display: grid;
+
+    &.full,
+    &.line,
+    &.row {
+        grid-template-columns: 1fr;
+    }
+
+    &.card {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
+
+.layoutBtn {
+    anchor-name: --layout-ctrl;
+}
+
+.layoutMenu {
+    inset: unset;
+    inset-block-start: anchor(bottom);
+    inset-inline-start: anchor(center);
+    position: absolute;
+    position-anchor: --layout-ctrl;
+    translate: -50% 0;
+}

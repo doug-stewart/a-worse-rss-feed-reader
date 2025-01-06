@@ -5,6 +5,7 @@ import styles from './root.module.css';
 
 import { FeedInitializer } from '@/components/feed-initializer/FeedInitializer';
 import { FeedsNavigation } from '@/components/feeds-navigation/FeedsNavigation';
+import { ShortcutsControl } from '@/components/shortcuts-control/ShortcutsControl';
 
 const RouteComponent = () => {
     return (
@@ -16,6 +17,7 @@ const RouteComponent = () => {
             <main className={styles.main}>
                 <Outlet />
             </main>
+            <ShortcutsControl />
             <FeedInitializer />
             <TanStackRouterDevtools />
         </>

@@ -6,11 +6,11 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './FeedArticle.module.css';
 
 import { feedStore } from '@/stores/feed.store';
-import type { FeedArticleObj } from '@/types';
+import type { FeedArticleObj, LayoutConsts } from '@/types';
 
-type FeedArticleProps = { article: FeedArticleObj };
+type FeedArticleProps = { article: FeedArticleObj; layout: LayoutConsts };
 
-export const FeedArticle = ({ article }: FeedArticleProps) => {
+export const FeedArticle = ({ article, layout }: FeedArticleProps) => {
     const { parent, title, url, date, cover, summary } = article;
 
     const wrapper = useRef<HTMLElement | null>(null);
@@ -42,7 +42,7 @@ export const FeedArticle = ({ article }: FeedArticleProps) => {
     return (
         <article
             ref={wrapper}
-            className={clsx(styles.article)}
+            className={clsx(styles.article, styles[layout])}
             style={{ ['--h' as string]: visible ? false : `${height}px` }}
         >
             {visible && (

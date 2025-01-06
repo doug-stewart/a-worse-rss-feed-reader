@@ -1,14 +1,35 @@
 .article {
     background-color: rgb(255 255 255 / 5%);
     display: grid;
-    grid-template:
-        'cover category category' auto
-        'cover title date' auto
-        'cover summary summary' auto
-        / auto 1fr max-content;
+
     margin-block-end: 1rem;
     min-height: max(var(--h), calc(120px + 2rem));
     padding: 1rem;
+
+    &.card,
+    &.full {
+        grid-template:
+            'cover' auto
+            'date' auto
+            'title' auto
+            'category' auto
+            'summary' auto
+            / 1fr;
+    }
+
+    &.line {
+        grid-template:
+            'title date category summary' auto
+            / 1fr max-content max-content 1fr;
+    }
+
+    &.row {
+        grid-template:
+            'cover category category' auto
+            'cover title date' auto
+            'cover summary summary' auto
+            / auto 1fr max-content;
+    }
 }
 
 .category {
@@ -54,5 +75,8 @@
     overflow: hidden;
 }
 
-/* .hidden {
-} */
+.article.card {
+    .cover {
+        width: 100%;
+    }
+}

@@ -1,0 +1,17 @@
+.menu {
+    background-color: black;
+    border: 1px solid;
+    color: white;
+    margin: unset;
+    position: absolute;
+    /* inset-block-start: anchor(block-end center);
+    inset-inline-start: anchor(center); */
+    position-area: block-end center;
+    width: max-content;
+
+    menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+}

@@ -146,6 +146,15 @@ li {
     text-wrap: pretty;
 }
 
+dialog:not([popover]) {
+    background-color: black;
+
+    &::backdrop {
+        backdrop-filter: blur(0.5rem);
+        background-color: rgb(0 0 0 / 0.5);
+    }
+}
+
 #root {
     display: grid;
     grid-template:

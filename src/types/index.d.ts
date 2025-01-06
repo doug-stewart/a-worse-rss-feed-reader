@@ -1,5 +1,7 @@
 export type CategoryObj = { id: number; name: string };
 
+export type LayoutConsts = 'line' | 'row' | 'card' | 'full';
+
 export type FeedObj = {
     id: number;
     category: number;
@@ -31,4 +33,15 @@ export type FeedArticleObj = {
     cover: string | null;
     summary: string | null;
     viewed: boolean;
+};
+
+type ShortcutObj = {
+    keyCode: string;
+    modifier?: string;
+    description: string;
+    fn: (params?: any) => void;
+};
+
+export type ShortcutStoreObj = {
+    shortcuts: Array<ShortcutObj>;
 };
