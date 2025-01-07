@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useSelector } from '@xstate/store/react';
 import clsx from 'clsx';
-import DOMPurify from 'dompurify';
 import { useState } from 'react';
 
 import styles from './FeedsNavigation.module.css';
@@ -76,11 +75,7 @@ const NavigationCategory = ({
         <li key={category.id}>
             <strong>
                 <Link to="/feeds" search={{ category: category.id }}>
-                    <span
-                        dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(category.name),
-                        }}
-                    />
+                    <span dangerouslySetInnerHTML={{ __html: category.name }} />
                     <span>({articlesCount})</span>
                 </Link>
                 <button onClick={toggleFeeds}>{open ? '-' : '+'}</button>
@@ -103,11 +98,7 @@ const NavigationFeed = ({ feed }: { feed: FeedObj }) => {
     return (
         <li key={feed.id}>
             <Link to="/feeds" search={{ feed: feed.id }}>
-                <span
-                    dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(feed.title),
-                    }}
-                />
+                <span dangerouslySetInnerHTML={{ __html: feed.title }} />
                 <span>({articlesCount})</span>
             </Link>
         </li>

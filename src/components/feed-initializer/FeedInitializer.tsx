@@ -1,4 +1,5 @@
 // This is a temp file until there's a better flow for this.
+import DOMPurify from 'dompurify';
 import { useEffect } from 'react';
 
 import * as feedsData from '@/assets/feedsData.json';
@@ -10,21 +11,33 @@ import type { FeedObj } from '@/types';
 export const FeedInitializer = () => {
     useEffect(() => {
         const initialize = async () => {
-            const orderedCategories = feedsData.categories.sort((catA, catB) => {
-                const indexA = feedsData.categoryOrder.indexOf(catA.id);
-                const indexB = feedsData.categoryOrder.indexOf(catB.id);
-                return indexA - indexB;
-            });
+            const { categories, categoryOrder, feeds } = feedsData;
 
-            const sortedFeeds = (feedsData.feeds as Array<FeedObj>).sort((feedA, feedB) => {
-                const titleA = feedA.title.replace(articleRegEx, '');
-                const titleB = feedB.title.replace(articleRegEx, '');
-                return titleA.localeCompare(titleB, 'en', { sensitivity: 'base' });
-            });
+            const collatedCategories = categories
+                .map((category) => ({
+                    ...category,
+                    name: DOMPurify.sanitize(category.name),
+                }))
+                .sort((catA, catB) => {
+                    const indexA = categoryOrder.indexOf(catA.id);
+                    const indexB = categoryOrder.indexOf(catB.id);
+                    return indexA - indexB;
+                });
+
+            const collatedFeeds = feeds
+                .map((feed) => ({
+                    ...feed,
+                    title: DOMPurify.sanitize(feed.title),
+                }))
+                .sort((feedA, feedB) => {
+                    const titleA = feedA.title.replace(articleRegEx, '');
+                    const titleB = feedB.title.replace(articleRegEx, '');
+                    return titleA.localeCompare(titleB, 'en', { sensitivity: 'base' });
+                }) as Array<FeedObj>;
 
             let articles = [];
 
-            const promises = feedsData.feeds.map(async (feed) => ({
+            const promises = collatedFeeds.map(async (feed) => ({
                 id: feed.id,
                 type: feed.type,
                 body: await fetch(feed.rss).then((response) => response.text()),
@@ -67,8 +80,8 @@ export const FeedInitializer = () => {
                 type: 'initialize',
                 data: {
                     categoryOrder: feedsData.categoryOrder,
-                    categories: orderedCategories,
-                    feeds: sortedFeeds,
+                    categories: collatedCategories,
+                    feeds: collatedFeeds,
                     articles: articles,
                 },
             });

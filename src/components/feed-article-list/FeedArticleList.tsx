@@ -28,12 +28,12 @@ export const FeedArticleList = ({ filters }: FeedArticleListProps) => {
     const filteredArticles = articles.filter((article) => {
         let include = true;
 
-        if (filters.category) {
+        if (typeof filters.category === 'number') {
             const feed = feeds.find((feed) => feed.id === article.parent);
             include = feed?.category === filters.category;
         }
 
-        if (filters.feed) {
+        if (typeof filters.feed === 'number') {
             include = article.parent === filters.feed;
         }
 

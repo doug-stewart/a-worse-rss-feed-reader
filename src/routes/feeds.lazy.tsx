@@ -15,13 +15,7 @@ const RouteComponent = () => {
 
     return (
         <>
-            <h2>
-                {searchParams.category
-                    ? categoryName || 'Unknown Category'
-                    : searchParams.feed
-                      ? feedName || 'Unknown Feed'
-                      : 'All Feeds'}
-            </h2>
+            <h2 dangerouslySetInnerHTML={{ __html: categoryName || feedName || 'All Feeds' }}></h2>
             <FeedArticleList filters={searchParams} />
         </>
     );
