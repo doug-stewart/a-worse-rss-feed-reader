@@ -1,7 +1,6 @@
 .article {
     background-color: rgb(255 255 255 / 5%);
     display: grid;
-
     margin-block-end: 1rem;
     min-height: max(var(--h), calc(120px + 2rem));
     padding: 1rem;
@@ -29,6 +28,10 @@
             'cover title date' auto
             'cover summary summary' auto
             / auto 1fr max-content;
+    }
+
+    &.read {
+        opacity: 0.5;
     }
 }
 

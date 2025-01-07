@@ -17,6 +17,7 @@ export const FeedArticle = ({ article, layout }: FeedArticleProps) => {
 
     const [height, setHeight] = useState(0);
     const [visible, setVisible] = useState(false);
+    const [read, setRead] = useState(false);
 
     const categories = useSelector(feedStore, (state) => state.context.feeds);
     const parentName = categories.find((category) => category.id === parent)?.title || 'Orphan';
@@ -25,7 +26,15 @@ export const FeedArticle = ({ article, layout }: FeedArticleProps) => {
         if (!wrapper.current) return;
 
         const observer = new IntersectionObserver((entries) => {
-            setVisible(!!entries.at(0)?.isIntersecting);
+            const entry = entries.at(0);
+            if (!entry) return;
+
+            const onScreen = entry.isIntersecting;
+
+            setRead(entry.boundingClientRect.top <= 0);
+            setVisible(onScreen);
+
+            if (!onScreen) setHeight(wrapper.current?.clientHeight || 0);
         });
 
         observer.observe(wrapper.current);
@@ -33,16 +42,10 @@ export const FeedArticle = ({ article, layout }: FeedArticleProps) => {
         return () => observer.disconnect && observer.disconnect();
     }, [wrapper]);
 
-    useEffect(() => {
-        if (visible) {
-            setHeight(wrapper.current?.clientHeight || 0);
-        }
-    }, [visible]);
-
     return (
         <article
             ref={wrapper}
-            className={clsx(styles.article, styles[layout])}
+            className={clsx(styles.article, styles[layout], read && styles.read)}
             style={{ ['--h' as string]: visible ? false : `${height}px` }}
         >
             {visible && (
