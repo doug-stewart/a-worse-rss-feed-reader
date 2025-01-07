@@ -35,12 +35,21 @@
     }
 }
 
+.category,
+.date {
+    height: 1lh;
+}
+
 .category {
     grid-area: category;
     max-width: min(20ch, 100%);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.date {
+    grid-area: date;
 }
 
 .title {
@@ -53,10 +62,6 @@
         -webkit-line-clamp: 2;
         overflow: hidden;
     }
-}
-
-.date {
-    grid-area: date;
 }
 
 .cover {
