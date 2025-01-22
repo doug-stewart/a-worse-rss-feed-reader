@@ -1,0 +1,7 @@
+.footer {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    height: 100svh;
+    padding: 4rem 1rem;
+    place-items: start center;
+}

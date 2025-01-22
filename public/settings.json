@@ -1,0 +1,12 @@
+{
+    "categoryOrder": [2, 5, 1, 0, 3, 4],
+
+    "categories": [
+        { "id": 0, "text": "Web Design &amp; Dev" },
+        { "id": 1, "text": "Motorcycles" },
+        { "id": 2, "text": "Comics" },
+        { "id": 3, "text": "Tech and Gaming" },
+        { "id": 4, "text": "News" },
+        { "id": 5, "text": "Inspiration" }
+    ]
+}
