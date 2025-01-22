@@ -19,7 +19,6 @@ export default tseslint.config(
             eslintConfigPrettier,
             eslintPluginPrettierRecommended,
             importPlugin.flatConfigs.recommended,
-            ...pluginRouter.configs['flat/recommended'],
         ],
         files: ['**/*.{js,jsx,ts,tsx}'],
         languageOptions: {
@@ -27,6 +26,7 @@ export default tseslint.config(
             globals: globals.browser,
         },
         plugins: {
+            '@tanstack/router': pluginRouter,
             '@typescript-eslint': tsESlintPlugin,
             'jsx-a11y': jsxA11y,
             'react-hooks': reactHooks,

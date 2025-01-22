@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 
 import styles from './ShortcutsControl.module.css';
 
-import { shortcutStore } from '@/stores/shortcut.store';
+import { shortcutStore } from '@/stores/shortcuts.store';
 import { ShortcutObj } from '@/types';
 
 export const ShortcutsControl = () => {

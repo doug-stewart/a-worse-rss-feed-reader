@@ -1,9 +1,9 @@
 .menu {
     border-inline-end: 1px solid;
     height: 100%;
-    max-width: 300px;
     overflow: auto;
     top: 0;
+    width: 300px;
 
     ol {
         list-style: none;
@@ -15,4 +15,26 @@
 
 .footer {
     padding: 1rem;
+}
+
+.category {
+    &.active {
+        color: tomato;
+    }
+}
+
+.feed {
+    a {
+        display: inline-block;
+        padding-inline-start: 1ch;
+        text-indent: -1ch;
+    }
+
+    &.active a {
+        color: tomato;
+    }
+
+    .hidden &:not(.active) {
+        display: none;
+    }
 }

@@ -1,16 +1,17 @@
-import { Link } from '@tanstack/react-router';
-import { useSelector } from '@xstate/store/react';
+import { useSearch, Link } from '@tanstack/react-router';
 import clsx from 'clsx';
 import { useState } from 'react';
 
 import styles from './FeedsNavigation.module.css';
 
-import { feedStore } from '@/stores/feed.store';
+import { useArticles } from '@/hooks/useArticles';
+import { useFeeds } from '@/hooks/useFeeds';
+import { useSettings } from '@/hooks/useSettings';
 import type { CategoryObj, FeedObj } from '@/types';
 
 export const FeedsNavigation = ({ className }: { className: string }) => {
-    const categories = useSelector(feedStore, (state) => state.context.categories);
-    const feeds = useSelector(feedStore, (state) => state.context.feeds);
+    const { categories, categoryOrder } = useSettings();
+    const feeds = useFeeds();
 
     return (
         <nav className={clsx(styles.menu, className)}>
@@ -38,13 +39,19 @@ export const FeedsNavigation = ({ className }: { className: string }) => {
             </ol>
             <h3>Categories</h3>
             <ol>
-                {categories.map((category) => (
-                    <NavigationCategory
-                        category={category}
-                        feeds={feeds.filter((feed) => feed.category === category.id)}
-                        key={category.id}
-                    />
-                ))}
+                {categories
+                    .sort((catA, catB) => {
+                        const indexA = categoryOrder.indexOf(catA.id);
+                        const indexB = categoryOrder.indexOf(catB.id);
+                        return indexA - indexB;
+                    })
+                    .map((category) => (
+                        <NavigationCategory
+                            category={category}
+                            feeds={feeds.filter((feed) => feed.category === category.id)}
+                            key={category.id}
+                        />
+                    ))}
             </ol>
             <footer className={styles.footer}>
                 <a href="#">Add Feed</a>
@@ -61,7 +68,8 @@ const NavigationCategory = ({
     category: CategoryObj;
     feeds: Array<FeedObj>;
 }) => {
-    const articles = useSelector(feedStore, (state) => state.context.articles);
+    const searchParams = useSearch({ strict: false });
+    const articles = useArticles();
     const articlesCount = feeds.reduce(
         (count, feed) => count + articles.filter((article) => article.parent === feed.id).length,
         0,
@@ -74,29 +82,38 @@ const NavigationCategory = ({
     return (
         <li key={category.id}>
             <strong>
-                <Link to="/feeds" search={{ category: category.id }}>
-                    <span dangerouslySetInnerHTML={{ __html: category.name }} />
+                <Link
+                    className={clsx(
+                        styles.category,
+                        searchParams.category === category.id && styles.active,
+                    )}
+                    to="/feeds"
+                    search={{ category: category.id }}
+                >
+                    <span dangerouslySetInnerHTML={{ __html: category.text }} />
                     <span>({articlesCount})</span>
                 </Link>
                 <button onClick={toggleFeeds}>{open ? '-' : '+'}</button>
             </strong>
-            {open && (
-                <ol>
-                    {feeds.map((feed) => (
-                        <NavigationFeed key={feed.id} feed={feed} />
-                    ))}
-                </ol>
-            )}
+            <ol className={clsx(styles.feeds, !open && styles.hidden)}>
+                {feeds.map((feed) => (
+                    <NavigationFeed key={feed.id} feed={feed} />
+                ))}
+            </ol>
         </li>
     );
 };
 
 const NavigationFeed = ({ feed }: { feed: FeedObj }) => {
-    const articles = useSelector(feedStore, (state) => state.context.articles);
+    const searchParams = useSearch({ strict: false });
+    const articles = useArticles();
     const articlesCount = articles.filter((article) => article.parent === feed.id).length;
 
     return (
-        <li key={feed.id}>
+        <li
+            key={feed.id}
+            className={clsx(styles.feed, searchParams.feed === feed.id && styles.active)}
+        >
             <Link to="/feeds" search={{ feed: feed.id }}>
                 <span dangerouslySetInnerHTML={{ __html: feed.title }} />
                 <span>({articlesCount})</span>

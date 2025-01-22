@@ -2,11 +2,23 @@
     "extends": ["stylelint-config-recommended", "stylelint-config-html"],
     "plugins": ["stylelint-order", "stylelint-prettier"],
     "rules": {
+        "at-rule-no-unknown": [true, { "ignoreAtRules": ["position-try"] }],
         "selector-class-pattern": null,
         "order/order": ["custom-properties", "declarations"],
         "order/properties-alphabetical-order": true,
         "no-descending-specificity": null,
-        "function-no-unknown": null,
-        "no-empty-source": null
+        "no-empty-source": null,
+        "function-no-unknown": [true, { "ignoreFunctions": ["anchor", "anchor-size"] }],
+        "property-no-unknown": [
+            true,
+            {
+                "ignoreProperties": [
+                    "anchor-name",
+                    "position-anchor",
+                    "position-try-fallbacks",
+                    "position-try"
+                ]
+            }
+        ]
     }
 }

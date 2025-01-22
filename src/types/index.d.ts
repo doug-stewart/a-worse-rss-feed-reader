@@ -1,4 +1,4 @@
-export type CategoryObj = { id: number; name: string };
+export type CategoryObj = { id: number; text: string };
 
 export type LayoutConsts = 'line' | 'row' | 'card' | 'full';
 
@@ -11,20 +11,12 @@ export type FeedObj = {
     type: 'rss' | 'atom';
 };
 
-export type FeedsDataObj = {
+export type SettingsObj = {
     categoryOrder: Array<number>;
     categories: Array<CategoryObj>;
-    feeds: Array<FeedObj>;
 };
 
-export type FeedStoreObj = {
-    categoryOrder: Array<number>;
-    categories: Array<CategoryObj>;
-    feeds: Array<FeedObj>;
-    articles: Array<FeedArticleObj>;
-};
-
-export type FeedArticleObj = {
+export type ArticleObj = {
     parent: number;
     title: string;
     url: string;
@@ -33,6 +25,8 @@ export type FeedArticleObj = {
     cover: string | null;
     summary: string | null;
     viewed: boolean;
+    body: string;
+    raw: string;
 };
 
 type ShortcutObj = {
