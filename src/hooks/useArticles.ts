@@ -1,61 +1,50 @@
 import { useQueries } from '@tanstack/react-query';
-import axios from 'axios';
+import { useMemo } from 'react';
 
 import { useFeeds } from './useFeeds';
 
-import { parseArticle } from '@/helpers/parseArticle';
-import type { ArticleObj, FeedObj } from '@/types';
+import { fetchArticle } from '@/helpers/fetchArticle';
+import type { ArticleObj } from '@/types';
 
-const fetchArticleCards = async (feed: FeedObj): Promise<Array<ArticleObj>> => {
-    const { data } = await axios.get(feed.rss);
-
-    const rssParser = new DOMParser();
-    const rssDoc = rssParser.parseFromString(data, 'text/xml');
-
-    const rssDocDateNode =
-        rssDoc.getElementsByTagName('lastBuildDate')[0] ||
-        rssDoc.getElementsByTagName('updated')[0] ||
-        rssDoc.getElementsByTagName('pubDate')[0];
-
-    const rssDocDate = new Date(rssDocDateNode?.textContent || new Date()).getTime();
-
-    const articles = [];
-
-    if (feed.type === 'atom') {
-        const rssRawItems = rssDoc.getElementsByTagName('entry');
-        for (const rssRawItem of rssRawItems) {
-            articles.push(parseArticle(rssRawItem, rssDocDate, feed.id));
-        }
-    }
-
-    if (feed.type === 'rss') {
-        const rssRawItems = rssDoc.getElementsByTagName('item');
-        for (const rssRawItem of rssRawItems) {
-            articles.push(parseArticle(rssRawItem, rssDocDate, feed.id));
-        }
-    }
-
-    return articles;
+type OptionsOjb = {
+    filter?: { category?: number; feed?: number };
 };
 
-export const useArticles = () => {
+export const useArticles = (options?: OptionsOjb) => {
+    const { filter } = options || {};
+
     const feeds = useFeeds();
     const results = useQueries({
         queries: feeds.map((feed) => ({
             queryKey: ['articles', feed.id],
-            queryFn: () => fetchArticleCards(feed),
+            queryFn: () => fetchArticle(feed),
         })),
     });
 
-    let articles: Array<ArticleObj> = [];
+    const memoizedArticles = useMemo(() => {
+        let filtered: Array<ArticleObj> = [];
 
-    if (results.some((result) => result.data !== undefined)) {
-        articles = results
-            .filter((result) => result.data !== undefined)
-            .map((result) => result.data)
-            .flat()
-            .sort((articleA, articleB) => articleB.date - articleA.date);
-    }
+        if (results.some((result) => result.data !== undefined)) {
+            filtered = results
+                .filter((result) => result.data !== undefined)
+                .map((result) => result.data)
+                .flat()
+                .sort((articleA, articleB) => articleB.date - articleA.date);
+        }
 
-    return articles;
+        if (typeof filter?.category === 'number') {
+            filtered = filtered.filter((article) => {
+                const feed = feeds.find((feed) => feed.id === article.parent);
+                return feed?.category === filter.category;
+            });
+        }
+
+        if (typeof filter?.feed === 'number') {
+            filtered = filtered.filter((article) => article.parent === filter.feed);
+        }
+
+        return filtered;
+    }, [results, feeds, filter]);
+
+    return memoizedArticles;
 };

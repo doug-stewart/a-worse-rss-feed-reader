@@ -10,5 +10,9 @@
 }
 
 .nav {
+    bottom: 0;
     grid-area: app-nav;
+    height: 100dvh;
+    position: sticky;
+    top: 0;
 }

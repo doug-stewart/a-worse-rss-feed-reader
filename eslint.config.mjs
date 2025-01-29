@@ -9,6 +9,7 @@ import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import pluginRouter from '@tanstack/eslint-plugin-router';
+import reactCompiler from 'eslint-plugin-react-compiler';
 
 export default tseslint.config(
     { ignores: ['dist'] },
@@ -29,6 +30,7 @@ export default tseslint.config(
             '@tanstack/router': pluginRouter,
             '@typescript-eslint': tsESlintPlugin,
             'jsx-a11y': jsxA11y,
+            'react-compiler': reactCompiler,
             'react-hooks': reactHooks,
             'react-refresh': reactRefresh,
         },
@@ -61,6 +63,7 @@ export default tseslint.config(
             '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
             'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+            'react-compiler/react-compiler': 'error',
             'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
         },
     },

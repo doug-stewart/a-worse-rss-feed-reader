@@ -159,7 +159,6 @@ dialog:not([popover]) {
     display: grid;
     grid-template:
         'app-nav app-header' auto
-        'app-nav app-main' 1fr
+        'app-nav app-main' auto
         / auto 1fr;
-    height: 100dvh;
 }

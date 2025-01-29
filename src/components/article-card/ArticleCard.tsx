@@ -1,89 +1,88 @@
 import clsx from 'clsx';
-import dayjs from 'dayjs';
-import DOMPurify from 'dompurify';
 import { useEffect, useRef, useState } from 'react';
 
 import styles from './ArticleCard.module.css';
+import { Content } from './Content';
 
 import { useArticle } from '@/hooks/useArticle';
 import { useFeeds } from '@/hooks/useFeeds';
 import type { ArticleObj, LayoutConsts } from '@/types';
 
-type ArticleCardProps = { article: ArticleObj; layout: LayoutConsts };
+type ArticleCardProps = {
+    article: ArticleObj;
+    layout: LayoutConsts;
+    read: boolean;
+    callback: (id: string) => void;
+};
 
-export const ArticleCard = ({ article, layout }: ArticleCardProps) => {
-    const feeds = useFeeds();
-
+export const ArticleCard = ({ article, layout, read, callback }: ArticleCardProps) => {
     const wrapper = useRef<HTMLElement | null>(null);
 
     const [height, setHeight] = useState(0);
     const [visible, setVisible] = useState(false);
-    const [read, setRead] = useState(false);
 
-    const { url, title, date, cover, body, parent, summary } = useArticle(article, visible);
+    const feeds = useFeeds();
+    const { data, isSuccess } = useArticle(article, visible);
 
-    const parentName = feeds.find((feed) => feed.id === parent)?.title || 'Orphan';
+    const { url = '', title = '', date = 0, cover = '', body = '', summary = '' } = data || {};
+    const parent = feeds.find((feed) => feed.id === article.parent)?.title || 'Orphan';
 
     useEffect(() => {
         if (!wrapper.current) return;
 
-        const observer = new IntersectionObserver((entries) => {
-            const entry = entries.at(0);
-            if (!entry) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const onScreen = entry.isIntersecting;
+                setVisible(onScreen);
 
-            const onScreen = entry.isIntersecting;
+                if (!onScreen) {
+                    setHeight(wrapper.current?.clientHeight || 0);
+                }
 
-            setRead(read || entry.boundingClientRect.top <= 0);
-            setVisible(onScreen);
-
-            if (!onScreen) setHeight(wrapper.current?.clientHeight || 0);
-        });
+                // IntersectionObserver fires when the card is partially off the screen
+                // and we only want to count when it's fully off the screen.
+                if (!read && !onScreen && entry.boundingClientRect.top <= 0) {
+                    callback(article.id);
+                }
+            },
+            {
+                threshold: 0,
+                // Use excessive bottom scroll margin to give us time
+                // to conditionally load additional assets.
+                rootMargin: '0px 0px 1200px 0px',
+            },
+        );
 
         observer.observe(wrapper.current);
 
         return () => observer.disconnect && observer.disconnect();
-    }, [read, wrapper]);
+    }, [callback, read, wrapper, article]);
 
     return (
         <article
             ref={wrapper}
-            className={clsx(styles.article, styles[layout], read && styles.read)}
+            data-id={article.id}
+            className={clsx(
+                styles.article,
+                styles[layout],
+                read && styles.read,
+                !isSuccess && styles.loading,
+            )}
             style={{ ['--h' as string]: visible ? false : `${height}px` }}
         >
-            {visible && (
-                <>
-                    <h3 className={styles.title}>
-                        <a href={url}>{title}</a>
-                    </h3>
-
-                    {date && (
-                        <time
-                            className={styles.date}
-                            dateTime={`${dayjs(date).format('YYYY-MM-DD')}`}
-                        >
-                            {dayjs(date).format('MMM D, YYYY')}
-                        </time>
-                    )}
-
-                    <p className={styles.category}>{parentName}</p>
-
-                    {cover ? (
-                        <img className={styles.cover} src={cover} alt={title} />
-                    ) : (
-                        <span className={styles.cover} />
-                    )}
-
-                    {layout === 'full'
-                        ? summary && (
-                              <p
-                                  className={styles.summary}
-                                  dangerouslySetInnerHTML={{
-                                      __html: DOMPurify.sanitize(body),
-                                  }}
-                              />
-                          )
-                        : summary && <p className={styles.summary}>{summary}</p>}
-                </>
+            {visible && isSuccess ? (
+                <Content
+                    url={url}
+                    title={title}
+                    date={date}
+                    parent={parent}
+                    cover={cover || ''}
+                    body={body}
+                    summary={summary || ''}
+                    layout={layout}
+                />
+            ) : (
+                <></>
             )}
         </article>
     );

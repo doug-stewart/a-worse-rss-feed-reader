@@ -1,5 +1,6 @@
 .list {
     display: grid;
+    gap: 1em;
 
     &.full,
     &.line,
@@ -12,15 +13,11 @@
     }
 }
 
-.layoutBtn {
-    anchor-name: --layout-ctrl;
-}
-
-.layoutMenu {
-    inset: unset;
-    inset-block-start: anchor(bottom);
-    inset-inline-start: anchor(center);
-    position: absolute;
-    position-anchor: --layout-ctrl;
-    translate: -50% 0;
+.footer {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-rows: auto auto 1fr;
+    height: calc(100svh + 100px);
+    padding: calc(4rem + 100px) 1rem;
+    place-items: start center;
 }

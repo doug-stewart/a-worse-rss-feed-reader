@@ -1,21 +1,22 @@
 import clsx from 'clsx';
+import { PropsWithChildren } from 'react';
 
 import styles from './ArticleList.module.css';
 
-import { ArticleCard } from '@/components/article-card/ArticleCard';
-import type { ArticleObj, LayoutConsts } from '@/types';
+import type { LayoutConsts } from '@/types';
 
-type ArticleCardListProps = {
-    articles: Array<ArticleObj>;
+type ArticleCardListProps = PropsWithChildren<{
     layout: LayoutConsts;
-};
+}>;
 
-export const ArticleList = ({ articles, layout }: ArticleCardListProps) => {
+export const ArticleList = ({ children, layout }: ArticleCardListProps) => {
     return (
         <div className={clsx(styles.list, styles[layout])}>
-            {articles.map((article) => (
-                <ArticleCard key={article.id} article={article} layout={layout} />
-            ))}
+            {children}
+            <footer className={styles.footer}>
+                <p>You&rsquo;ve reached the end&hellip;</p>
+                <button>Mark All Unseen</button>
+            </footer>
         </div>
     );
 };

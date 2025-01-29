@@ -45,7 +45,7 @@ export const parseArticle = (
         body: body,
         cover: cover,
         date: date,
-        id: id,
+        id: encodeURIComponent(id),
         parent: parent,
         summary: summary,
         title: title,

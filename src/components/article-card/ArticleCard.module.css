@@ -2,38 +2,26 @@
     align-content: start;
     background-color: rgb(255 255 255 / 5%);
     display: grid;
-    margin-block-end: 1rem;
-    min-height: max(var(--h), calc(120px + 2rem));
+    min-height: max(var(--h), 240px);
     padding: 1rem;
+}
 
-    &.card,
-    &.full {
-        grid-template:
-            'cover' auto
-            'date' auto
-            'title' auto
-            'category' auto
-            'summary' max-content
-            / 1fr;
-    }
+.line {
+    grid-template:
+        'title date category summary' auto
+        / 1fr max-content max-content 1fr;
+}
 
-    &.line {
-        grid-template:
-            'title date category summary' auto
-            / 1fr max-content max-content 1fr;
-    }
+.row {
+    grid-template:
+        'cover category category' auto
+        'cover title date' auto
+        'cover summary summary' auto
+        / auto 1fr max-content;
+}
 
-    &.row {
-        grid-template:
-            'cover category category' auto
-            'cover title date' auto
-            'cover summary summary' auto
-            / auto 1fr max-content;
-    }
-
-    &.read {
-        opacity: 0.5;
-    }
+.read {
+    opacity: 0.5;
 }
 
 .category,
@@ -66,11 +54,10 @@
 }
 
 .cover {
-    aspect-ratio: 1 / 1;
     background-color: rgb(255 255 255 / 5%);
     display: block;
     grid-area: cover;
-    margin-inline-end: 1rem;
+    height: auto;
     object-fit: cover;
     object-position: 50% 0;
     width: 100%;
@@ -88,8 +75,31 @@
     overflow: hidden;
 }
 
-.article.card {
+.card,
+.full {
+    grid-template:
+        'cover' auto
+        'date' auto
+        'title' auto
+        'category' auto
+        'summary' auto
+        / 1fr;
+}
+
+.card {
     .cover {
         width: 100%;
+    }
+}
+
+.loading {
+    > *:not(.cover, .summary) {
+        background-color: rgb(255 255 255 / 5%);
+        border-radius: 0.5lh;
+        height: 1lh;
+    }
+
+    .summary {
+        height: 4lh;
     }
 }

@@ -1,4 +1,5 @@
 import { useSearch, Link } from '@tanstack/react-router';
+import { useSelector } from '@xstate/store/react';
 import clsx from 'clsx';
 import { useState } from 'react';
 
@@ -7,6 +8,7 @@ import styles from './FeedsNavigation.module.css';
 import { useArticles } from '@/hooks/useArticles';
 import { useFeeds } from '@/hooks/useFeeds';
 import { useSettings } from '@/hooks/useSettings';
+import { userStore } from '@/stores/user.store';
 import type { CategoryObj, FeedObj } from '@/types';
 
 export const FeedsNavigation = ({ className }: { className: string }) => {
@@ -70,8 +72,15 @@ const NavigationCategory = ({
 }) => {
     const searchParams = useSearch({ strict: false });
     const articles = useArticles();
+
+    const readArticles = useSelector(userStore, (state) => state.context.read);
+
     const articlesCount = feeds.reduce(
-        (count, feed) => count + articles.filter((article) => article.parent === feed.id).length,
+        (count, feed) =>
+            count +
+            articles.filter(
+                (article) => article.parent === feed.id && !readArticles.includes(article.id),
+            ).length,
         0,
     );
 
@@ -107,7 +116,12 @@ const NavigationCategory = ({
 const NavigationFeed = ({ feed }: { feed: FeedObj }) => {
     const searchParams = useSearch({ strict: false });
     const articles = useArticles();
-    const articlesCount = articles.filter((article) => article.parent === feed.id).length;
+
+    const readArticles = useSelector(userStore, (state) => state.context.read);
+
+    const articlesCount = articles.filter(
+        (article) => article.parent === feed.id && !readArticles.includes(article.id),
+    ).length;
 
     return (
         <li

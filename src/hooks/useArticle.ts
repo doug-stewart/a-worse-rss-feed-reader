@@ -3,13 +3,16 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchMissingInfo } from '@/helpers/fetchMissingInfo';
 import type { ArticleObj } from '@/types';
 
-export const useArticle = (article: ArticleObj, enhance = false): ArticleObj => {
-    const { data } = useQuery({
-        queryKey: ['article', article.id],
-        queryFn: () => fetchMissingInfo(article),
-        enabled:
-            enhance && [article.cover, article.summary, article.body].some((item) => item === ''),
+export const useArticle = (initial: ArticleObj, enhance = false) => {
+    const shouldFetch =
+        enhance && [initial.cover, initial.summary, initial.body].some((item) => item === '');
+
+    const query = useQuery({
+        queryKey: ['article', initial.id],
+        queryFn: () => fetchMissingInfo(initial),
+        enabled: shouldFetch,
+        placeholderData: initial,
     });
 
-    return Object.assign(article, data);
+    return query;
 };

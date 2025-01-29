@@ -1,3 +1,4 @@
+import axios from 'axios';
 import DOMPurify from 'dompurify';
 
 import { isImageUrl } from './isImageUrl';
@@ -9,8 +10,9 @@ export const fetchMissingInfo = async (article: ArticleObj): Promise<ArticleObj>
     let { body, cover, summary } = article;
 
     try {
-        const page = await fetch(url)
-            .then((response) => response.text())
+        const page = await axios
+            .get(url)
+            .then((response) => response.data)
             .catch((error) => {
                 throw new Error(error);
             });
