@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify';
 import type { CategoriesObj, CategoryObj } from '../types';
 
 export const fetchCategories = async (): Promise<CategoriesObj> => {
-    const categories = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/categories.json`);
+    const categories = await axios.get(`${import.meta.env.BASE_URL}/categories.json`);
 
     const collatedCategories = categories.data.categories.map((category: CategoryObj) => ({
         ...category,

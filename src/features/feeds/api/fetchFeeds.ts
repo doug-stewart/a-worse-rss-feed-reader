@@ -6,7 +6,7 @@ import type { FeedObj } from '../types';
 import { articleRegEx } from '@/features/feeds/helpers/articleRegEx';
 
 export const fetchFeeds = async (): Promise<Array<FeedObj>> => {
-    const rawFeeds = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/feeds.json`);
+    const rawFeeds = await axios.get(`${import.meta.env.BASE_URL}/feeds.json`);
 
     const sanitizedTitles = rawFeeds.data.feeds.map((feed: FeedObj) => ({
         ...feed,

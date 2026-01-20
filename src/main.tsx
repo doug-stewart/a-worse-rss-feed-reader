@@ -11,7 +11,7 @@ declare module '@tanstack/react-router' {
     }
 }
 
-const router = createRouter({ routeTree });
+const router = createRouter({ routeTree, basepath: import.meta.env.BASE_URL || '/' });
 const rootElement = document.getElementById('root')!;
 
 if (!rootElement.innerHTML) {

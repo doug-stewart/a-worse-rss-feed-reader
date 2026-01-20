@@ -16,6 +16,7 @@
     "dependencies": {
         "@tanstack/react-query": "^5.90.19",
         "@tanstack/react-router": "^1.153.2",
+        "@vitejs/plugin-react": "^5.1.2",
         "@xstate/store": "^3.15.0",
         "axios": "^1.13.2",
         "clsx": "^2.1.1",
@@ -40,7 +41,6 @@
         "@types/react": "^19.2.9",
         "@types/react-dom": "^19.2.3",
         "@typescript-eslint/parser": "^8.53.1",
-        "@vitejs/plugin-react": "^5.1.2",
         "babel-plugin-react-compiler": "^19.0.0-beta-27714ef-20250124",
         "eslint": "^9.39.2",
         "eslint-config-prettier": "^10.1.8",
