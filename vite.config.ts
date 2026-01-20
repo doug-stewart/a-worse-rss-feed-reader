@@ -1,13 +1,16 @@
-import * as path from 'path';
+import * as path from 'node:path';
 
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
+import TanStackRouter from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
+    base: '/a-worse-rss-feed-reader/',
     plugins: [
         react({ babel: { plugins: [['babel-plugin-react-compiler']] } }),
-        TanStackRouterVite(),
+        svgr(),
+        TanStackRouter(),
     ],
     resolve: {
         alias: {

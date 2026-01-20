@@ -1,14 +1,13 @@
 {
-    "extends": ["stylelint-config-recommended", "stylelint-config-html"],
-    "plugins": ["stylelint-order", "stylelint-prettier"],
+    "extends": ["stylelint-config-standard", "stylelint-config-html"],
+    "plugins": ["stylelint-order"],
     "rules": {
         "at-rule-no-unknown": [true, { "ignoreAtRules": ["position-try"] }],
-        "selector-class-pattern": null,
+        "function-no-unknown": [true, { "ignoreFunctions": ["anchor", "anchor-size"] }],
         "order/order": ["custom-properties", "declarations"],
         "order/properties-alphabetical-order": true,
         "no-descending-specificity": null,
         "no-empty-source": null,
-        "function-no-unknown": [true, { "ignoreFunctions": ["anchor", "anchor-size"] }],
         "property-no-unknown": [
             true,
             {
@@ -19,6 +18,7 @@
                     "position-try"
                 ]
             }
-        ]
+        ],
+        "selector-class-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$"
     }
 }
