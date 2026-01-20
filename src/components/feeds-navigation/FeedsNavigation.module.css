@@ -14,25 +14,3 @@
 .footer {
     padding: 1rem;
 }
-
-.category {
-    &.active {
-        color: tomato;
-    }
-}
-
-.feed {
-    a {
-        display: inline-block;
-        padding-inline-start: 1ch;
-        text-indent: -1ch;
-    }
-
-    &.active a {
-        color: tomato;
-    }
-
-    .hidden &:not(.active) {
-        display: none;
-    }
-}

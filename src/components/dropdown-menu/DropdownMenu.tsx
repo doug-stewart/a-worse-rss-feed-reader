@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { customAlphabet } from 'nanoid';
-import { Children, PropsWithChildren, useEffect, useRef } from 'react';
+import type { PropsWithChildren } from 'react';
+import { Children, useEffect, useRef } from 'react';
 
 import styles from './DropdownMenu.module.css';
 
@@ -18,7 +19,7 @@ export const DropdownMenu = ({ button, children, className }: DropdownProps) => 
 
         const el = dialog.current;
         el.addEventListener('click', (e) => {
-            const wasButton = !!(e.target as HTMLElement)?.closest('button');
+            const wasButton = !!(e.target as HTMLElement).closest('button');
             if (wasButton) el.hidePopover();
         });
 

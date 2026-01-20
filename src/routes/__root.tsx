@@ -1,13 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { createRootRoute, Outlet } from '@tanstack/react-router';
+import { Outlet, createRootRoute } from '@tanstack/react-router';
 // import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { useEffect, useRef } from 'react';
 
 import styles from './root.module.css';
 
 import { FeedsNavigation } from '@/components/feeds-navigation/FeedsNavigation';
-import { ShortcutsControl } from '@/components/shortcuts-control/ShortcutsControl';
+import { ShortcutsControl } from '@/features/shortcuts/components/shortcuts-control/ShortcutsControl';
 
 const queryClient = new QueryClient({
     defaultOptions: {

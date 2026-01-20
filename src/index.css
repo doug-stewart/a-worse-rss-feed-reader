@@ -10,7 +10,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: color-mix(in srgb, transparent, white) 20%);
+    background-color: color-mix(in srgb, transparent, white 20%);
 }
 
 :root {
@@ -151,7 +151,7 @@ dialog:not([popover]) {
 
     &::backdrop {
         backdrop-filter: blur(0.5rem);
-        background-color: rgb(0 0 0 / 0.5);
+        background-color: rgb(0 0 0 / 50%);
     }
 }
 

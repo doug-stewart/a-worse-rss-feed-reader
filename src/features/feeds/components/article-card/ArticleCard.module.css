@@ -1,0 +1,102 @@
+.article {
+    align-content: start;
+    background-color: rgb(255 255 255 / 5%);
+    display: grid;
+    min-height: max(var(--h), 240px);
+    padding: 1rem;
+}
+
+.line {
+    grid-template:
+        'title date category summary' auto
+        / 1fr max-content max-content 1fr;
+}
+
+.row {
+    grid-template:
+        'cover category category' auto
+        'cover title date' auto
+        'cover summary summary' auto
+        / auto 1fr max-content;
+}
+
+.read {
+    opacity: 0.5;
+}
+
+.category,
+.date {
+    height: 1lh;
+}
+
+.category {
+    grid-area: category;
+    max-width: min(20ch, 100%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.date {
+    grid-area: date;
+}
+
+.title {
+    grid-area: title;
+    margin-block-end: 0.5rem;
+
+    a {
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+}
+
+.cover {
+    background-color: rgb(255 255 255 / 5%);
+    display: block;
+    grid-area: cover;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 0;
+    width: 100%;
+}
+
+.summary {
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    grid-area: summary;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
+.card,
+.full {
+    grid-template:
+        'cover' auto
+        'date' auto
+        'title' auto
+        'category' auto
+        'summary' auto
+        / 1fr;
+}
+
+.card {
+    .cover {
+        aspect-ratio: 7/5;
+        width: 100%;
+    }
+}
+
+.loading {
+    > *:not(.cover, .summary) {
+        background-color: rgb(255 255 255 / 5%);
+        border-radius: 0.5lh;
+        height: 1lh;
+    }
+
+    .summary {
+        height: 4lh;
+    }
+}

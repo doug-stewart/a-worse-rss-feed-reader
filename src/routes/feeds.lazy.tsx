@@ -1,27 +1,26 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
-import { ArticleCard } from '@/components/article-card/ArticleCard';
-import { ArticleList } from '@/components/article-list/ArticleList';
 import { DropdownMenu } from '@/components/dropdown-menu/DropdownMenu';
-import { useArticles } from '@/hooks/useArticles';
-import { useFeeds } from '@/hooks/useFeeds';
-import { useSettings } from '@/hooks/useSettings';
-import { useShortcut } from '@/hooks/useShortcut';
-import { userStore } from '@/stores/user.store';
-import { ArticleObj, LayoutConsts } from '@/types';
+import { ArticleCard } from '@/features/feeds/components/article-card/ArticleCard';
+import { ArticleList } from '@/features/feeds/components/article-list/ArticleList';
+import { useArticles } from '@/features/feeds/hooks/useArticles';
+import { useCategories } from '@/features/feeds/hooks/useCategories';
+import { useFeeds } from '@/features/feeds/hooks/useFeeds';
+import { useShortcut } from '@/features/shortcuts/hooks/useShortcut';
+import { useUserActions } from '@/features/user/stores/user.store';
+import type { LayoutConsts } from '@/types';
 
 const RouteComponent = () => {
     const searchParams = Route.useSearch();
+
+    const { markRead } = useUserActions();
 
     const allArticles = useArticles({
         filter: { category: searchParams.category, feed: searchParams.feed },
     });
     const feeds = useFeeds();
-    const { categories } = useSettings();
-
-    const [articles, setArticles] = useState<Array<ArticleObj>>([]);
-    const [filterSnapshot, setFilterSnapshot] = useState({});
+    const { categories } = useCategories();
 
     const [layout, setLayout] = useState<LayoutConsts>('card');
     const [read, setRead] = useState(new Set<string>());
@@ -30,28 +29,20 @@ const RouteComponent = () => {
     const categoryName = categories.find((category) => category.id === searchParams.category)?.text;
     const feedName = feeds.find((feed) => feed.id === searchParams.feed)?.title;
 
-    const changeLayout = (layout: LayoutConsts) => setLayout(layout);
+    const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
 
     const handleMarkRead = (id: string) => {
-        setHidden((hidden) => new Set(hidden.add(id)));
-        setRead((read) => new Set(read.add(id)));
+        setHidden((currentHidden) => new Set(currentHidden.add(id)));
+        setRead((currentRead) => new Set(currentRead.add(id)));
     };
 
     const handleMarkAllRead = () => allArticles.forEach((article) => handleMarkRead(article.id));
 
     useEffect(() => {
-        // Putting this ina  useEffect allows the state to update asynchronously
+        // Putting this in a useEffect allows the state to update asynchronously
         // and doesn't block the main thread
-        userStore.send({ type: 'add', ids: Array.from(read) });
-    }, [read]);
-
-    useEffect(() => {
-        // This will be replaced with some kind of database interaction
-        if (JSON.stringify(filterSnapshot) === JSON.stringify(searchParams)) return;
-        setFilterSnapshot({ ...searchParams });
-        setRead(new Set());
-        setArticles(allArticles.filter((article) => !hidden.has(article.id)));
-    }, [allArticles, filterSnapshot, searchParams, hidden]);
+        markRead(Array.from(read));
+    }, [read, markRead]);
 
     // Register dialog shortcut
     useShortcut({
@@ -73,6 +64,8 @@ const RouteComponent = () => {
         fn: () => console.log('Mark feeds as read'),
     });
 
+    const displayArticles = allArticles.filter((article) => !hidden.has(article.id));
+
     return (
         <>
             <header>
@@ -82,7 +75,7 @@ const RouteComponent = () => {
                             __html: categoryName || feedName || 'All Feeds',
                         }}
                     />
-                    ({articles.length})
+                    ({displayArticles.length})
                 </h2>
                 <menu>
                     <li>
@@ -102,7 +95,7 @@ const RouteComponent = () => {
                 </menu>
             </header>
             <ArticleList layout={layout}>
-                {articles.map((article) => (
+                {displayArticles.map((article) => (
                     <ArticleCard
                         key={article.id}
                         article={article}
