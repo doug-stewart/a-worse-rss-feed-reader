@@ -3,3 +3,7 @@
         color: tomato;
     }
 }
+
+:where(.hidden li) {
+    display: none;
+}

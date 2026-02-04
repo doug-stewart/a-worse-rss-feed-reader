@@ -5,11 +5,11 @@
         text-indent: -1ch;
     }
 
-    &.active a {
-        color: tomato;
-    }
+    &.active {
+        display: block;
 
-    .hidden &:not(.active) {
-        display: none;
+        a {
+            color: tomato;
+        }
     }
 }
