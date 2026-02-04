@@ -16,7 +16,7 @@ const RouteComponent = () => {
 
     const { markRead } = useUserActions();
 
-    const { articles: allArticles } = useArticles({
+    const { articles: allArticles, articlesQuery } = useArticles({
         filter: { category: searchParams.category, feed: searchParams.feed },
     });
 
@@ -45,7 +45,8 @@ const RouteComponent = () => {
     const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
 
     const handleRefresh = () => {
-        console.log('Refresh feeds');
+        setHidden(new Set(allRead));
+        articlesQuery.forEach((query) => query.refetch());
     };
 
     const pendingRead = new Batcher<string>((ids) => {
