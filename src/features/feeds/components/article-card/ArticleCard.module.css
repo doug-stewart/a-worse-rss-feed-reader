@@ -2,7 +2,7 @@
     align-content: start;
     background-color: rgb(255 255 255 / 5%);
     display: grid;
-    min-height: max(var(--h), 240px);
+    min-height: var(--h);
     padding: 1rem;
 }
 
@@ -24,9 +24,10 @@
     opacity: 0.5;
 }
 
+.title,
 .category,
 .date {
-    height: 1lh;
+    min-height: 1lh;
 }
 
 .category {
@@ -67,7 +68,8 @@
     -webkit-box-orient: vertical;
     display: -webkit-box;
     grid-area: summary;
-    -webkit-line-clamp: 4;
+    height: 3lh;
+    -webkit-line-clamp: 3;
     overflow: hidden;
 }
 

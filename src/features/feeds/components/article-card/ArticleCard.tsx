@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 import type { ArticleObj } from '../../types';
 
@@ -8,28 +8,31 @@ import { Content } from './Content';
 
 import { useArticle } from '@/features/feeds/hooks/useArticle';
 import { useFeeds } from '@/features/feeds/hooks/useFeeds';
+import { useRead } from '@/features/user/stores/user.store';
 import type { LayoutConsts } from '@/types';
 
 type ArticleCardProps = {
     article: ArticleObj;
     layout: LayoutConsts;
-    read: boolean;
-    callback: (id: string) => void;
+    onRead: (id: string) => void;
 };
 
-export const ArticleCard = ({ article, layout, read, callback }: ArticleCardProps) => {
+export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
     const wrapper = useRef<HTMLElement | null>(null);
+    const allRead = useRead();
+
+    const read = allRead.includes(article.id);
 
     const [height, setHeight] = useState(0);
-    const [visible, setVisible] = useState(false);
+    const [isVisible, setVisible] = useState(false);
 
     const feeds = useFeeds();
-    const { data, isSuccess } = useArticle(article, visible);
+    const { data, isSuccess } = useArticle(article, isVisible);
 
     const { url = '', title = '', date = 0, cover = '', body = '', summary = '' } = data || {};
     const parent = feeds.find((feed) => feed.id === article.parent)?.title || 'Orphan';
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!wrapper.current) return;
 
         const observer = new IntersectionObserver(
@@ -44,21 +47,21 @@ export const ArticleCard = ({ article, layout, read, callback }: ArticleCardProp
                 // IntersectionObserver fires when the card is partially off the screen
                 // and we only want to count when it's fully off the screen.
                 if (!read && !onScreen && entry.boundingClientRect.top <= 0) {
-                    callback(article.id);
+                    onRead(article.id);
                 }
             },
             {
                 threshold: 0,
                 // Use excessive bottom scroll margin to give us time
                 // to conditionally load additional assets.
-                rootMargin: '0px 0px 1200px 0px',
+                rootMargin: '0px 0px 3000px 0px',
             },
         );
 
         observer.observe(wrapper.current);
 
         return () => observer.disconnect();
-    }, [callback, read, wrapper, article]);
+    }, [onRead, read, wrapper, article]);
 
     return (
         <article
@@ -68,23 +71,24 @@ export const ArticleCard = ({ article, layout, read, callback }: ArticleCardProp
                 styles.article,
                 styles[layout],
                 read && styles.read,
-                !isSuccess && styles.loading,
+                !isVisible && styles.loading,
             )}
-            style={{ ['--h' as string]: visible ? false : `${height}px` }}
+            style={{ ['--h' as string]: isVisible ? false : `${height}px` }}
         >
-            {visible && isSuccess ? (
+            {isVisible ? (
                 <Content
                     url={url}
                     title={title}
                     date={date}
                     parent={parent}
-                    cover={cover || ''}
+                    cover={isSuccess ? cover || '' : ''}
                     body={body}
                     summary={summary || ''}
                     layout={layout}
                 />
             ) : (
                 <></>
+                // <Skeleton layout={layout} />
             )}
         </article>
     );

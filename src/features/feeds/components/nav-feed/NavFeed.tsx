@@ -6,16 +6,10 @@ import type { FeedObj } from '../../types';
 
 import styles from './NavFeed.module.css';
 
-import { useRead } from '@/features/user/stores/user.store';
-
 export const NavFeed = ({ feed }: { feed: FeedObj }) => {
     const searchParams = useSearch({ strict: false });
-    const articles = useArticles();
-    const read = useRead();
-
-    const articlesCount = articles.filter(
-        (article) => article.parent === feed.id && !read.includes(article.id),
-    ).length;
+    const { articles } = useArticles({ filter: { feed: feed.id, read: false } });
+    const articlesCount = articles.length;
 
     return (
         <li

@@ -6,15 +6,18 @@ import type { ArticleObj } from '../types';
 import { useFeeds } from './useFeeds';
 
 import { fetchArticles } from '@/features/feeds/api/fetchArticles';
+import { useRead } from '@/features/user/stores/user.store';
 
 type OptionsOjb = {
-    filter?: { category?: number; feed?: number };
+    filter?: { category?: number; feed?: number; read?: boolean };
 };
 
 export const useArticles = (options?: OptionsOjb) => {
     const { filter } = options || {};
 
     const feeds = useFeeds();
+    const read = useRead();
+
     const results = useQueries({
         queries: feeds.map((feed) => ({
             queryKey: ['articles', feed.id],
@@ -33,6 +36,10 @@ export const useArticles = (options?: OptionsOjb) => {
                 .sort((articleA, articleB) => articleB.date - articleA.date);
         }
 
+        if (filter?.read === false) {
+            filtered = filtered.filter((article) => !read.includes(article.id));
+        }
+
         if (typeof filter?.category === 'number') {
             filtered = filtered.filter((article) => {
                 const feed = feeds.find((f) => f.id === article.parent);
@@ -45,7 +52,7 @@ export const useArticles = (options?: OptionsOjb) => {
         }
 
         return filtered;
-    }, [results, feeds, filter]);
+    }, [results, feeds, filter, read]);
 
-    return memoizedArticles;
+    return { articles: memoizedArticles };
 };

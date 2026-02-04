@@ -8,8 +8,6 @@ import { NavFeed } from '../nav-feed/NavFeed';
 
 import styles from './NavCategory.module.css';
 
-import { useRead } from '@/features/user/stores/user.store';
-
 export const NavCategory = ({
     category,
     feeds,
@@ -18,20 +16,12 @@ export const NavCategory = ({
     feeds: Array<FeedObj>;
 }) => {
     const searchParams = useSearch({ strict: false });
-    const articles = useArticles();
-    const read = useRead();
 
-    const articlesCount = feeds.reduce(
-        (count, feed) =>
-            count +
-            articles.filter((article) => article.parent === feed.id && !read.includes(article.id))
-                .length,
-        0,
-    );
+    const { articles } = useArticles({ filter: { category: category.id, read: false } });
+    const articlesCount = articles.length;
 
     const [open, setOpen] = useState(false);
-
-    const toggleFeeds = () => setOpen(!open);
+    const toggleFeeds = () => setOpen((current) => !current);
 
     return (
         <li key={category.id}>
