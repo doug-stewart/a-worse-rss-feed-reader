@@ -12,7 +12,6 @@ import { useRead, useUserActions } from '@/features/user/stores/user.store';
 import type { LayoutConsts } from '@/types';
 
 const RouteComponent = () => {
-    console.log('Rendering Feeds Route');
     const searchParams = Route.useSearch();
 
     const { markRead } = useUserActions();
@@ -20,17 +19,17 @@ const RouteComponent = () => {
     const { articles: allArticles } = useArticles({
         filter: { category: searchParams.category, feed: searchParams.feed },
     });
+
     const feeds = useFeeds();
     const allRead = useRead();
     const { categories } = useCategories();
 
+    const [hidden, setHidden] = useState(new Set(allRead));
     const [layout, setLayout] = useState<LayoutConsts>('card');
     const [activeParams, setActiveParams] = useState({
         feed: searchParams.feed,
         category: searchParams.category,
     });
-
-    const [hidden, setHidden] = useState(new Set([] as Array<string>));
 
     if (
         activeParams.feed !== searchParams.feed ||
