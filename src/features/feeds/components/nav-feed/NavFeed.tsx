@@ -8,8 +8,7 @@ import styles from './NavFeed.module.css';
 
 export const NavFeed = ({ feed }: { feed: FeedObj }) => {
     const searchParams = useSearch({ strict: false });
-    const { articles } = useArticles({ filter: { feed: feed.id, read: false } });
-    const articlesCount = articles.length;
+    const { unreadCount } = useArticles({ feed: feed.id });
 
     return (
         <li
@@ -18,7 +17,7 @@ export const NavFeed = ({ feed }: { feed: FeedObj }) => {
         >
             <Link to="/feeds" search={{ feed: feed.id }}>
                 <span dangerouslySetInnerHTML={{ __html: feed.title }} />
-                <span>({articlesCount})</span>
+                <span>({unreadCount})</span>
             </Link>
         </li>
     );

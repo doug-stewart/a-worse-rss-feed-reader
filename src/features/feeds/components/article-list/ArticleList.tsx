@@ -5,6 +5,7 @@ import { ArticleCard } from '../article-card/ArticleCard';
 
 import styles from './ArticleList.module.css';
 
+import { useUserActions } from '@/features/user/stores/user.store';
 import type { LayoutConsts } from '@/types';
 
 type ArticleCardListProps = {
@@ -14,6 +15,12 @@ type ArticleCardListProps = {
 };
 
 export const ArticleList = ({ articles, layout, onRead }: ArticleCardListProps) => {
+    const { markUnread } = useUserActions();
+
+    const handleMarkAllUnread = () => {
+        markUnread(articles.map(({ id }) => id));
+    };
+
     return (
         <div className={clsx(styles.list, styles[layout])}>
             {articles.map((article) => (
@@ -21,7 +28,7 @@ export const ArticleList = ({ articles, layout, onRead }: ArticleCardListProps) 
             ))}
             <footer className={styles.footer}>
                 <p>You&rsquo;ve reached the end&hellip;</p>
-                <button>Mark All Unseen</button>
+                <button onClick={handleMarkAllUnread}>Mark All Unseen</button>
             </footer>
         </div>
     );

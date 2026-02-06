@@ -16,9 +16,7 @@ export const NavCategory = ({
     feeds: Array<FeedObj>;
 }) => {
     const searchParams = useSearch({ strict: false });
-
-    const { articles } = useArticles({ filter: { category: category.id, read: false } });
-    const articlesCount = articles.length;
+    const { unreadCount } = useArticles({ category: category.id });
 
     const [open, setOpen] = useState(false);
     const toggleFeeds = () => setOpen((current) => !current);
@@ -35,7 +33,7 @@ export const NavCategory = ({
                     search={{ category: category.id }}
                 >
                     <span dangerouslySetInnerHTML={{ __html: category.text }} />
-                    <span>({articlesCount})</span>
+                    <span>({unreadCount})</span>
                 </Link>
                 <button onClick={toggleFeeds}>{open ? '-' : '+'}</button>
             </strong>

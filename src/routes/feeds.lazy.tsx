@@ -1,4 +1,4 @@
-import { Batcher, debounce } from '@tanstack/pacer';
+import { Batcher } from '@tanstack/pacer';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
@@ -8,7 +8,7 @@ import { useArticles } from '@/features/feeds/hooks/useArticles';
 import { useCategories } from '@/features/feeds/hooks/useCategories';
 import { useFeeds } from '@/features/feeds/hooks/useFeeds';
 import { useShortcut } from '@/features/shortcuts/hooks/useShortcut';
-import { useRead, useUserActions } from '@/features/user/stores/user.store';
+import { useUserActions } from '@/features/user/stores/user.store';
 import type { LayoutConsts } from '@/types';
 
 const RouteComponent = () => {
@@ -17,14 +17,15 @@ const RouteComponent = () => {
     const { markRead } = useUserActions();
 
     const { articles: allArticles, articlesQuery } = useArticles({
-        filter: { category: searchParams.category, feed: searchParams.feed },
+        category: searchParams.category,
+        feed: searchParams.feed,
     });
 
     const feeds = useFeeds();
-    const allRead = useRead();
+    // const allRead = useRead();
     const { categories } = useCategories();
 
-    const [hidden, setHidden] = useState(new Set(allRead));
+    const [hidden, setHidden] = useState(new Set());
     const [layout, setLayout] = useState<LayoutConsts>('card');
     const [activeParams, setActiveParams] = useState({
         feed: searchParams.feed,
@@ -36,7 +37,7 @@ const RouteComponent = () => {
         activeParams.category !== searchParams.category
     ) {
         setActiveParams({ feed: searchParams.feed, category: searchParams.category });
-        setHidden(new Set(allRead));
+        setHidden(new Set());
     }
 
     const categoryName = categories.find((category) => category.id === searchParams.category)?.text;
@@ -45,25 +46,19 @@ const RouteComponent = () => {
     const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
 
     const handleRefresh = () => {
-        setHidden(new Set(allRead));
+        setHidden(new Set());
         articlesQuery.forEach((query) => query.refetch());
     };
 
-    const pendingRead = new Batcher<string>((ids) => {
-        markRead(ids);
-    }, {});
-
-    const debouncedUpdateRead = debounce(
-        () => {
-            console.log('marking read articles');
-            pendingRead.flush();
+    const pendingRead = new Batcher<string>(
+        (ids) => {
+            markRead(ids);
         },
-        { wait: 500 },
+        { wait: 100 },
     );
 
     const handleMarkRead = (id: string) => {
         pendingRead.addItem(id);
-        debouncedUpdateRead();
     };
 
     const handleMarkAllRead = () => {
