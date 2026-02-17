@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { parseOpml } from 'feedsmith';
 
 type ParsedFeed = {
@@ -16,15 +17,20 @@ export const parseOPML = (xml: string) => {
         for (const outline of outlines) {
             if (outline.type === 'rss' && outline.xmlUrl) {
                 feeds.push({
-                    title: outline.title || outline.text || '',
-                    rss: outline.xmlUrl,
-                    website: outline.htmlUrl || new URL(outline.xmlUrl).origin,
+                    title: DOMPurify.sanitize(outline.title || outline.text || ''),
+                    rss: DOMPurify.sanitize(outline.xmlUrl || ''),
+                    website: DOMPurify.sanitize(
+                        outline.htmlUrl || new URL(outline.xmlUrl).origin || '',
+                    ),
                     category: categoryPath.join(' > '),
                 });
             }
 
             if (outline.outlines) {
-                traverse(outline.outlines, [...categoryPath, outline.title || outline.text || '']);
+                traverse(outline.outlines, [
+                    ...categoryPath,
+                    DOMPurify.sanitize(outline.title || outline.text || ''),
+                ]);
             }
         }
     };
