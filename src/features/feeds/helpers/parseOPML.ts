@@ -42,5 +42,9 @@ export const parseOPML = (xml: string) => {
         }
     }
 
+    if (collated.Uncategorized.length === 0) {
+        delete collated.Uncategorized;
+    }
+
     return collated;
 };
