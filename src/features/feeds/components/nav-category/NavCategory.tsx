@@ -22,7 +22,7 @@ export const NavCategory = ({
     const toggleFeeds = () => setOpen((current) => !current);
 
     return (
-        <li key={category.id}>
+        <li>
             <strong>
                 <Link
                     className={clsx(

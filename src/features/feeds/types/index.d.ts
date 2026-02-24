@@ -26,3 +26,10 @@ export type ArticleObj = {
     body: string;
     raw: string;
 };
+
+type ParsedFeed = {
+    title: string;
+    rss: string;
+    website: string;
+    category: string;
+};

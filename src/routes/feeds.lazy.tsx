@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { DropdownMenu } from '@/components/dropdown-menu/DropdownMenu';
 import { ArticleList } from '@/features/feeds/components/article-list/ArticleList';
+import { FeedFilters } from '@/features/feeds/components/feed-filters/FeedFilters';
 import { useArticles } from '@/features/feeds/hooks/useArticles';
 import { useCategories } from '@/features/feeds/hooks/useCategories';
 import { useFeeds } from '@/features/feeds/hooks/useFeeds';
@@ -16,38 +17,37 @@ const RouteComponent = () => {
 
     const { markRead } = useUserActions();
 
-    const { articles: allArticles, articlesQuery } = useArticles({
+    const { articles, unreadCount, refreshArticles } = useArticles({
         category: searchParams.category,
         feed: searchParams.feed,
     });
 
     const feeds = useFeeds();
-    // const allRead = useRead();
     const { categories } = useCategories();
 
-    const [hidden, setHidden] = useState(new Set());
     const [layout, setLayout] = useState<LayoutConsts>('card');
-    const [activeParams, setActiveParams] = useState({
-        feed: searchParams.feed,
-        category: searchParams.category,
-    });
 
-    if (
-        activeParams.feed !== searchParams.feed ||
-        activeParams.category !== searchParams.category
-    ) {
-        setActiveParams({ feed: searchParams.feed, category: searchParams.category });
-        setHidden(new Set());
-    }
+    const categoryName = categories
+        .filter((category) => searchParams.category?.includes(category.id))
+        .map((category) => category.text)
+        .join(', ');
 
-    const categoryName = categories.find((category) => category.id === searchParams.category)?.text;
-    const feedName = feeds.find((feed) => feed.id === searchParams.feed)?.title;
+    const feedName = feeds
+        .filter((feed) => searchParams.feed?.includes(feed.id))
+        .map((feed) => feed.title)
+        .join(', ');
 
     const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
 
+    const cycleLayout = () => {
+        const layouts: Array<LayoutConsts> = ['line', 'row', 'card', 'full'];
+        const currentIndex = layouts.indexOf(layout);
+        const nextIndex = (currentIndex + 1) % layouts.length;
+        setLayout(layouts[nextIndex]);
+    };
+
     const handleRefresh = () => {
-        setHidden(new Set());
-        articlesQuery.forEach((query) => query.refetch());
+        refreshArticles();
     };
 
     const pendingRead = new Batcher<string>(
@@ -62,8 +62,9 @@ const RouteComponent = () => {
     };
 
     const handleMarkAllRead = () => {
-        const ids = Array.from(allArticles).map(({ id }) => id);
+        const ids = Array.from(articles).map(({ id }) => id);
         markRead(ids);
+        refreshArticles();
     };
 
     // Register dialog shortcut
@@ -71,25 +72,24 @@ const RouteComponent = () => {
         keyCode: 'l',
         modifier: 'shift',
         description: 'Cycle through layouts',
-        fn: () => console.log('Cycle through layouts'),
+        fn: cycleLayout,
     });
     useShortcut({
         keyCode: 'r',
         modifier: 'shift',
         description: 'Refresh feeds',
-        fn: () => console.log('Refresh feeds'),
+        fn: handleRefresh,
     });
     useShortcut({
         keyCode: 'backspace',
         modifier: 'shift',
         description: 'Mark feeds as read',
-        fn: () => console.log('Mark feeds as read'),
+        fn: handleMarkAllRead,
     });
-
-    const displayArticles = allArticles.filter((article) => !hidden.has(article.id));
 
     return (
         <>
+            <FeedFilters />
             <header>
                 <h2>
                     <span
@@ -97,7 +97,7 @@ const RouteComponent = () => {
                             __html: categoryName || feedName || 'All Feeds',
                         }}
                     />
-                    ({displayArticles.length})
+                    ({unreadCount})
                 </h2>
                 <menu>
                     <li>
@@ -116,7 +116,7 @@ const RouteComponent = () => {
                     </li>
                 </menu>
             </header>
-            <ArticleList layout={layout} articles={displayArticles} onRead={handleMarkRead} />
+            <ArticleList layout={layout} articles={articles} onRead={handleMarkRead} />
         </>
     );
 };

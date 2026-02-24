@@ -7,31 +7,35 @@ import { fetchArticles } from '@/features/feeds/api/fetchArticles';
 import { useRead } from '@/features/user/stores/user.store';
 
 type OptionsOjb = {
-    category?: number;
-    feed?: number;
+    category?: Array<number>;
+    feed?: Array<number>;
     read?: boolean;
 };
 
 export const useArticles = (options?: OptionsOjb) => {
-    const { category: categoryFilter, feed: feedFilter, read: includeRead = false } = options || {};
+    const {
+        category: categoryFilter = [],
+        feed: feedFilter = [],
+        read: includeRead = false,
+    } = options || {};
 
     const feeds = useFeeds();
     const read = useRead();
 
-    const [prevFilters, setPrevFilters] = useState({ category: categoryFilter, feed: feedFilter });
+    const [refreshSnapshot, setRefreshSnapshot] = useState(true);
     const [readSnapshot, setReadSnapshot] = useState(read);
 
-    if (prevFilters.category !== categoryFilter || prevFilters.feed !== feedFilter) {
-        setPrevFilters({ category: categoryFilter, feed: feedFilter });
+    if (refreshSnapshot) {
         setReadSnapshot(read);
+        setRefreshSnapshot(false);
     }
 
     const filteredFeeds = feeds.filter((feed) => {
-        if (typeof categoryFilter === 'number') {
-            return feed.category === categoryFilter;
+        if (categoryFilter.length > 0) {
+            return categoryFilter.includes(feed.category);
         }
-        if (typeof feedFilter === 'number') {
-            return feed.id === feedFilter;
+        if (feedFilter.length > 0) {
+            return feedFilter.includes(feed.id);
         }
         return true;
     });
@@ -58,9 +62,16 @@ export const useArticles = (options?: OptionsOjb) => {
         (article) => read.includes(article.id) === false,
     ).length;
 
+    const refreshArticles = async () => {
+        const promises = results.map((result) => result.refetch());
+        await Promise.all(promises);
+        setRefreshSnapshot(true);
+    };
+
     return {
         articles: displayArticles,
         unreadCount,
+        refreshArticles,
         articlesQuery: results,
     };
 };

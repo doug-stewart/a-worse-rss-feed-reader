@@ -1,14 +1,9 @@
 import DOMPurify from 'dompurify';
 import { parseOpml } from 'feedsmith';
 
-type ParsedFeed = {
-    title: string;
-    rss: string;
-    website: string;
-    category: string;
-};
+import type { ParsedFeed } from '../types';
 
-export const parseOPML = (xml: string) => {
+export const parseOPML = (xml: string): { [key: string]: Array<ParsedFeed> } => {
     const collated: { [key: string]: Array<ParsedFeed> } = { Uncategorized: [] };
     const feeds: Array<ParsedFeed> = [];
     const opml = parseOpml(xml);
