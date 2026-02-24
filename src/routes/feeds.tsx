@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 type FeedSearchParams = {
-    category?: number;
-    feed?: number;
+    category?: Array<number>;
+    feed?: Array<number>;
     range?: string;
 };
 
