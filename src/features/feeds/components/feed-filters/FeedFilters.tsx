@@ -5,6 +5,9 @@ import { useFeeds } from '../../hooks/useFeeds';
 
 import styles from './FeedFilters.module.css';
 
+import CategoryIcon from '@/assets/category.svg?react';
+import FeedIcon from '@/assets/feed.svg?react';
+
 export const FeedFilters = () => {
     const { category: searchCategory = [], feed: searchFeed = [] } = useSearch({ strict: false });
     const { categories } = useCategories();
@@ -84,7 +87,9 @@ export const FeedFilters = () => {
             <h2>Filters</h2>
             <form className={styles.form}>
                 <fieldset>
-                    <legend>Categories</legend>
+                    <legend>
+                        <CategoryIcon title="Categories" />
+                    </legend>
                     <label>
                         <input
                             type="checkbox"
@@ -109,7 +114,9 @@ export const FeedFilters = () => {
                     </div>
                 </fieldset>
                 <fieldset>
-                    <legend>Feeds</legend>
+                    <legend>
+                        <FeedIcon title="Feeds" />
+                    </legend>
                     <label>
                         <input
                             type="checkbox"
