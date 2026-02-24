@@ -46,10 +46,6 @@ const RouteComponent = () => {
         setLayout(layouts[nextIndex]);
     };
 
-    const handleRefresh = () => {
-        refreshArticles();
-    };
-
     const pendingRead = new Batcher<string>(
         (ids) => {
             markRead(ids);
@@ -78,7 +74,7 @@ const RouteComponent = () => {
         keyCode: 'r',
         modifier: 'shift',
         description: 'Refresh feeds',
-        fn: handleRefresh,
+        fn: refreshArticles,
     });
     useShortcut({
         keyCode: 'backspace',
@@ -101,7 +97,7 @@ const RouteComponent = () => {
                 </h2>
                 <menu>
                     <li>
-                        <button onClick={handleRefresh}>Refresh</button>
+                        <button onClick={refreshArticles}>Refresh</button>
                     </li>
                     <li>
                         <button onClick={handleMarkAllRead}>Mark all read</button>

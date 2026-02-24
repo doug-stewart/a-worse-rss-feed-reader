@@ -62,10 +62,10 @@ export const useArticles = (options?: OptionsOjb) => {
         (article) => read.includes(article.id) === false,
     ).length;
 
-    const refreshArticles = async () => {
-        const promises = results.map((result) => result.refetch());
-        await Promise.all(promises);
+    const refreshArticles = () => {
         setRefreshSnapshot(true);
+        const promises = results.map((result) => result.refetch());
+        return Promise.all(promises);
     };
 
     return {
