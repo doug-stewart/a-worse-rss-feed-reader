@@ -1,4 +1,5 @@
 import { Batcher } from '@tanstack/pacer';
+import { useHotkey } from '@tanstack/react-hotkeys';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
@@ -8,7 +9,6 @@ import { FeedFilters } from '@/features/feeds/components/feed-filters/FeedFilter
 import { useArticles } from '@/features/feeds/hooks/useArticles';
 import { useCategories } from '@/features/feeds/hooks/useCategories';
 import { useFeeds } from '@/features/feeds/hooks/useFeeds';
-import { useShortcut } from '@/features/shortcuts/hooks/useShortcut';
 import { useUserActions } from '@/features/user/stores/user.store';
 import type { LayoutConsts } from '@/types';
 
@@ -63,25 +63,9 @@ const RouteComponent = () => {
         refreshArticles();
     };
 
-    // Register dialog shortcut
-    useShortcut({
-        keyCode: 'l',
-        modifier: 'shift',
-        description: 'Cycle through layouts',
-        fn: cycleLayout,
-    });
-    useShortcut({
-        keyCode: 'r',
-        modifier: 'shift',
-        description: 'Refresh feeds',
-        fn: refreshArticles,
-    });
-    useShortcut({
-        keyCode: 'backspace',
-        modifier: 'shift',
-        description: 'Mark feeds as read',
-        fn: handleMarkAllRead,
-    });
+    useHotkey('Shift+L', () => cycleLayout());
+    useHotkey('Shift+R', () => refreshArticles());
+    useHotkey('Shift+Backspace', () => handleMarkAllRead());
 
     return (
         <>
