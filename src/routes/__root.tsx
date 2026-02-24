@@ -6,7 +6,6 @@ import { useEffect, useRef } from 'react';
 
 import styles from './root.module.css';
 
-import { FeedsNavigation } from '@/components/feeds-navigation/FeedsNavigation';
 import { ShortcutsControl } from '@/features/shortcuts/components/shortcuts-control/ShortcutsControl';
 
 const queryClient = new QueryClient({
@@ -28,7 +27,6 @@ const RouteComponent = () => {
             <header className={styles.header}>
                 <h1>A Worse RSS feed reader</h1>
             </header>
-            <FeedsNavigation className={styles.nav} />
             <main ref={wrapper} className={styles.main}>
                 <Outlet />
             </main>
