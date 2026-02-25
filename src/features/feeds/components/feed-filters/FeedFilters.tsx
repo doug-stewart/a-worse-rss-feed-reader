@@ -82,61 +82,59 @@ export const FeedFilters = () => {
         .sort((a, b) => a.title.localeCompare(b.title));
 
     return (
-        <aside>
-            <form className={styles.form}>
-                <fieldset>
-                    <legend>
-                        <CategoryIcon title="Categories" />
-                    </legend>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={searchCategory.length === 0}
-                            onChange={clearCategories}
-                        />
-                        All
-                    </label>
-                    <div className={styles.items}>
-                        {categories
-                            .sort((a, b) => a.text.localeCompare(b.text))
-                            .map((category) => (
-                                <label key={category.id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={searchCategory.includes(category.id)}
-                                        onChange={() => toggleCategory(category.id)}
-                                    />
-                                    <span dangerouslySetInnerHTML={{ __html: category.text }} />
-                                </label>
-                            ))}
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>
-                        <FeedIcon title="Feeds" />
-                    </legend>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={searchFeed.length === 0}
-                            onChange={clearFeeds}
-                        />
-                        All
-                    </label>
-                    <div className={styles.items}>
-                        {collatedFeeds.map((feed) => (
-                            <label key={feed.id}>
+        <form className={styles.form}>
+            <fieldset>
+                <legend>
+                    <CategoryIcon title="Categories" />
+                </legend>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={searchCategory.length === 0}
+                        onChange={clearCategories}
+                    />
+                    All
+                </label>
+                <div className={styles.items}>
+                    {categories
+                        .sort((a, b) => a.text.localeCompare(b.text))
+                        .map((category) => (
+                            <label key={category.id}>
                                 <input
                                     type="checkbox"
-                                    checked={searchFeed.includes(feed.id)}
-                                    onChange={() => toggleFeed(feed.id)}
+                                    checked={searchCategory.includes(category.id)}
+                                    onChange={() => toggleCategory(category.id)}
                                 />
-                                <span dangerouslySetInnerHTML={{ __html: feed.title }} />
+                                <span dangerouslySetInnerHTML={{ __html: category.text }} />
                             </label>
                         ))}
-                    </div>
-                </fieldset>
-            </form>
-        </aside>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    <FeedIcon title="Feeds" />
+                </legend>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={searchFeed.length === 0}
+                        onChange={clearFeeds}
+                    />
+                    All
+                </label>
+                <div className={styles.items}>
+                    {collatedFeeds.map((feed) => (
+                        <label key={feed.id}>
+                            <input
+                                type="checkbox"
+                                checked={searchFeed.includes(feed.id)}
+                                onChange={() => toggleFeed(feed.id)}
+                            />
+                            <span dangerouslySetInnerHTML={{ __html: feed.title }} />
+                        </label>
+                    ))}
+                </div>
+            </fieldset>
+        </form>
     );
 };
