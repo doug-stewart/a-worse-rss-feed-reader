@@ -83,8 +83,6 @@ export const FeedFilters = () => {
 
     return (
         <aside>
-            <h2>Sort</h2>
-            <h2>Filters</h2>
             <form className={styles.form}>
                 <fieldset>
                     <legend>

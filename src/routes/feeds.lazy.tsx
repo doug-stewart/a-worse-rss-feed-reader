@@ -3,7 +3,11 @@ import { useHotkey } from '@tanstack/react-hotkeys';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 
-import { DropdownMenu } from '@/components/dropdown-menu/DropdownMenu';
+import FullIcon from '@/assets/full.svg?react';
+import GridIcon from '@/assets/grid.svg?react';
+import ListIcon from '@/assets/list.svg?react';
+import MarkAllIcon from '@/assets/mark-all.svg?react';
+import RefreshIcon from '@/assets/refresh.svg?react';
 import { ArticleList } from '@/features/feeds/components/article-list/ArticleList';
 import { FeedFilters } from '@/features/feeds/components/feed-filters/FeedFilters';
 import { useArticles } from '@/features/feeds/hooks/useArticles';
@@ -40,7 +44,7 @@ const RouteComponent = () => {
     const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
 
     const cycleLayout = () => {
-        const layouts: Array<LayoutConsts> = ['line', 'row', 'card', 'full'];
+        const layouts: Array<LayoutConsts> = ['row', 'card', 'full'];
         const currentIndex = layouts.indexOf(layout);
         const nextIndex = (currentIndex + 1) % layouts.length;
         setLayout(layouts[nextIndex]);
@@ -69,7 +73,6 @@ const RouteComponent = () => {
 
     return (
         <>
-            <FeedFilters />
             <header>
                 <h2>
                     <span
@@ -79,22 +82,45 @@ const RouteComponent = () => {
                     />
                     ({unreadCount})
                 </h2>
-                <menu>
-                    <li>
-                        <button onClick={refreshArticles}>Refresh</button>
-                    </li>
-                    <li>
-                        <button onClick={handleMarkAllRead}>Mark all read</button>
-                    </li>
-                    <li>
-                        <DropdownMenu button="Change View">
-                            <button onClick={() => changeLayout('line')}>Dense Line</button>
-                            <button onClick={() => changeLayout('row')}>Row</button>
-                            <button onClick={() => changeLayout('card')}>Cards</button>
-                            <button onClick={() => changeLayout('full')}>Full</button>
-                        </DropdownMenu>
-                    </li>
-                </menu>
+                <FeedFilters />
+
+                <div>
+                    <button onClick={refreshArticles}>
+                        <RefreshIcon title="Refresh Articles" />
+                    </button>
+                    <button onClick={handleMarkAllRead}>
+                        <MarkAllIcon title="Mark All Read" />
+                    </button>
+                    <form>
+                        <label>
+                            <input
+                                type="radio"
+                                name="layout"
+                                checked={layout === 'row'}
+                                onChange={() => changeLayout('row')}
+                            />
+                            <ListIcon title="Row" />
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="layout"
+                                checked={layout === 'card'}
+                                onChange={() => changeLayout('card')}
+                            />
+                            <GridIcon title="Card" />
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="layout"
+                                checked={layout === 'full'}
+                                onChange={() => changeLayout('full')}
+                            />
+                            <FullIcon title="Full" />
+                        </label>
+                    </form>
+                </div>
             </header>
             <ArticleList layout={layout} articles={articles} onRead={handleMarkRead} />
         </>
