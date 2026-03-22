@@ -19,15 +19,19 @@ export const useArticles = (options?: OptionsOjb) => {
         read: includeRead = false,
     } = options || {};
 
+    const optionsStringified = JSON.stringify(options);
+
     const { feeds } = useFeeds();
     const read = useRead();
 
     const [refreshSnapshot, setRefreshSnapshot] = useState(true);
     const [readSnapshot, setReadSnapshot] = useState(read);
+    const [optionsSnapshot, setOptionsSnapshot] = useState('');
 
-    if (refreshSnapshot) {
+    if (refreshSnapshot || optionsSnapshot !== optionsStringified) {
         setReadSnapshot(read);
         setRefreshSnapshot(false);
+        setOptionsSnapshot(optionsStringified);
     }
 
     const filteredFeeds = feeds.filter((feed) => {
