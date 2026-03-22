@@ -8,14 +8,14 @@ import styles from './NavFeed.module.css';
 
 export const NavFeed = ({ feed }: { feed: FeedObj }) => {
     const searchParams = useSearch({ strict: false });
-    const { unreadCount } = useArticles({ feed: feed.id });
+    const { unreadCount } = useArticles({ feed: [feed.id] });
 
     return (
         <li
             key={feed.id}
-            className={clsx(styles.feed, searchParams.feed === feed.id && styles.active)}
+            className={clsx(styles.feed, searchParams.feed?.includes(feed.id) && styles.active)}
         >
-            <Link to="/feeds" search={{ feed: feed.id }}>
+            <Link to="/feeds" search={{ feed: [feed.id] }}>
                 <span dangerouslySetInnerHTML={{ __html: feed.title }} />
                 <span>({unreadCount})</span>
             </Link>

@@ -16,7 +16,7 @@ export const NavCategory = ({
     feeds: Array<FeedObj>;
 }) => {
     const searchParams = useSearch({ strict: false });
-    const { unreadCount } = useArticles({ category: category.id });
+    const { unreadCount } = useArticles({ category: [category.id] });
 
     const [open, setOpen] = useState(false);
     const toggleFeeds = () => setOpen((current) => !current);
@@ -27,10 +27,10 @@ export const NavCategory = ({
                 <Link
                     className={clsx(
                         styles.category,
-                        searchParams.category === category.id && styles.active,
+                        searchParams.category?.includes(category.id) && styles.active,
                     )}
                     to="/feeds"
-                    search={{ category: category.id }}
+                    search={{ category: [category.id] }}
                 >
                     <span dangerouslySetInnerHTML={{ __html: category.text }} />
                     <span>({unreadCount})</span>
