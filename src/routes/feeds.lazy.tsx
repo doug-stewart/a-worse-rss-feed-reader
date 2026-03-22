@@ -73,7 +73,7 @@ const RouteComponent = () => {
 
     return (
         <>
-            <header>
+            <header style={{ position: 'sticky', top: 0, zIndex: 1 }}>
                 <h2>
                     <span
                         dangerouslySetInnerHTML={{
