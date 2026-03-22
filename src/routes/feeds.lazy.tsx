@@ -26,7 +26,7 @@ const RouteComponent = () => {
         feed: searchParams.feed,
     });
 
-    const feeds = useFeeds();
+    const { feeds } = useFeeds();
     const { categories } = useCategories();
 
     const [layout, setLayout] = useState<LayoutConsts>('card');

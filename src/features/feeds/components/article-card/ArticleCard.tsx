@@ -26,7 +26,7 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
     const [height, setHeight] = useState(0);
     const [isVisible, setVisible] = useState(false);
 
-    const feeds = useFeeds();
+    const { feeds } = useFeeds();
     const { data, isSuccess } = useArticle(article, isVisible);
 
     const { url = '', title = '', date = 0, cover = '', body = '', summary = '' } = data || {};

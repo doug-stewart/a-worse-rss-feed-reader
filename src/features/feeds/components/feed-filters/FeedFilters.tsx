@@ -11,7 +11,7 @@ import FeedIcon from '@/assets/feed.svg?react';
 export const FeedFilters = () => {
     const { category: searchCategory = [], feed: searchFeed = [] } = useSearch({ strict: false });
     const { categories } = useCategories();
-    const feeds = useFeeds();
+    const { feeds } = useFeeds();
     const navigate = useNavigate();
 
     const clearCategories = () => {

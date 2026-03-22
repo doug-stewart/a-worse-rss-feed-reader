@@ -9,7 +9,7 @@ import { useFeeds } from '@/features/feeds/hooks/useFeeds';
 
 export const FeedsNavigation = ({ className }: { className: string }) => {
     const { categories, categoryOrder } = useCategories();
-    const feeds = useFeeds();
+    const { feeds } = useFeeds();
 
     return (
         <nav className={clsx(styles.menu, className)}>

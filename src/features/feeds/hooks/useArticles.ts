@@ -19,7 +19,7 @@ export const useArticles = (options?: OptionsOjb) => {
         read: includeRead = false,
     } = options || {};
 
-    const feeds = useFeeds();
+    const { feeds } = useFeeds();
     const read = useRead();
 
     const [refreshSnapshot, setRefreshSnapshot] = useState(true);
