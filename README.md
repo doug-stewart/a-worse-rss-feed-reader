@@ -43,12 +43,12 @@ want.
     - [ ] The "all" views need to have a layout.
     - [ ] Alls, categories, and feeds need a sort order.
 - [ ] Add basic functionality:
-    - [ ] Refresh.
-    - [ ] Mark all read.
+    - [x] Refresh.
+    - [x] Mark all read.
     - [ ] Mark older than 1 day read.
     - [ ] Mark older than 1 week read.
-    - [ ] Mark as read on scroll.
-    - [ ] Mark as read on open.
+    - [x] Mark as read on scroll.
+    - [x] Mark as read on open.
     - [ ] Can sort feed views independently.
     - [ ] Can set layouts for feed views.
     - [ ] Manage categories.

@@ -85,6 +85,7 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
                     body={body}
                     summary={summary || ''}
                     layout={layout}
+                    onRead={() => onRead(article.id)}
                 />
             ) : (
                 <></>

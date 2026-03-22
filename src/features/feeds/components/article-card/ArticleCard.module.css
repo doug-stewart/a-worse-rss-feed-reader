@@ -4,6 +4,12 @@
     display: grid;
     min-height: var(--h);
     padding: 1rem;
+    position: relative;
+    z-index: 0;
+
+    &:has(a:hover, a:focus-visible) {
+        outline: 2px solid orange;
+    }
 }
 
 .line {
@@ -51,6 +57,17 @@
         display: -webkit-box;
         -webkit-line-clamp: 2;
         overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
     }
 }
 

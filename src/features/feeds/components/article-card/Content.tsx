@@ -14,6 +14,7 @@ type ContentProps = {
     body: string;
     summary: string;
     layout: LayoutConsts;
+    onRead: () => void;
 };
 
 export const Content = ({
@@ -25,11 +26,14 @@ export const Content = ({
     body,
     layout,
     summary,
+    onRead,
 }: ContentProps) => {
     return (
         <>
             <h3 className={styles.title}>
-                <a href={url}>{title}</a>
+                <a href={url} onClick={onRead} target="_blank">
+                    {title}
+                </a>
             </h3>
 
             {date && (
