@@ -1,17 +1,17 @@
 .header {
     container-type: inline-size;
-    grid-area: app-header;
+    grid-area: header;
 }
 
 .main {
     container-type: inline-size;
-    grid-area: app-main;
+    grid-area: main;
     overflow: auto;
 }
 
 .nav {
     bottom: 0;
-    grid-area: app-nav;
+    grid-area: left-aside;
     height: 100dvh;
     position: sticky;
     top: 0;

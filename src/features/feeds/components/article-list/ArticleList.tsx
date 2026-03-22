@@ -1,4 +1,6 @@
+import { useSearch } from '@tanstack/react-router';
 import clsx from 'clsx';
+import { useEffect, useRef } from 'react';
 
 import type { ArticleObj } from '../../types';
 import { ArticleCard } from '../article-card/ArticleCard';
@@ -16,13 +18,20 @@ type ArticleCardListProps = {
 
 export const ArticleList = ({ articles, layout, onRead }: ArticleCardListProps) => {
     const { markUnread } = useUserActions();
+    const list = useRef<HTMLDivElement>(null);
+
+    const searchParams = useSearch({ from: '/feeds' });
+
+    useEffect(() => {
+        list.current?.parentElement?.scrollTo(0, 0);
+    }, [searchParams]);
 
     const handleMarkAllUnread = () => {
         markUnread(articles.map(({ id }) => id));
     };
 
     return (
-        <div className={clsx(styles.list, styles[layout])}>
+        <div ref={list} className={clsx(styles.list, styles[layout])}>
             {articles.map((article) => (
                 <ArticleCard key={article.id} article={article} onRead={onRead} layout={layout} />
             ))}

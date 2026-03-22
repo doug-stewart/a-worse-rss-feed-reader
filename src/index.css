@@ -158,7 +158,10 @@ dialog:not([popover]) {
 #root {
     display: grid;
     grid-template:
-        'app-nav app-header' auto
-        'app-nav app-main' auto
-        / auto 1fr;
+        'header header header' auto
+        'left-aside main right-aside' 1fr
+        'footer footer footer' auto
+        / auto 1fr auto;
+    position: fixed;
+    inset: 0;
 }
