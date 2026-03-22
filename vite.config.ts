@@ -9,7 +9,7 @@ export default defineConfig({
     base: '/a-worse-rss-feed-reader/',
     plugins: [
         tanstackRouter({ target: 'react', autoCodeSplitting: true }),
-        react({ babel: { plugins: [['babel-plugin-react-compiler']] } }),
+        react(),
         svgr({ svgrOptions: { titleProp: true } }),
     ],
     resolve: {
