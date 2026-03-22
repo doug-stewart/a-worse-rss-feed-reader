@@ -2,6 +2,7 @@ import { useNavigate, useSearch } from '@tanstack/react-router';
 
 import { useCategories } from '../../hooks/useCategories';
 import { useFeeds } from '../../hooks/useFeeds';
+import { FeedFilterList } from '../feed-filter-list/FeedFilterList';
 
 import styles from './FeedFilters.module.css';
 
@@ -72,6 +73,14 @@ export const FeedFilters = () => {
         navigate({ to: '/feeds', search: newParams });
     };
 
+    const collatedCategories = categories
+        .sort((a, b) => a.text.localeCompare(b.text))
+        .map((category) => ({
+            id: category.id,
+            title: category.text,
+            checked: searchCategory.includes(category.id),
+        }));
+
     const collatedFeeds = feeds
         .filter((feed) => {
             if (searchCategory.length > 0) {
@@ -79,62 +88,29 @@ export const FeedFilters = () => {
             }
             return true;
         })
-        .sort((a, b) => a.title.localeCompare(b.title));
+        .sort((a, b) => a.title.localeCompare(b.title))
+        .map((feed) => ({
+            id: feed.id,
+            title: feed.title,
+            checked: searchFeed.includes(feed.id),
+        }));
 
     return (
         <form className={styles.form}>
-            <fieldset>
-                <legend>
-                    <CategoryIcon title="Categories" />
-                </legend>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={searchCategory.length === 0}
-                        onChange={clearCategories}
-                    />
-                    All
-                </label>
-                <div className={styles.items}>
-                    {categories
-                        .sort((a, b) => a.text.localeCompare(b.text))
-                        .map((category) => (
-                            <label key={category.id}>
-                                <input
-                                    type="checkbox"
-                                    checked={searchCategory.includes(category.id)}
-                                    onChange={() => toggleCategory(category.id)}
-                                />
-                                <span dangerouslySetInnerHTML={{ __html: category.text }} />
-                            </label>
-                        ))}
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>
-                    <FeedIcon title="Feeds" />
-                </legend>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={searchFeed.length === 0}
-                        onChange={clearFeeds}
-                    />
-                    All
-                </label>
-                <div className={styles.items}>
-                    {collatedFeeds.map((feed) => (
-                        <label key={feed.id}>
-                            <input
-                                type="checkbox"
-                                checked={searchFeed.includes(feed.id)}
-                                onChange={() => toggleFeed(feed.id)}
-                            />
-                            <span dangerouslySetInnerHTML={{ __html: feed.title }} />
-                        </label>
-                    ))}
-                </div>
-            </fieldset>
+            <FeedFilterList
+                label={<CategoryIcon title="Categories" />}
+                count={searchCategory.length}
+                items={collatedCategories}
+                onClear={clearCategories}
+                onToggle={toggleCategory}
+            />
+            <FeedFilterList
+                label={<FeedIcon title="Feeds" />}
+                count={searchFeed.length}
+                items={collatedFeeds}
+                onClear={clearFeeds}
+                onToggle={toggleFeed}
+            />
         </form>
     );
 };
