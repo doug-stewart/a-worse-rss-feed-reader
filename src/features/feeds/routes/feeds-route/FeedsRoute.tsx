@@ -21,7 +21,7 @@ export const FeedsRoute = () => {
 
     const { markRead } = useUserActions();
 
-    const { articles, unreadCount, refreshArticles } = useArticles({
+    const { articles, unreadCount, refreshArticles, query } = useArticles({
         category: searchParams.category,
         feed: searchParams.feed,
     });
@@ -122,6 +122,11 @@ export const FeedsRoute = () => {
                     </form>
                 </div>
             </header>
+            {query.isPending === true && (
+                <span>
+                    Updating&hellip; ({query.total - query.pending}/{query.total})
+                </span>
+            )}
             <ArticleList layout={layout} articles={articles} onRead={handleMarkRead} />
         </>
     );

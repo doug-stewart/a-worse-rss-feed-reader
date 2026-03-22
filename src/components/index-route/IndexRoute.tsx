@@ -7,6 +7,7 @@ import styles from './IndexRoute.module.css';
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
+            refetchOnWindowFocus: false,
             staleTime: Infinity,
         },
     },

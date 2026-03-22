@@ -44,17 +44,25 @@ export const useArticles = (options?: OptionsOjb) => {
         return true;
     });
 
-    const results = useQueries({
+    const queryResults = useQueries({
         queries: filteredFeeds.map((feed) => ({
             queryKey: ['articles', feed.id],
             queryFn: () => fetchArticles(feed),
         })),
+        combine: (results) => {
+            return {
+                data: results.map((result) => result),
+                isPending: results.some((result) => result.isPending),
+                pending: results.filter((result) => result.isPending).length,
+                total: results.length,
+            };
+        },
     });
 
     const collatedArticles = useMemo(() => {
-        const articles = results.flatMap((result) => result.data ?? []);
+        const articles = queryResults.data.flatMap((result) => result.data ?? []);
         return articles;
-    }, [results]);
+    }, [queryResults]);
 
     const displayArticles = collatedArticles
         .filter((article) =>
@@ -68,7 +76,7 @@ export const useArticles = (options?: OptionsOjb) => {
 
     const refreshArticles = () => {
         setRefreshSnapshot(true);
-        const promises = results.map((result) => result.refetch());
+        const promises = queryResults.data.map((result) => result.refetch());
         return Promise.all(promises);
     };
 
@@ -76,6 +84,6 @@ export const useArticles = (options?: OptionsOjb) => {
         articles: displayArticles,
         unreadCount,
         refreshArticles,
-        articlesQuery: results,
+        query: queryResults,
     };
 };
