@@ -14,10 +14,10 @@ const queryClient = new QueryClient({
 });
 
 export const IndexRoute = () => {
-    const searchParams = useSearch({ from: '__root__' });
+    const searchParams = useSearch({ strict: false });
     const wrapper = useRef<HTMLDivElement>(null);
 
-    useEffect(() => window.scrollTo(0, 0), [searchParams]);
+    useEffect(() => wrapper.current?.scrollTo(0, 0), [searchParams]);
 
     return (
         <QueryClientProvider client={queryClient}>
