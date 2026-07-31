@@ -1,11 +1,13 @@
-import { API_URL } from "@/config";
 import { useQuery } from "@tanstack/react-query";
+import { API_URL } from "@/config";
 
 export const useAuth = () => {
   const query = useQuery({
     queryKey: ["auth"],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/api/auth/me`, { credentials: "include" });
+      const res = await fetch(`${API_URL}/api/auth/me`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Failed to fetch auth");
       }
@@ -15,7 +17,7 @@ export const useAuth = () => {
 
   const user = query.data;
   const isAuthenticated = !!user;
-  const {isSuccess} = query;
+  const { isSuccess } = query;
 
-  return {user, isAuthenticated,isSuccess, query};
+  return { user, isAuthenticated, isSuccess, query };
 };
