@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Project files
+.env
 .tanstack/*
 node_modules
 dist
