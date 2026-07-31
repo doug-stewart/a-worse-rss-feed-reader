@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
-    base: '/a-worse-rss-feed-reader/',
+    base: '/',
     plugins: [
         tanstackRouter({ target: 'react', autoCodeSplitting: true }),
         react(),
