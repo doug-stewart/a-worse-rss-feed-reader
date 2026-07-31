@@ -13,9 +13,9 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@better-auth/oauth-provider": "^1.6.15",
-    "@better-auth/passkey": "^1.6.15",
-    "@hookform/resolvers": "^5.4.0",
+    "@better-auth/oauth-provider": "^1.6.25",
+    "@better-auth/passkey": "^1.6.25",
+    "@hookform/resolvers": "^5.5.7",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tanstack/pacer": "^0.21.1",
     "@tanstack/react-hotkeys": "^0.10.0",
@@ -24,7 +24,7 @@
     "@vitejs/plugin-react": "^6.0.5",
     "@xstate/store": "^4.2.2",
     "axios": "^1.19.0",
-    "better-auth": "^1.6.15",
+    "better-auth": "^1.6.25",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "dayjs": "^1.11.21",
@@ -38,20 +38,21 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.7",
-    "@biomejs/biome": "2.4.16",
+    "@babel/core": "^8.0.1",
+    "@biomejs/biome": "2.5.6",
     "@tanstack/react-query-devtools": "^5.101.4",
     "@tanstack/router-devtools": "^1.167.0",
     "@tanstack/router-plugin": "^1.168.23",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^26.1.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "globals": "^17.8.0",
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^7.0.2",
     "vite": "^8.2.0",
     "vite-plugin-svgr": "^5.2.0"
-  }
+  },
+  "packageManager": "pnpm@11.18.0"
 }
