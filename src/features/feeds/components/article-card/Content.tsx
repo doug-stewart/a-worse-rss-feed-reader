@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import DOMPurify from 'dompurify';
+import { useState } from 'react';
 
 import styles from './ArticleCard.module.css';
 
@@ -28,6 +29,8 @@ export const Content = ({
     summary,
     onRead,
 }: ContentProps) => {
+    const [showImage, setShowImage] = useState(true);
+
     return (
         <>
             <h3 className={styles.title}>
@@ -46,8 +49,13 @@ export const Content = ({
 
             {layout === 'full' ? (
                 <></>
-            ) : cover ? (
-                <img className={styles.cover} src={cover} alt={title} />
+            ) : showImage && cover ? (
+                <img
+                    className={styles.cover}
+                    src={cover}
+                    alt={title}
+                    onError={() => setShowImage(false)}
+                />
             ) : (
                 <span className={styles.cover} />
             )}

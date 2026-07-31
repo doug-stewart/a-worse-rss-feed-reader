@@ -6,31 +6,22 @@ import type { ArticleObj } from '../../types';
 import styles from './ArticleCard.module.css';
 import { Content } from './Content';
 
-import { useArticle } from '@/features/feeds/hooks/useArticle';
-import { useFeeds } from '@/features/feeds/hooks/useFeeds';
-import { useRead } from '@/features/user/stores/user.store';
 import type { LayoutConsts } from '@/types';
 
 type ArticleCardProps = {
     article: ArticleObj;
-    layout: LayoutConsts;
-    onRead: (id: string) => void;
+  layout: LayoutConsts;
+    parent: string;
+  onRead: (id: string) => void;
+  isRead: boolean;
 };
 
-export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
-    const wrapper = useRef<HTMLElement | null>(null);
-    const allRead = useRead();
+export const ArticleCard = ({ article, layout, parent, onRead, isRead }: ArticleCardProps) => {
+    const { url = '', title = '', date = 0, cover = '', body = '', summary = '' } = article || {};
 
-    const read = allRead.includes(article.id);
-
+  const wrapper = useRef<HTMLElement | null>(null);
     const [height, setHeight] = useState(0);
     const [isVisible, setVisible] = useState(false);
-
-    const { feeds } = useFeeds();
-    const { data, isSuccess } = useArticle(article, isVisible);
-
-    const { url = '', title = '', date = 0, cover = '', body = '', summary = '' } = data || {};
-    const parent = feeds.find((feed) => feed.id === article.parent)?.title || 'Orphan';
 
     useLayoutEffect(() => {
         if (!wrapper.current) return;
@@ -46,7 +37,7 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
 
                 // IntersectionObserver fires when the card is partially off the screen
                 // and we only want to count when it's fully off the screen.
-                if (!read && !onScreen && entry.boundingClientRect.top <= 0) {
+                if (!isRead && !onScreen && entry.boundingClientRect.top <= 0) {
                     onRead(article.id);
                 }
             },
@@ -61,16 +52,15 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
         observer.observe(wrapper.current);
 
         return () => observer.disconnect();
-    }, [onRead, read, wrapper, article]);
+    }, [onRead, isRead, wrapper, article]);
 
     return (
         <article
             ref={wrapper}
-            data-id={article.id}
             className={clsx(
                 styles.article,
                 styles[layout],
-                read && styles.read,
+                isRead && styles.read,
                 !isVisible && styles.loading,
             )}
             style={{ ['--h' as string]: isVisible ? false : `${height}px` }}
@@ -81,7 +71,7 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
                     title={title}
                     date={date}
                     parent={parent}
-                    cover={isSuccess ? cover || '' : ''}
+                    cover={cover ?? ""}
                     body={body}
                     summary={summary || ''}
                     layout={layout}
