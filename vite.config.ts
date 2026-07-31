@@ -1,20 +1,23 @@
-import * as path from 'node:path';
+import { resolve } from "node:path";
+import babel from "@rolldown/plugin-babel";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import svgr from "vite-plugin-svgr";
 
-import { tanstackRouter } from '@tanstack/router-plugin/vite';
-import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
-import svgr from 'vite-plugin-svgr';
-
+// https://vite.dev/config/
 export default defineConfig({
-    base: '/',
-    plugins: [
-        tanstackRouter({ target: 'react', autoCodeSplitting: true }),
-        react(),
-        svgr({ svgrOptions: { titleProp: true } }),
-    ],
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, './src'),
-        },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src"),
     },
+  },
+  plugins: [
+    react(),
+    svgr({
+      svgrOptions: {
+        titleProp: true,
+      },
+    }),
+    babel({ presets: [reactCompilerPreset()] }),
+  ],
 });
