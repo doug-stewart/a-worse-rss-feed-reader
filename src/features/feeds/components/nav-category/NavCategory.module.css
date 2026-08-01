@@ -1,9 +1,9 @@
 .category {
-    &.active {
-        color: tomato;
-    }
+  &.active {
+    color: tomato;
+  }
 }
 
 :where(.hidden li) {
-    display: none;
+  display: none;
 }

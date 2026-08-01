@@ -1,7 +1,7 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
+import { createLazyFileRoute } from "@tanstack/react-router";
 
-import { FeedsRoute } from '@/features/feeds/routes/feeds-route/FeedsRoute';
+import { FeedsRoute } from "@/features/feeds/routes/feeds-route/FeedsRoute";
 
-export const Route = createLazyFileRoute('/feeds')({
-    component: FeedsRoute,
+export const Route = createLazyFileRoute("/feeds")({
+  component: FeedsRoute,
 });

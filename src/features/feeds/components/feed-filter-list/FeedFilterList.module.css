@@ -1,88 +1,92 @@
 @property --overflow-fade-value {
-    inherits: false;
-    initial-value: 0;
-    syntax: '<length>';
+  inherits: false;
+  initial-value: 0;
+  syntax: "<length>";
 }
 
 @keyframes overflow-fade {
-    from {
-        --overflow-fade-value: 0rem;
-    }
+  from {
+    --overflow-fade-value: 0rem;
+  }
 
-    to {
-        --overflow-fade-value: 2rem;
-    }
+  to {
+    --overflow-fade-value: 2rem;
+  }
 }
 
 .set {
-    align-items: center;
-    border: none;
-    display: grid;
-    grid-template: 'label all list' auto / auto auto 1fr;
-    min-width: 0;
-    padding: 0;
-    width: 100%;
+  display: grid;
+  grid-template: "label all list" auto / auto auto 1fr;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: none;
 }
 
 .title {
-    display: block;
-    float: left; /* Required to position the legend correctly */
-    grid-area: label;
+  float: left; /* Required to position the legend correctly */
+  display: block;
+  grid-area: label;
 }
 
 .label {
-    border: 1px solid oklch(from currentcolor l c h / 20%);
-    border-radius: 2lh;
-    cursor: pointer;
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  max-width: 66vw;
+  height: 1lh;
+  padding-block: 0;
+  padding-inline: 1lh 0.5lh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 2em;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid oklch(from currentcolor l c h / 20%);
+  border-radius: 2lh;
+
+  &::before {
+    position: absolute;
+    top: 0.25lh;
+    left: 0.25lh;
     display: block;
-    flex: 0 0 auto;
-    height: 1lh;
-    line-height: 2em;
-    max-width: 66vw;
-    overflow: hidden;
-    padding-block: 0;
-    padding-inline: 1lh 0.5lh;
-    position: relative;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    width: calc(0.5lh - 2px);
+    height: calc(0.5lh - 2px);
+    content: "";
+    border: 1px solid;
+    border-radius: 50%;
+  }
+
+  &:has(:checked) {
+    background: green;
 
     &::before {
-        border: 1px solid;
-        border-radius: 50%;
-        content: '';
-        display: block;
-        height: calc(0.5lh - 2px);
-        left: 0.25lh;
-        position: absolute;
-        top: 0.25lh;
-        width: calc(0.5lh - 2px);
+      background: currentcolor;
     }
+  }
 
-    &:has(:checked) {
-        background: green;
-
-        &::before {
-            background: currentcolor;
-        }
-    }
-
-    input {
-        display: none;
-    }
+  input {
+    display: none;
+  }
 }
 
 .items {
-    animation: overflow-fade forwards;
-    animation-range: 0.5rem 2rem;
-    animation-timeline: --overflow-fade;
-    display: flex;
-    gap: 0.5em;
-    mask-image: linear-gradient(to right, transparent, black var(--overflow-fade-value));
-    overflow: auto;
-    padding: 0.5em;
-    scroll-timeline: --overflow-fade inline;
+  animation: overflow-fade forwards;
+  animation-range: 0.5rem 2rem;
+  animation-timeline: --overflow-fade;
+  display: flex;
+  gap: 0.5em;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--overflow-fade-value)
+  );
+  overflow: auto;
+  padding: 0.5em;
+  scroll-timeline: --overflow-fade inline;
 
-    &.expanded {
-        flex-wrap: wrap;
-    }
+  &.expanded {
+    flex-wrap: wrap;
+  }
 }

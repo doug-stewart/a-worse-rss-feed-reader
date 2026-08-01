@@ -1,14 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
-import type { FeedObj } from '../types';
+import { fetchFeeds } from "@/features/feeds/api/fetchFeeds";
+import type { Feed } from "../types";
 
-import { fetchFeeds } from '@/features/feeds/api/fetchFeeds';
+export const useFeeds = (): {
+  feeds: Array<Feed>;
+  query: ReturnType<typeof useQuery>;
+} => {
+  const { user, isAuthenticated } = useAuth();
+  const query = useQuery({
+    queryKey: ["user", user?.id, "feeds"],
+    queryFn: fetchFeeds,
+    enabled: isAuthenticated && !!user?.id,
+  });
 
-export const useFeeds = (): { feeds: Array<FeedObj>; query: ReturnType<typeof useQuery> } => {
-    const query = useQuery({
-        queryKey: ['feeds'],
-        queryFn: fetchFeeds,
-    });
-
-    return { feeds: query.data || [], query };
+  return { feeds: query.data || [], query };
 };

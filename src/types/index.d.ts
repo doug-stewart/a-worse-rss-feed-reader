@@ -1,1 +1,1 @@
-export type LayoutConsts = 'row' | 'card' | 'full';
+export type LayoutConsts = "row" | "card" | "full";

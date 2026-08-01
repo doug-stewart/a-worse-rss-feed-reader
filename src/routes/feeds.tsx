@@ -1,17 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
-type FeedSearchParams = {
-    category?: Array<number>;
-    feed?: Array<number>;
-    range?: string;
-};
-
-export const Route = createFileRoute('/feeds')({
-    validateSearch: (search: Record<string, any>): FeedSearchParams => {
-        return {
-            category: search.category,
-            feed: search.feed,
-            range: search.range,
-        };
-    },
+export const Route = createFileRoute("/feeds")({
+  validateSearch: z.object({
+    category: z.number().array().optional(),
+    feed: z.number().array().optional(),
+    range: z.enum(["today", "week"]).optional(),
+  }),
 });

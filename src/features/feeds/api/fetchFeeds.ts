@@ -1,23 +1,9 @@
-import axios from 'axios';
-import DOMPurify from 'dompurify';
+import { API_URL } from "@/config";
 
-import type { FeedObj } from '../types';
-
-import { articleRegEx } from '@/features/feeds/helpers/articleRegEx';
-
-export const fetchFeeds = async (): Promise<Array<FeedObj>> => {
-    const rawFeeds = await axios.get(`${import.meta.env.BASE_URL}/feeds.json`);
-
-    const sanitizedTitles = rawFeeds.data.feeds.map((feed: FeedObj) => ({
-        ...feed,
-        title: DOMPurify.sanitize(feed.title),
-    }));
-
-    const sortedFeeds = sanitizedTitles.sort((feedA: FeedObj, feedB: FeedObj) => {
-        const titleA = feedA.title.replace(articleRegEx, '');
-        const titleB = feedB.title.replace(articleRegEx, '');
-        return titleA.localeCompare(titleB, 'en', { sensitivity: 'base' });
-    });
-
-    return sortedFeeds;
+export const fetchFeeds = async () => {
+  const results = await fetch(`${API_URL}/api/feeds`, {
+    credentials: "include",
+  });
+  const feeds = await results.json();
+  return feeds;
 };

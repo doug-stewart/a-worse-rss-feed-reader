@@ -1,15 +1,15 @@
 .feed {
+  a {
+    display: inline-block;
+    padding-inline-start: 1ch;
+    text-indent: -1ch;
+  }
+
+  &.active {
+    display: block;
+
     a {
-        display: inline-block;
-        padding-inline-start: 1ch;
-        text-indent: -1ch;
+      color: tomato;
     }
-
-    &.active {
-        display: block;
-
-        a {
-            color: tomato;
-        }
-    }
+  }
 }

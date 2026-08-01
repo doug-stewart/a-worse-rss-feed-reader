@@ -8,73 +8,73 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as FeedsRouteImport } from './routes/feeds'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as FeedsRouteImport } from "./routes/feeds";
 
-const IndexLazyRouteImport = createFileRoute('/')()
+const IndexLazyRouteImport = createFileRoute("/")();
 
-const FeedsRoute = FeedsRouteImport.update({
-  id: '/feeds',
-  path: '/feeds',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/feeds.lazy').then((d) => d.Route))
 const IndexLazyRoute = IndexLazyRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any).lazy(() => import("./routes/index.lazy").then((d) => d.Route));
+const FeedsRoute = FeedsRouteImport.update({
+  id: "/feeds",
+  path: "/feeds",
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import("./routes/feeds.lazy").then((d) => d.Route));
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
-  '/feeds': typeof FeedsRoute
+  "/": typeof IndexLazyRoute;
+  "/feeds": typeof FeedsRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
-  '/feeds': typeof FeedsRoute
+  "/": typeof IndexLazyRoute;
+  "/feeds": typeof FeedsRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexLazyRoute
-  '/feeds': typeof FeedsRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexLazyRoute;
+  "/feeds": typeof FeedsRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/feeds'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/feeds'
-  id: '__root__' | '/' | '/feeds'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "/" | "/feeds";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/" | "/feeds";
+  id: "__root__" | "/" | "/feeds";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
-  FeedsRoute: typeof FeedsRoute
+  IndexLazyRoute: typeof IndexLazyRoute;
+  FeedsRoute: typeof FeedsRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/feeds': {
-      id: '/feeds'
-      path: '/feeds'
-      fullPath: '/feeds'
-      preLoaderRoute: typeof FeedsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexLazyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/feeds": {
+      id: "/feeds";
+      path: "/feeds";
+      fullPath: "/feeds";
+      preLoaderRoute: typeof FeedsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   FeedsRoute: FeedsRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

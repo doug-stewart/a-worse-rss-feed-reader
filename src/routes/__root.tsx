@@ -1,7 +1,7 @@
-import { createRootRoute } from '@tanstack/react-router';
+import { createRootRoute } from "@tanstack/react-router";
 
-import { IndexRoute } from '@/components/index-route/IndexRoute';
+import { IndexRoute } from "@/components/index-route/IndexRoute";
 
 export const Route = createRootRoute({
-    component: IndexRoute,
+  component: IndexRoute,
 });

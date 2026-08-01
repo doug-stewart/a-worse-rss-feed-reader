@@ -1,18 +1,18 @@
 .header {
-    container-type: inline-size;
-    grid-area: header;
+  grid-area: header;
+  container-type: inline-size;
 }
 
 .main {
-    container-type: inline-size;
-    grid-area: main;
-    overflow: auto;
+  grid-area: main;
+  container-type: inline-size;
+  overflow: auto;
 }
 
 .nav {
-    bottom: 0;
-    grid-area: left-aside;
-    height: 100dvh;
-    position: sticky;
-    top: 0;
+  position: sticky;
+  top: 0;
+  bottom: 0;
+  grid-area: left-aside;
+  height: 100dvh;
 }

@@ -1,16 +1,16 @@
 .menu {
-    border-inline-end: 1px solid;
-    overflow: auto;
-    width: 300px;
+  width: 300px;
+  overflow: auto;
+  border-inline-end: 1px solid;
 
-    ol {
-        list-style: none;
-        margin-block: 1rem;
-        margin-inline: 0;
-        padding-inline: 1rem;
-    }
+  ol {
+    padding-inline: 1rem;
+    margin-block: 1rem;
+    margin-inline: 0;
+    list-style: none;
+  }
 }
 
 .footer {
-    padding: 1rem;
+  padding: 1rem;
 }

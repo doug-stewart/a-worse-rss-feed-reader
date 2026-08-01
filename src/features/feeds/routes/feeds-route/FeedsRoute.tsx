@@ -1,133 +1,150 @@
-import { Batcher } from '@tanstack/pacer';
-import { useHotkey } from '@tanstack/react-hotkeys';
-import { useSearch } from '@tanstack/react-router';
-import { useState } from 'react';
-
-import FullIcon from '@/assets/full.svg?react';
-import GridIcon from '@/assets/grid.svg?react';
-import ListIcon from '@/assets/list.svg?react';
-import MarkAllIcon from '@/assets/mark-all.svg?react';
-import RefreshIcon from '@/assets/refresh.svg?react';
-import { ArticleList } from '@/features/feeds/components/article-list/ArticleList';
-import { FeedFilters } from '@/features/feeds/components/feed-filters/FeedFilters';
-import { useArticles } from '@/features/feeds/hooks/useArticles';
-import { useCategories } from '@/features/feeds/hooks/useCategories';
-import { useFeeds } from '@/features/feeds/hooks/useFeeds';
-import { useUserActions } from '@/features/user/stores/user.store';
-import type { LayoutConsts } from '@/types';
+import { Batcher } from "@tanstack/pacer";
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { useSearch } from "@tanstack/react-router";
+import { useState } from "react";
+import FullIcon from "@/assets/full.svg?react";
+import GridIcon from "@/assets/grid.svg?react";
+import ListIcon from "@/assets/list.svg?react";
+import MarkAllIcon from "@/assets/mark-all.svg?react";
+import RefreshIcon from "@/assets/refresh.svg?react";
+import { ArticleList } from "@/features/feeds/components/article-list/ArticleList";
+import { FeedFilters } from "@/features/feeds/components/feed-filters/FeedFilters";
+import { useArticles } from "@/features/feeds/hooks/useArticles";
+import { useCategories } from "@/features/feeds/hooks/useCategories";
+import { useFeeds } from "@/features/feeds/hooks/useFeeds";
+import { useUserActions } from "@/features/user/stores/user.store";
+import type { LayoutConsts } from "@/types";
+import { FeedImporter } from "../../components/feed-importer/FeedImporter";
 
 export const FeedsRoute = () => {
-    const searchParams = useSearch({ from: '/feeds' });
+  const searchParams = useSearch({ from: "/feeds" });
 
-    const { markRead } = useUserActions();
+  const { markRead, markUnread } = useUserActions();
 
-    const { articles, unreadCount, refreshArticles, query } = useArticles({
-        category: searchParams.category,
-        feed: searchParams.feed,
-    });
+  const { feeds } = useFeeds();
+  const { categories } = useCategories();
 
-    const { feeds } = useFeeds();
-    const { categories } = useCategories();
+  const { articles, isPending, totalQueries, pendingQueries } = useArticles(
+    feeds.map((feed) => feed.id),
+  );
 
-    const [layout, setLayout] = useState<LayoutConsts>('card');
+  const refreshArticles = () => null;
 
-    const categoryName = categories
-        .filter((category) => searchParams.category?.includes(category.id))
-        .map((category) => category.text)
-        .join(', ');
+  const unreadCount = 0;
 
-    const feedName = feeds
-        .filter((feed) => searchParams.feed?.includes(feed.id))
-        .map((feed) => feed.title)
-        .join(', ');
+  const [searchSnapshot, setSearchSnapshot] = useState("");
+  const [articlesSnapshot, setArticlesSnapshot] = useState<Array<string>>([]);
+  const [layout, setLayout] = useState<LayoutConsts>("card");
 
-    const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
+  if (searchSnapshot !== JSON.stringify(searchParams)) {
+    setSearchSnapshot(JSON.stringify(searchParams));
+    const ids = Array.from(articles).map(({ id }) => id);
+    setArticlesSnapshot(ids);
+  }
 
-    const cycleLayout = () => {
-        const layouts: Array<LayoutConsts> = ['row', 'card', 'full'];
-        const currentIndex = layouts.indexOf(layout);
-        const nextIndex = (currentIndex + 1) % layouts.length;
-        setLayout(layouts[nextIndex]);
-    };
+  const categoryName = categories
+    .filter((category) => searchParams.category?.includes(category.id))
+    .map((category) => category.name)
+    .join(", ");
 
-    const pendingRead = new Batcher<string>(
-        (ids) => {
-            markRead(ids);
-        },
-        { wait: 100 },
-    );
+  const feedName = feeds
+    .filter((feed) => searchParams.feed?.includes(feed.id))
+    .map((feed) => feed.name)
+    .join(", ");
 
-    const handleMarkRead = (id: string) => {
-        pendingRead.addItem(id);
-    };
+  const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
 
-    const handleMarkAllRead = () => {
-        const ids = Array.from(articles).map(({ id }) => id);
-        markRead(ids);
-        refreshArticles();
-    };
+  const cycleLayout = () => {
+    const layouts: Array<LayoutConsts> = ["row", "card", "full"];
+    const currentIndex = layouts.indexOf(layout);
+    const nextIndex = (currentIndex + 1) % layouts.length;
+    setLayout(layouts[nextIndex]);
+  };
 
-    useHotkey('Shift+L', () => cycleLayout());
-    useHotkey('Shift+R', () => refreshArticles());
-    useHotkey('Shift+Backspace', () => handleMarkAllRead());
+  const pendingRead = new Batcher<string>(
+    (ids) => {
+      markRead(ids);
+    },
+    { wait: 100 },
+  );
 
-    return (
-        <>
-            <header style={{ position: 'sticky', top: 0, zIndex: 1 }}>
-                <h2>
-                    <span
-                        dangerouslySetInnerHTML={{
-                            __html: categoryName || feedName || 'All Feeds',
-                        }}
-                    />
-                    ({unreadCount})
-                </h2>
-                <FeedFilters />
+  const handleMarkRead = (id: string) => {
+    pendingRead.addItem(id);
+  };
 
-                <div>
-                    <button onClick={refreshArticles}>
-                        <RefreshIcon title="Refresh Articles" />
-                    </button>
-                    <button onClick={handleMarkAllRead}>
-                        <MarkAllIcon title="Mark All Read" />
-                    </button>
-                    <form>
-                        <label>
-                            <input
-                                type="radio"
-                                name="layout"
-                                checked={layout === 'row'}
-                                onChange={() => changeLayout('row')}
-                            />
-                            <ListIcon title="Row" />
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="layout"
-                                checked={layout === 'card'}
-                                onChange={() => changeLayout('card')}
-                            />
-                            <GridIcon title="Card" />
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="layout"
-                                checked={layout === 'full'}
-                                onChange={() => changeLayout('full')}
-                            />
-                            <FullIcon title="Full" />
-                        </label>
-                    </form>
-                </div>
-            </header>
-            {query.isPending === true && (
-                <span>
-                    Updating&hellip; ({query.total - query.pending}/{query.total})
-                </span>
-            )}
-            <ArticleList layout={layout} articles={articles} onRead={handleMarkRead} />
-        </>
-    );
+  const handleMarkAllRead = () => {
+    const ids = Array.from(articles).map(({ id }) => id);
+    setArticlesSnapshot(ids);
+    markRead(ids);
+    refreshArticles();
+  };
+
+  const handleMarkAllUnread = () => {
+    markUnread(articlesSnapshot);
+    refreshArticles();
+  };
+
+  useHotkey("Shift+L", cycleLayout);
+  useHotkey("Shift+R", refreshArticles);
+  useHotkey("Shift+Backspace", handleMarkAllRead);
+
+  return (
+    <>
+      <header style={{ position: "sticky", top: 0, zIndex: 1 }}>
+        <h2>
+          <span>{categoryName || feedName || "All Feeds"}</span> ({unreadCount})
+        </h2>
+        <FeedFilters />
+        <div>
+          <button onClick={refreshArticles} type="button">
+            <RefreshIcon title="Refresh Articles" />
+          </button>
+          <button onClick={handleMarkAllRead} type="button">
+            <MarkAllIcon title="Mark All Read" />
+          </button>
+          <form>
+            <label>
+              <input
+                checked={layout === "row"}
+                name="layout"
+                onChange={() => changeLayout("row")}
+                type="radio"
+              />
+              <ListIcon title="Row" />
+            </label>
+            <label>
+              <input
+                checked={layout === "card"}
+                name="layout"
+                onChange={() => changeLayout("card")}
+                type="radio"
+              />
+              <GridIcon title="Card" />
+            </label>
+            <label>
+              <input
+                checked={layout === "full"}
+                name="layout"
+                onChange={() => changeLayout("full")}
+                type="radio"
+              />
+              <FullIcon title="Full" />
+            </label>
+          </form>
+        </div>
+      </header>
+      {isPending === true && (
+        <span>
+          Updating&hellip; ({totalQueries - pendingQueries}/{totalQueries})
+        </span>
+      )}
+      <FeedImporter />
+      <ArticleList
+        articles={articles}
+        layout={layout}
+        onAllUnread={handleMarkAllUnread}
+        onRead={handleMarkRead}
+      />
+    </>
+  );
 };

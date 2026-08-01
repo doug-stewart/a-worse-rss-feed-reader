@@ -1,71 +1,71 @@
 ::selection {
-    background-color: white;
-    color: black;
+  color: black;
+  background-color: white;
 }
 
 ::-webkit-scrollbar {
-    background-color: transparent;
-    height: 0.6rem;
-    width: 0.6rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: color-mix(in srgb, transparent, white 20%);
+  background-color: color-mix(in srgb, transparent, white 20%);
 }
 
 :root {
-    scrollbar-color: color-mix(in srgb, transparent, white 20%) transparent;
-    scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, transparent, white 20%) transparent;
+  scrollbar-width: thin;
 }
 
 *,
 ::before,
 ::after {
-    box-sizing: border-box;
-    color: currentcolor;
-    vertical-align: baseline;
+  box-sizing: border-box;
+  vertical-align: baseline;
+  color: currentcolor;
 }
 
-[role='presentation'],
+[role="presentation"],
 :disabled {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 :focus {
-    outline: 1px solid;
+  outline: 1px solid;
 }
 
 @supports selector(:focus-visible) {
-    :focus {
-        outline: none;
-    }
+  :focus {
+    outline: none;
+  }
 }
 
 :focus-visible {
-    outline: 1px solid;
+  outline: 1px solid;
 }
 
 :target {
-    scroll-margin-block: 1rlh;
+  scroll-margin-block: 1rlh;
 }
 
 html {
-    text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 body {
-    background-color: black;
-    color: white;
-    font-kerning: normal;
-    font-optical-sizing: auto;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-variant-ligatures: common-ligatures no-discretionary-ligatures no-historical-ligatures
-        contextual;
-    line-height: 1.5;
-    min-height: 100dvh;
-    text-decoration-skip-ink: auto;
-    text-rendering: geometricprecision;
+  min-height: 100dvh;
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures no-discretionary-ligatures
+    no-historical-ligatures contextual;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  color: white;
+  text-decoration-skip-ink: auto;
+  background-color: black;
+  text-rendering: geometricprecision;
 }
 
 blockquote,
@@ -80,58 +80,58 @@ h4,
 h5,
 h6,
 p {
-    margin: 0;
+  margin: 0;
 }
 
 a:where(:not([class])) {
-    color: currentcolor;
-    text-decoration-skip-ink: auto;
+  color: currentcolor;
+  text-decoration-skip-ink: auto;
 }
 
 button,
 input,
 select,
 textarea {
-    appearance: unset;
-    font: inherit;
+  font: inherit;
+  appearance: unset;
 }
 
 button,
-input[type='button'],
-input[type='checkbox'],
-input[type='radio'],
+input[type="button"],
+input[type="checkbox"],
+input[type="radio"],
 select {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 button {
-    background: unset;
-    border: unset;
+  background: unset;
+  border: unset;
 
-    :active {
-        outline: unset;
-    }
+  :active {
+    outline: unset;
+  }
 }
 
 h1,
 h2,
 h3 {
-    text-wrap: balance;
+  text-wrap: balance;
 }
 
 img,
 picture {
-    display: block;
-    max-width: 100%;
+  display: block;
+  max-width: 100%;
 }
 
 ul,
 ol {
-    &:where([class]) {
-        list-style-type: none;
-        margin: unset;
-        padding: unset;
-    }
+  &:where([class]) {
+    padding: unset;
+    margin: unset;
+    list-style-type: none;
+  }
 }
 
 body,
@@ -139,29 +139,29 @@ dd,
 dt,
 p,
 li {
-    font-family: system-ui, sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 300;
-    line-height: max(24px, 1.5em);
-    text-wrap: pretty;
+  font-family: system-ui, sans-serif;
+  font-weight: 300;
+  font-optical-sizing: auto;
+  line-height: max(24px, 1.5em);
+  text-wrap: pretty;
 }
 
 dialog:not([popover]) {
-    background-color: black;
+  background-color: black;
 
-    &::backdrop {
-        backdrop-filter: blur(0.5rem);
-        background-color: rgb(0 0 0 / 50%);
-    }
+  &::backdrop {
+    background-color: rgb(0 0 0 / 50%);
+    backdrop-filter: blur(0.5rem);
+  }
 }
 
 #root {
-    display: grid;
-    grid-template:
-        'header header header' auto
-        'left-aside main right-aside' 1fr
-        'footer footer footer' auto
-        / auto 1fr auto;
-    position: fixed;
-    inset: 0;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template:
+    "header header header" auto
+    "left-aside main right-aside" 1fr
+    "footer footer footer" auto
+    / auto 1fr auto;
 }
