@@ -28,36 +28,36 @@ want.
 - [ ] Hit it with the pretty stick
 - [ ] Make publishable to somewhere
 - [ ] Add routes:
-    - [x] /
-    - [ ] /login
-    - [ ] /index
-    - [ ] /user
-    - [ ] /manage
-    - [ ] /add
-    - [ ] /edit
-    - [x] /feeds
-    - [x] /feeds?category=mep
-    - [x] /feeds?feed=mep
+  - [x] /
+  - [ ] /login
+  - [ ] /index
+  - [ ] /user
+  - [ ] /manage
+  - [ ] /add
+  - [ ] /edit
+  - [x] /feeds
+  - [x] /feeds?category=mep
+  - [x] /feeds?feed=mep
 - [ ] Add to the data:
-    - [ ] Categories and feeds need to know about layouts.
-    - [ ] The "all" views need to have a layout.
-    - [ ] Alls, categories, and feeds need a sort order.
+  - [ ] Categories and feeds need to know about layouts.
+  - [ ] The "all" views need to have a layout.
+  - [ ] Alls, categories, and feeds need a sort order.
 - [ ] Add basic functionality:
-    - [x] Refresh.
-    - [x] Mark all read.
-    - [ ] Mark older than 1 day read.
-    - [ ] Mark older than 1 week read.
-    - [x] Mark as read on scroll.
-    - [x] Mark as read on open.
-    - [ ] Can sort feed views independently.
-    - [ ] Can set layouts for feed views.
-    - [ ] Manage categories.
-        - [ ] Reorder
-        - [ ] Add
-        - [ ] Edit
-        - [ ] Delete
-    - [ ] Manage feeds.
-        - [ ] Add
-        - [ ] Edit
-        - [ ] Delete
-    - [ ] Can reorder categories in sidebar.
+  - [x] Refresh.
+  - [x] Mark all read.
+  - [ ] Mark older than 1 day read.
+  - [ ] Mark older than 1 week read.
+  - [x] Mark as read on scroll.
+  - [x] Mark as read on open.
+  - [ ] Can sort feed views independently.
+  - [ ] Can set layouts for feed views.
+  - [ ] Manage categories.
+    - [ ] Reorder
+    - [ ] Add
+    - [ ] Edit
+    - [ ] Delete
+  - [ ] Manage feeds.
+    - [ ] Add
+    - [ ] Edit
+    - [ ] Delete
+  - [ ] Can reorder categories in sidebar.
