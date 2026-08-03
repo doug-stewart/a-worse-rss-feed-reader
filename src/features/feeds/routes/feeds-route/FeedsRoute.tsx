@@ -26,9 +26,9 @@ export const FeedsRoute = () => {
     query: articlesQuery,
     markRead,
     markUnread,
+    refetchArticles,
   } = useArticles(searchParams.feed, searchParams.category);
 
-  const refreshArticles = () => articlesQuery.refetch();
   const unreadCount = articles.filter((article) => !article.viewed).length;
 
   const [searchSnapshot, setSearchSnapshot] = useState("");
@@ -39,6 +39,7 @@ export const FeedsRoute = () => {
     setSearchSnapshot(JSON.stringify(searchParams));
     const ids = Array.from(articles).map(({ id }) => id);
     setArticlesSnapshot(ids);
+    refetchArticles();
   }
 
   const categoryName = categories
@@ -80,17 +81,17 @@ export const FeedsRoute = () => {
     const ids = Array.from(articles).map(({ id }) => id);
     setArticlesSnapshot(ids);
     markRead.mutate(ids);
-    refreshArticles();
+    refetchArticles();
   };
 
   const handleMarkAllUnread = () => {
     markUnread.mutate(articlesSnapshot);
-    refreshArticles();
+    refetchArticles();
   };
 
-  useHotkey("Shift+L", cycleLayout);
-  useHotkey("Shift+R", refreshArticles);
-  useHotkey("Shift+Backspace", handleMarkAllRead);
+  useHotkey({ key: "l", shift: true }, cycleLayout);
+  useHotkey({ key: "r", shift: true }, refetchArticles);
+  useHotkey({ key: "Backspace", shift: true }, handleMarkAllRead);
 
   return (
     <>
@@ -100,7 +101,7 @@ export const FeedsRoute = () => {
         </h2>
         <FeedFilters />
         <div>
-          <button onClick={refreshArticles} type="button">
+          <button onClick={refetchArticles} type="button">
             <RefreshIcon title="Refresh Articles" />
           </button>
           <button onClick={handleMarkAllRead} type="button">

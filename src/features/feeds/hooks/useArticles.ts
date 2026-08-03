@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/config";
 import { setAritclesRead } from "../api/setArticlesRead";
 import { setAritclesUnread } from "../api/setArticlesUnread";
-import { invalidateArticles } from "../helpers/invalidatArticles";
 import type { Article } from "../types";
 
 export const useArticles = (feedIds?: Array<number>, categoryIds?: Array<number>) => {
@@ -24,18 +23,21 @@ export const useArticles = (feedIds?: Array<number>, categoryIds?: Array<number>
 
   const markRead = useMutation({
     mutationFn: setAritclesRead,
-    onSuccess: () => invalidateArticles(queryClient),
   });
 
   const markUnread = useMutation({
     mutationFn: setAritclesUnread,
-    onSuccess: () => invalidateArticles(queryClient),
   });
+
+  const refetchArticles = () => {
+    queryClient.invalidateQueries({ queryKey: ["articles"], refetchType: "all" });
+  };
 
   return {
     articles: (Array.isArray(query.data) ? query.data : []) as Array<Article>,
     query,
     markRead,
     markUnread,
+    refetchArticles,
   };
 };
