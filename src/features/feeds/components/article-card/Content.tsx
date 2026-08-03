@@ -29,6 +29,8 @@ export const Content = ({
 }: ContentProps) => {
   const [showImage, setShowImage] = useState(true);
 
+  const cleanSummary = DOMPurify.sanitize(summary, { RETURN_DOM: true })?.textContent;
+
   return (
     <>
       <h3 className={styles.title}>
@@ -61,7 +63,7 @@ export const Content = ({
               }}
             />
           )
-        : summary && <p className={styles.summary}>{summary}</p>}
+        : cleanSummary && <p className={styles.summary}>{cleanSummary}</p>}
     </>
   );
 };
