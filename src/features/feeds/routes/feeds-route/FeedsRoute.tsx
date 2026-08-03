@@ -77,10 +77,17 @@ export const FeedsRoute = () => {
     [pendingRead],
   );
 
-  const handleMarkAllRead = () => {
+  const handleMarkAllRead = async () => {
     const ids = Array.from(articles).map(({ id }) => id);
     setArticlesSnapshot(ids);
-    markRead.mutate(ids);
+    const batchSize = 250;
+    const batches = [];
+    for (let i = 0; i < ids.length; i += batchSize) {
+      batches.push(ids.slice(i, i + batchSize));
+    }
+    for (const batch of batches) {
+      await markRead.mutateAsync(batch);
+    }
     refetchArticles();
   };
 
