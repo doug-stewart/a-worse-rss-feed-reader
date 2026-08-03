@@ -1,7 +1,7 @@
 import { Batcher } from "@tanstack/pacer";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useSearch } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import FullIcon from "@/assets/full.svg?react";
 import GridIcon from "@/assets/grid.svg?react";
 import ListIcon from "@/assets/list.svg?react";
@@ -12,28 +12,27 @@ import { FeedFilters } from "@/features/feeds/components/feed-filters/FeedFilter
 import { useArticles } from "@/features/feeds/hooks/useArticles";
 import { useCategories } from "@/features/feeds/hooks/useCategories";
 import { useFeeds } from "@/features/feeds/hooks/useFeeds";
-import { useUserActions } from "@/features/user/stores/user.store";
 import type { LayoutConsts } from "@/types";
 import { FeedImporter } from "../../components/feed-importer/FeedImporter";
 
 export const FeedsRoute = () => {
   const searchParams = useSearch({ from: "/feeds" });
 
-  const { markRead, markUnread } = useUserActions();
-
   const { feeds } = useFeeds();
   const { categories } = useCategories();
 
-  const { articles, isPending, totalQueries, pendingQueries } = useArticles(
-    feeds.map((feed) => feed.id),
-  );
+  const {
+    articles,
+    query: articlesQuery,
+    markRead,
+    markUnread,
+  } = useArticles(searchParams.feed, searchParams.category);
 
-  const refreshArticles = () => null;
-
-  const unreadCount = 0;
+  const refreshArticles = () => articlesQuery.refetch();
+  const unreadCount = articles.filter((article) => !article.viewed).length;
 
   const [searchSnapshot, setSearchSnapshot] = useState("");
-  const [articlesSnapshot, setArticlesSnapshot] = useState<Array<string>>([]);
+  const [articlesSnapshot, setArticlesSnapshot] = useState<Array<number>>([]);
   const [layout, setLayout] = useState<LayoutConsts>("card");
 
   if (searchSnapshot !== JSON.stringify(searchParams)) {
@@ -61,26 +60,31 @@ export const FeedsRoute = () => {
     setLayout(layouts[nextIndex]);
   };
 
-  const pendingRead = new Batcher<string>(
-    (ids) => {
-      markRead(ids);
-    },
-    { wait: 100 },
-  );
+  const pendingRead = useRef(
+    new Batcher<number>(
+      (ids) => {
+        markRead.mutate(ids);
+      },
+      { wait: 100 },
+    ),
+  ).current;
 
-  const handleMarkRead = (id: string) => {
-    pendingRead.addItem(id);
-  };
+  const handleMarkRead = useCallback(
+    (id: number) => {
+      pendingRead.addItem(id);
+    },
+    [pendingRead],
+  );
 
   const handleMarkAllRead = () => {
     const ids = Array.from(articles).map(({ id }) => id);
     setArticlesSnapshot(ids);
-    markRead(ids);
+    markRead.mutate(ids);
     refreshArticles();
   };
 
   const handleMarkAllUnread = () => {
-    markUnread(articlesSnapshot);
+    markUnread.mutate(articlesSnapshot);
     refreshArticles();
   };
 
@@ -133,11 +137,7 @@ export const FeedsRoute = () => {
           </form>
         </div>
       </header>
-      {isPending === true && (
-        <span>
-          Updating&hellip; ({totalQueries - pendingQueries}/{totalQueries})
-        </span>
-      )}
+      {articlesQuery.isFetching === true && <span>Fetching articles&hellip;</span>}
       <FeedImporter />
       <ArticleList
         articles={articles}

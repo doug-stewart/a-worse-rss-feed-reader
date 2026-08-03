@@ -1,3 +1,5 @@
+import type z from "zod";
+
 export type Category = {
   id: number;
   name: string;
@@ -15,14 +17,18 @@ export type Feed = {
 };
 
 export type Article = {
-  parent: number;
+  id: number;
+  dedup_key: string;
   title: string;
   url: string;
-  id: string;
-  date: number;
   cover: string | null;
-  summary: string | null;
-  viewed: boolean;
+  summary: string;
   body: string;
-  raw: string;
+  feed_id: number;
+  created_at: string;
+  enriched_at: string;
+  last_seen_at: string;
+  published_at: string;
+  updated_at: string;
+  viewed: boolean;
 };

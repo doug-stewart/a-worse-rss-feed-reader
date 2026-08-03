@@ -1,23 +1,41 @@
-import { useQueries } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/config";
+import { setAritclesRead } from "../api/setArticlesRead";
+import { setAritclesUnread } from "../api/setArticlesUnread";
+import { invalidateArticles } from "../helpers/invalidatArticles";
+import type { Article } from "../types";
 
-export const useArticles = (feedIds: Array<number>) => {
-  const queries = useQueries({
-    queries: feedIds.map((feed) => {
-      return {
-        queryKey: ["feeds", feed, "articles"],
-        queryFn: () =>
-          fetch(`${API_URL}/api/feeds/${feed}`, {
-            credentials: "include",
-          }).then((res) => res.json()),
-      };
-    }),
+export const useArticles = (feedIds?: Array<number>, categoryIds?: Array<number>) => {
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
+    queryKey: ["articles", { feedIds, categoryIds }],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      feedIds && params.append("feeds", feedIds.join(","));
+      categoryIds && params.append("categories", categoryIds.join(","));
+      const search = params.toString();
+      const url = `${API_URL}/api/articles${search ? `?${search}` : ""}`;
+      const resspone = await fetch(url, { credentials: "include" });
+      const data = await resspone.json();
+      return data;
+    },
   });
-  const articles = queries.flatMap((query) => query.data).filter(Boolean);
 
-  const isPending = queries.some((query) => query.isPending);
-  const totalQueries = queries.length;
-  const pendingQueries = queries.filter((query) => query.isPending).length;
+  const markRead = useMutation({
+    mutationFn: setAritclesRead,
+    onSuccess: () => invalidateArticles(queryClient),
+  });
 
-  return { articles, isPending, totalQueries, pendingQueries, queries };
+  const markUnread = useMutation({
+    mutationFn: setAritclesUnread,
+    onSuccess: () => invalidateArticles(queryClient),
+  });
+
+  return {
+    articles: (Array.isArray(query.data) ? query.data : []) as Array<Article>,
+    query,
+    markRead,
+    markUnread,
+  };
 };

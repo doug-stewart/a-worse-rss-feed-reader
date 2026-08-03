@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { LayoutConsts } from "@/types";
+import { useFeeds } from "../../hooks/useFeeds";
 import type { Article } from "../../types";
 import styles from "./ArticleCard.module.css";
 import { Content } from "./Content";
@@ -8,17 +9,18 @@ import { Content } from "./Content";
 type ArticleCardProps = {
   article: Article;
   layout: LayoutConsts;
-  parent: string;
-  onRead: (id: string) => void;
+  onRead: (id: number) => void;
 };
 
-export const ArticleCard = ({ article, layout, parent, onRead }: ArticleCardProps) => {
-  const { url = "", title = "", date = 0, cover = "", body = "", summary = "" } = article || {};
+export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
+  const { url, title, published_at, cover, body, summary } = article || {};
 
-  const [isRead, setIsRead] = useState(article.viewed || false);
+  const { feeds } = useFeeds();
+  const parent = feeds.find((feed) => feed.id === article.feed_id)?.name || null;
 
   const wrapper = useRef<HTMLElement | null>(null);
   const [height, setHeight] = useState(0);
+  const [isRead, setIsRead] = useState(article.viewed || false);
   const [isVisible, setVisible] = useState(false);
 
   useLayoutEffect(() => {
@@ -51,7 +53,7 @@ export const ArticleCard = ({ article, layout, parent, onRead }: ArticleCardProp
     observer.observe(wrapper.current);
 
     return () => observer.disconnect();
-  }, [onRead, article]);
+  }, [onRead, article.id, article.viewed]);
 
   return (
     <article
@@ -69,7 +71,7 @@ export const ArticleCard = ({ article, layout, parent, onRead }: ArticleCardProp
           <Content
             body={body}
             cover={cover ?? ""}
-            date={date}
+            date={published_at}
             layout={layout}
             onRead={() => onRead(article.id)}
             parent={parent}

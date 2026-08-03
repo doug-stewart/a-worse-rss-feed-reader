@@ -27,7 +27,6 @@
     "better-auth": "^1.6.25",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
-    "dayjs": "^1.11.21",
     "dompurify": "^3.4.12",
     "feedsmith": "^2.9.6",
     "nanoid": "^6.0.0",

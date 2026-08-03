@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { format } from "date-fns";
 import DOMPurify from "dompurify";
 import { useState } from "react";
 import type { LayoutConsts } from "@/types";
@@ -7,8 +7,8 @@ import styles from "./ArticleCard.module.css";
 type ContentProps = {
   url: string;
   title: string;
-  date: number;
-  parent: string;
+  date: string;
+  parent: string | null;
   cover: string;
   body: string;
   summary: string;
@@ -37,13 +37,13 @@ export const Content = ({
         </a>
       </h3>
 
-      {date && (
-        <time className={styles.date} dateTime={`${dayjs(date).format("YYYY-MM-DD")}`}>
-          {dayjs(date).format("MMM D, YYYY")}
+      {Boolean(date) && (
+        <time className={styles.date} dateTime={date}>
+          {format(new Date(date), "MMM d, yyyy")}
         </time>
       )}
 
-      <p className={styles.category}>{parent}</p>
+      {Boolean(parent) && <p className={styles.category}>{parent}</p>}
 
       {layout === "full" ? null : showImage && cover ? (
         <img alt={title} className={styles.cover} onError={() => setShowImage(false)} src={cover} />
@@ -52,7 +52,7 @@ export const Content = ({
       )}
 
       {layout === "full"
-        ? summary && (
+        ? body && (
             <p
               className={styles.summary}
               // biome-ignore lint/security/noDangerouslySetInnerHtml: Trusted content
