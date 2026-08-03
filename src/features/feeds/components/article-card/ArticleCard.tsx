@@ -66,22 +66,19 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
       ref={wrapper}
       style={{ ["--h" as string]: isVisible ? false : `${height}px` }}
     >
-      {
-        isVisible ? (
-          <Content
-            body={body}
-            cover={cover ?? ""}
-            date={published_at}
-            layout={layout}
-            onRead={() => onRead(article.id)}
-            parent={parent}
-            summary={summary || ""}
-            title={title}
-            url={url}
-          />
-        ) : null
-        // <Skeleton layout={layout} />
-      }
+      {isVisible ? (
+        <Content
+          body={body}
+          cover={cover ?? ""}
+          date={published_at}
+          layout={layout}
+          onRead={() => onRead(article.id)}
+          parent={parent}
+          summary={summary || ""}
+          title={title}
+          url={url}
+        />
+      ) : null}
     </article>
   );
 };

@@ -28,7 +28,6 @@ export const Content = ({
   onRead,
 }: ContentProps) => {
   const [showImage, setShowImage] = useState(true);
-
   const cleanSummary = DOMPurify.sanitize(summary, { RETURN_DOM: true })?.textContent;
 
   return (
