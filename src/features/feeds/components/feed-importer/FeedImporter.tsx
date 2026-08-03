@@ -1,24 +1,22 @@
-import { API_URL } from "@/config";
+import { useState } from "react";
+import { useOPMLImport } from "../../hooks/useOPMLImport";
 
 export const FeedImporter = () => {
+  const [uploading, setUploading] = useState(false);
+  const importOPML = useOPMLImport();
+
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUploading(true);
     const file = event.target.files?.[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file); //
-    const result = await fetch(`${API_URL}/api/opml/import`, {
-      credentials: "include",
-      method: "POST",
-      body: formData,
-    });
-    const data = await result.json();
-    console.log({ data });
+    await importOPML.mutateAsync(file);
+    setUploading(false);
   };
+
   return (
     <label>
       Upload an OPML file to import your feeds:
       <br />
-      <input accept=".opml" onChange={handleUpload} type="file" />
+      <input accept=".opml" disabled={uploading} onChange={handleUpload} type="file" />
     </label>
   );
 };
