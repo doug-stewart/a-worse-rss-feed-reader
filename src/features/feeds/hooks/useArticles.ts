@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { apiFetch } from "@/helpers/apiFetch";
 import { setAritclesRead } from "../api/setArticlesRead";
 import { setAritclesUnread } from "../api/setArticlesUnread";
 import type { Article } from "../types";
@@ -14,8 +14,8 @@ export const useArticles = (feedIds?: Array<number>, categoryIds?: Array<number>
       feedIds && params.append("feeds", feedIds.join(","));
       categoryIds && params.append("categories", categoryIds.join(","));
       const search = params.toString();
-      const url = `${API_URL}/api/articles${search ? `?${search}` : ""}`;
-      const resspone = await fetch(url, { credentials: "include" });
+      const url = `/articles${search ? `?${search}` : ""}`;
+      const resspone = await apiFetch(url);
       const data = await resspone.json();
       return data;
     },

@@ -1,9 +1,8 @@
-import { API_URL } from "@/config";
+import { apiFetch } from "@/helpers/apiFetch";
 
 export const setAritclesRead = async (ids: Array<number>) => {
-  const response = await fetch(`${API_URL}/api/articles/read`, {
+  const response = await apiFetch("/articles", {
     method: "PATCH",
-    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

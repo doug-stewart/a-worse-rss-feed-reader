@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { apiFetch } from "@/helpers/apiFetch";
 
 export const useOPMLImport = () => {
   const queryClient = useQueryClient();
@@ -11,8 +11,7 @@ export const useOPMLImport = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const result = await fetch(`${API_URL}/api/opml/import`, {
-        credentials: "include",
+      const result = await apiFetch("/opml/import", {
         method: "POST",
         body: formData,
       });

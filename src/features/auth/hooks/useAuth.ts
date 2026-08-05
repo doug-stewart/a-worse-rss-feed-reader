@@ -1,13 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { apiFetch } from "@/helpers/apiFetch";
 
 export const useAuth = () => {
   const query = useQuery({
     queryKey: ["auth"],
     queryFn: async () => {
-      const res = await fetch(`${API_URL}/api/auth/me`, {
-        credentials: "include",
-      });
+      const res = await apiFetch("/auth/me");
       if (!res.ok) {
         throw new Error("Failed to fetch auth");
       }

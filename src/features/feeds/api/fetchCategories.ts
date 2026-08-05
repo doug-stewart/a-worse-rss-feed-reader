@@ -1,9 +1,7 @@
-import { API_URL } from "@/config";
+import { apiFetch } from "@/helpers/apiFetch";
 
 export const fetchCategories = async () => {
-  const result = await fetch(`${API_URL}/api/categories`, {
-    credentials: "include",
-  });
+  const result = await apiFetch("/categories");
   const categories = await result.json();
   return categories;
 };
