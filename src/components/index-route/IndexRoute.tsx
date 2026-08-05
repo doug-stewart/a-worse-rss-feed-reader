@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, useSearch } from "@tanstack/react-router";
 import { useLayoutEffect, useRef } from "react";
+import Logo from "@/assets/logo.svg?react";
 
 import styles from "./IndexRoute.module.css";
 
@@ -32,7 +33,9 @@ export const IndexRoute = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <header className={styles.header}>
-        <h1>A Worse RSS App</h1>
+        <h1>
+          <Logo title="A Worse RSS App" />
+        </h1>
       </header>
 
       <main className={styles.main} ref={wrapper}>
