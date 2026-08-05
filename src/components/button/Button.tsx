@@ -1,5 +1,5 @@
+import { Link } from "@tanstack/react-router";
 import clsx from "clsx";
-import { Link } from "react-router";
 import type { ButtonProps } from "./Button.d";
 import styles from "./Button.module.css";
 
