@@ -1,5 +1,3 @@
-import type z from "zod";
-
 export type Category = {
   id: number;
   name: string;
