@@ -1,0 +1,78 @@
+.tootlip {
+  --_offset: calc(var(--spacing) * 0.5);
+
+  background-color: var(--color-on-primary);
+  color: var(--color-bg-primary);
+  border-radius: calc(var(--spacing) * 0.36);
+  border: unset;
+  padding: calc(var(--spacing) * 0.24) calc(var(--spacing) * 0.48);
+  position-anchor: --tooltip;
+  font-size: 0.8em;
+  font-weight: 600;
+  position: absolute;
+  inset: unset;
+  width: max-content;
+  overflow: unset;
+  visibility: hidden;
+
+  :hover > &,
+  :focus-within > & {
+    visibility: visible;
+  }
+}
+
+.top {
+  margin-bottom: var(--_offset);
+  position-area: top center;
+}
+
+.right {
+  margin-left: var(--_offset);
+  position-area: center right;
+}
+
+.bottom {
+  margin-top: var(--_offset);
+  position-area: bottom center;
+}
+
+.left {
+  margin-right: var(--_offset);
+  position-area: center left;
+}
+
+.arrow {
+  position: absolute;
+  display: block;
+  width: 1em;
+  height: calc(0.6em + 1px);
+  background: var(--color-on-primary);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+
+  .top & {
+    top: calc(100% - 1px);
+    left: 50%;
+    translate: -50% 0;
+  }
+
+  .right & {
+    top: 50%;
+    right: calc(100% - 1px);
+    rotate: 90deg;
+    translate: 0 -50%;
+  }
+
+  .bottom & {
+    bottom: calc(100% - 1px);
+    left: 50%;
+    rotate: 180deg;
+    translate: -50% 0;
+  }
+
+  .left & {
+    top: 50%;
+    left: calc(100% - 1px);
+    rotate: 270deg;
+    translate: 0 -50%;
+  }
+}

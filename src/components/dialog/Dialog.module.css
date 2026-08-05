@@ -1,0 +1,28 @@
+.dialog {
+  width: calc(100vw - calc(var(--spacing) * 1));
+  max-width: 640px;
+  padding: calc(var(--spacing) * 0.84);
+  margin: auto;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(var(--spacing) * 0.84);
+  height: calc(var(--spacing) * 0.84);
+  padding: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  svg {
+    display: block;
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  &:not(:hover, :focus-visible) {
+    --_bg: transparent;
+    --_text: var(--color-on-primary);
+  }
+}
