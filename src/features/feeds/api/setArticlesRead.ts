@@ -1,7 +1,7 @@
 import { apiFetch } from "@/helpers/apiFetch";
 
 export const setAritclesRead = async (ids: Array<number>) => {
-  const response = await apiFetch("/articles", {
+  const response = await apiFetch("/articles/read", {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
