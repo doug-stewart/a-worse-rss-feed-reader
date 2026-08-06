@@ -4,18 +4,13 @@ import { apiFetch } from "@/helpers/apiFetch";
 export const useAuth = () => {
   const query = useQuery({
     queryKey: ["auth"],
-    queryFn: async () => {
-      const res = await apiFetch("/auth/me");
-      if (!res.ok) {
-        throw new Error("Failed to fetch auth");
-      }
-      return res.json();
-    },
+    queryFn: () => apiFetch("/auth/me"),
+    retry: false,
   });
 
+  const { isFetched: isLoaded } = query;
   const user = query.data;
-  const isAuthenticated = !!user;
-  const { isSuccess } = query;
+  const isAuthenticated = isLoaded && !!user;
 
-  return { user, isAuthenticated, isSuccess, query };
+  return { user, isAuthenticated, isLoaded, query };
 };
