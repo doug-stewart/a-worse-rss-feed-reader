@@ -2,9 +2,9 @@ import { createLazyFileRoute, Navigate } from "@tanstack/react-router";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 const RouteComponent = () => {
-  const { isAuthenticated, isSuccess } = useAuth();
+  const { isAuthenticated, isLoaded } = useAuth();
 
-  return isAuthenticated && isSuccess ? (
+  return isAuthenticated && isLoaded ? (
     <Navigate to="/feeds" />
   ) : (
     <>
