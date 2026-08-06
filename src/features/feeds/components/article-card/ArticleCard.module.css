@@ -57,6 +57,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
 
     &::before {
       position: absolute;
@@ -88,6 +89,7 @@
   height: 3lh;
   overflow: hidden;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .card,
@@ -117,5 +119,20 @@
 
   .summary {
     height: 4lh;
+  }
+}
+
+.actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+
+  .article:hover &,
+  .article:focus-within & {
+    pointer-events: auto;
+    opacity: 1;
   }
 }
