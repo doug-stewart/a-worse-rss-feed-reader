@@ -14,6 +14,7 @@ import { useCategories } from "@/features/feeds/hooks/useCategories";
 import { useFeeds } from "@/features/feeds/hooks/useFeeds";
 import type { LayoutConsts } from "@/types";
 import { FeedImporter } from "../../components/feed-importer/FeedImporter";
+import { scrollMainToTop } from "../../helpers/scrollMainToTop";
 
 export const FeedsRoute = () => {
   const searchParams = useSearch({ from: "/feeds" });
@@ -41,6 +42,11 @@ export const FeedsRoute = () => {
     setArticlesSnapshot(ids);
     refetchArticles();
   }
+
+  const refreshFeed = () => {
+    scrollMainToTop();
+    refetchArticles();
+  };
 
   const categoryName = categories
     .filter((category) => searchParams.category?.includes(category.id))
@@ -88,16 +94,18 @@ export const FeedsRoute = () => {
     for (const batch of batches) {
       await markRead.mutateAsync(batch);
     }
+    scrollMainToTop();
     refetchArticles();
   };
 
   const handleMarkAllUnread = () => {
     markUnread.mutate(articlesSnapshot);
+    scrollMainToTop();
     refetchArticles();
   };
 
   useHotkey({ key: "l", shift: true }, cycleLayout);
-  useHotkey({ key: "r", shift: true }, refetchArticles);
+  useHotkey({ key: "r", shift: true }, refreshFeed);
   useHotkey({ key: "Backspace", shift: true }, handleMarkAllRead);
 
   return (

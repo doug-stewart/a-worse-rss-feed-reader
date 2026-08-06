@@ -1,11 +1,11 @@
 import { Navigate, useLocation, useSearch } from "@tanstack/react-router";
-import { type PropsWithChildren, useLayoutEffect, useRef } from "react";
+import { type PropsWithChildren, useLayoutEffect } from "react";
 import Logo from "@/assets/logo.svg?react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { scrollMainToTop } from "@/features/feeds/helpers/scrollMainToTop";
 import styles from "./Layout.module.css";
 
 export const Layout = ({ children }: PropsWithChildren) => {
-  const wrapper = useRef<HTMLDivElement>(null);
   const { isLoaded, isAuthenticated } = useAuth();
   const pathname = useLocation({
     select: (location) => location.pathname,
@@ -17,11 +17,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Intended behavior
   useLayoutEffect(() => {
-    wrapper.current?.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
+    scrollMainToTop();
   }, [category, feed]);
 
   const shouldRedirect = !isAuthenticated && isLoaded && pathname !== "/";
@@ -35,9 +31,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
           <Logo title="A Worse RSS App" />
         </h1>
       </header>
-      <main className={styles.main} ref={wrapper}>
-        {children}
-      </main>
+      <main className={styles.main}>{children}</main>
     </>
   );
 };
