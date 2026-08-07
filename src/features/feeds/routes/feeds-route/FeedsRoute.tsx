@@ -13,7 +13,6 @@ import { useArticles } from "@/features/feeds/hooks/useArticles";
 import { useCategories } from "@/features/feeds/hooks/useCategories";
 import { useFeeds } from "@/features/feeds/hooks/useFeeds";
 import type { LayoutConsts } from "@/types";
-import { FeedImporter } from "../../components/feed-importer/FeedImporter";
 import { scrollMainToTop } from "../../helpers/scrollMainToTop";
 import styles from "./FeedsRoute.module.css";
 
@@ -154,14 +153,16 @@ export const FeedsRoute = () => {
           </form>
         </div>
       </header>
-      {articlesQuery.isFetching === true && <span>Fetching articles&hellip;</span>}
-      <FeedImporter />
-      <ArticleList
-        articles={articles}
-        layout={layout}
-        onAllUnread={handleMarkAllUnread}
-        onRead={handleMarkRead}
-      />
+      {articlesQuery.isFetching === true ? (
+        <span>Fetching articles&hellip;</span>
+      ) : (
+        <ArticleList
+          articles={articles}
+          layout={layout}
+          onAllUnread={handleMarkAllUnread}
+          onRead={handleMarkRead}
+        />
+      )}
     </>
   );
 };
