@@ -5,10 +5,12 @@
   align-content: start;
   min-height: var(--h);
   padding: 1rem;
-  background-color: rgb(255 255 255 / 5%);
+  cursor: pointer;
+  background-color: black;
 
-  &:has(a:hover, a:focus-visible) {
-    outline: 2px solid orange;
+  &:hover,
+  &:focus-visible {
+    background-color: color-mix(in oklch, black, white 24%);
   }
 }
 
@@ -26,8 +28,8 @@
     / auto 1fr max-content;
 }
 
-.read {
-  opacity: 0.5;
+.read > * {
+  opacity: 0.24;
 }
 
 .title,
@@ -77,6 +79,7 @@
   grid-area: cover;
   width: 100%;
   height: auto;
+  aspect-ratio: 8 / 6;
   object-fit: cover;
   object-position: 50% 0;
   background-color: rgb(255 255 255 / 5%);

@@ -56,17 +56,19 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
   useLayoutEffect(() => {
     if (!wrapper.current || !scrollRoot) return;
 
-    const handleIntersection = (entryies: Array<IntersectionObserverEntry>) => {
+    const handleRender = (entryies: Array<IntersectionObserverEntry>) => {
       const [entry] = entryies;
       const onScreen = entry.isIntersecting;
       setVisible(onScreen);
-
       if (!onScreen) {
         setHeight(wrapper.current?.clientHeight || 0);
       }
+    };
 
-      // IntersectionObserver fires when the card is partially off the screen
-      // and we only want to count when it's fully off the screen.
+    const handleRead = (entryies: Array<IntersectionObserverEntry>) => {
+      const [entry] = entryies;
+      const onScreen = entry.isIntersecting;
+
       if (
         keepUnread === false &&
         onScreen === false &&
@@ -78,16 +80,25 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
       }
     };
 
-    const options = {
+    const renderObserver = new IntersectionObserver(handleRender, {
       root: scrollRoot,
       threshold: 0,
       rootMargin: "1000px 0px 1000px 0px",
+    });
+
+    const readObserver = new IntersectionObserver(handleRead, {
+      root: scrollRoot,
+      threshold: 0,
+      rootMargin: "0px",
+    });
+
+    renderObserver.observe(wrapper.current);
+    readObserver.observe(wrapper.current);
+
+    return () => {
+      renderObserver.disconnect();
+      readObserver.disconnect();
     };
-
-    const observer = new IntersectionObserver(handleIntersection, options);
-    observer.observe(wrapper.current);
-
-    return () => observer.disconnect();
   }, [onRead, keepUnread, scrollRoot, article.id, article.viewed]);
 
   return (
