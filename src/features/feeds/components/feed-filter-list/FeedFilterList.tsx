@@ -14,13 +14,13 @@ export const FeedFilterList = ({ label, count, items, onClear, onToggle }: FeedF
   return (
     <fieldset className={styles.set}>
       <legend className={styles.title}>{label}</legend>
-      <label className={styles.label}>
+      <label className={styles.item}>
         <input checked={count === 0} onChange={onClear} type="checkbox" />
         All
       </label>
       <div className={styles.items}>
         {items.map((item) => (
-          <label className={styles.label} key={item.id}>
+          <label className={styles.item} key={item.id}>
             <input checked={item.checked} onChange={() => onToggle(item.id)} type="checkbox" />
             <span>{item.title}</span>
           </label>

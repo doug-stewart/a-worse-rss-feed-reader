@@ -15,6 +15,7 @@ import { useFeeds } from "@/features/feeds/hooks/useFeeds";
 import type { LayoutConsts } from "@/types";
 import { FeedImporter } from "../../components/feed-importer/FeedImporter";
 import { scrollMainToTop } from "../../helpers/scrollMainToTop";
+import styles from "./FeedsRoute.module.css";
 
 export const FeedsRoute = () => {
   const searchParams = useSearch({ from: "/feeds" });
@@ -110,7 +111,7 @@ export const FeedsRoute = () => {
 
   return (
     <>
-      <header style={{ position: "sticky", top: 0, zIndex: 1 }}>
+      <header className={styles.header}>
         <h2>
           <span>{categoryName || feedName || "All Feeds"}</span> ({unreadCount})
         </h2>

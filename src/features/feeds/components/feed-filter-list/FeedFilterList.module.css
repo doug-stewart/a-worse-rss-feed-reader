@@ -22,6 +22,11 @@
   min-width: 0;
   padding: 0;
   border: none;
+  border-block-start: 1px solid oklch(from currentcolor l c h / 20%);
+
+  & + & {
+    border-block-end: 1px solid oklch(from currentcolor l c h / 20%);
+  }
 }
 
 .title {
@@ -30,63 +35,57 @@
   grid-area: label;
 }
 
-.label {
-  position: relative;
-  display: block;
-  flex: 0 0 auto;
-  max-width: 66vw;
-  height: 1lh;
-  padding-block: 0;
-  padding-inline: 1lh 0.5lh;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 2em;
-  white-space: nowrap;
-  cursor: pointer;
-  border: 1px solid oklch(from currentcolor l c h / 20%);
-  border-radius: 2lh;
-
-  &::before {
-    position: absolute;
-    top: 0.25lh;
-    left: 0.25lh;
-    display: block;
-    width: calc(0.5lh - 2px);
-    height: calc(0.5lh - 2px);
-    content: "";
-    border: 1px solid;
-    border-radius: 50%;
-  }
-
-  &:has(:checked) {
-    background: green;
-
-    &::before {
-      background: currentcolor;
-    }
-  }
-
-  input {
-    display: none;
-  }
-}
-
 .items {
   animation: overflow-fade forwards;
   animation-range: 0.5rem 2rem;
   animation-timeline: --overflow-fade;
   display: flex;
-  gap: 0.5em;
   mask-image: linear-gradient(
     to right,
     transparent,
     black var(--overflow-fade-value)
   );
   overflow: auto;
-  padding: 0.5em;
   scroll-timeline: --overflow-fade inline;
+  scrollbar-width: none;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    oklch(from currentcolor l c h / 0.12) 0,
+    oklch(from currentcolor l c h / 0.12) 1px,
+    transparent 1px,
+    transparent 0.24rem
+  );
 
   &.expanded {
     flex-wrap: wrap;
+  }
+
+  &::after {
+    flex: 0 0 5rem;
+    content: "";
+  }
+}
+
+.item {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  max-width: 66vw;
+  padding-block: 1.44em;
+  padding-inline: 1.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: black;
+  border-right: 1px solid oklch(from currentcolor l c h / 20%);
+
+  &:has(:checked) {
+    background: green;
+  }
+
+  input {
+    display: none;
   }
 }
