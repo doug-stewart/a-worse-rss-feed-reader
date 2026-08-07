@@ -105,8 +105,8 @@ export const FeedsRoute = () => {
     refetchArticles();
   };
 
-  useHotkey({ key: "l", shift: true }, cycleLayout);
-  useHotkey({ key: "r", shift: true }, refreshFeed);
+  useHotkey({ key: "l" }, cycleLayout);
+  useHotkey({ key: "r" }, refreshFeed);
   useHotkey({ key: "Backspace", shift: true }, handleMarkAllRead);
 
   return (
