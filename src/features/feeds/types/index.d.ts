@@ -5,7 +5,7 @@ export type Category = {
 };
 
 export type Feed = {
-  category: number;
+  category: number | null;
   id: number;
   name: string;
   rss: string;

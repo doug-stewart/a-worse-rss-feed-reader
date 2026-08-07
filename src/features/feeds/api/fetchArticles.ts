@@ -15,7 +15,6 @@ export const fetchArticles = async (
 
   const search = params.toString();
   const url = `/articles${search ? `?${search}` : ""}`;
-
   const resspone = await apiFetch(url);
 
   return resspone;

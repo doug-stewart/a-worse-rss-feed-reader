@@ -1,13 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { STALE_TIME } from "@/config";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { apiFetch } from "@/helpers/apiFetch";
+import { createCategory } from "../api/createCategory";
+import { deleteCategory } from "../api/deleteCategory";
+import { updateCategory } from "../api/updateCategory";
 import type { Category } from "../types";
 
-export const useCategories = (): {
-  categories: Array<Category>;
-  query: ReturnType<typeof useQuery>;
-} => {
+export const useCategories = () => {
   const { user, isAuthenticated } = useAuth();
 
   const query = useQuery({
@@ -17,5 +17,26 @@ export const useCategories = (): {
     staleTime: STALE_TIME,
   });
 
-  return { categories: query.data || [], query };
+  const createFn = useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => query.refetch(),
+  });
+
+  const deleteFn = useMutation({
+    mutationFn: deleteCategory,
+    onSuccess: () => query.refetch(),
+  });
+
+  const updateFn = useMutation({
+    mutationFn: updateCategory,
+    onSuccess: () => query.refetch(),
+  });
+
+  return {
+    categories: (query.data || []) as Array<Category>,
+    createCategory: createFn,
+    deleteCategory: deleteFn,
+    updateCategory: updateFn,
+    query,
+  };
 };

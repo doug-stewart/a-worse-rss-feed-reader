@@ -3,9 +3,7 @@ import { apiFetch } from "@/helpers/apiFetch";
 export const setAritclesRead = async (ids: Array<number>) => {
   const response = await apiFetch("/articles/read", {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ids }),
   });
   if (!response.ok) {
