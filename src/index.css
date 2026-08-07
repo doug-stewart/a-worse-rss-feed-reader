@@ -49,12 +49,21 @@
   scroll-margin-block: 1rlh;
 }
 
+html,
+body,
+#root {
+  position: absolute;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 html {
   text-size-adjust: none;
 }
 
 body {
-  min-height: 100dvh;
   font-optical-sizing: auto;
   font-kerning: normal;
   font-variant-ligatures: common-ligatures no-discretionary-ligatures
@@ -156,8 +165,6 @@ dialog:not([popover]) {
 }
 
 #root {
-  position: fixed;
-  inset: 0;
   display: grid;
   grid-template:
     "header header header" auto
