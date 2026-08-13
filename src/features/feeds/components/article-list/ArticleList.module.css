@@ -1,16 +1,28 @@
+.wrapper {
+  padding-inline: var(--space);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    oklch(from currentcolor l c h / 0.12) 0,
+    oklch(from currentcolor l c h / 0.12) 1px,
+    transparent 1px,
+    transparent 0.24rem
+  );
+}
+
 .list {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 1px;
-  background-color: oklch(from currentcolor l c h / 20%);
-
-  &.full,
-  &.line,
-  &.row {
-    grid-template-columns: 1fr;
-  }
+  padding-inline: 1px;
+  background-color: color-mix(in oklch, black, currentColor 40%);
 
   &.card {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    @media (width > 380px) {
+      grid-template-columns: repeat(
+          auto-fill,
+          minmax(max(280px, calc((100% - 3px) / 4)), 1fr)
+        );
+    }
   }
 }
 

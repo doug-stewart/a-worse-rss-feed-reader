@@ -13,16 +13,18 @@ type ArticleCardListProps = {
 
 export const ArticleList = ({ articles, layout, onRead, onAllUnread }: ArticleCardListProps) => {
   return (
-    <div className={clsx(styles.list, styles[layout])}>
-      {articles.map((article) => (
-        <ArticleCard article={article} key={article.id} layout={layout} onRead={onRead} />
-      ))}
-      <footer className={styles.footer}>
-        <p>You&rsquo;ve reached the end&hellip;</p>
-        <button onClick={onAllUnread} type="button">
-          Mark All Unseen
-        </button>
-      </footer>
+    <div className={styles.wrapper}>
+      <div className={clsx(styles.list, styles[layout])}>
+        {articles.map((article) => (
+          <ArticleCard article={article} key={article.id} layout={layout} onRead={onRead} />
+        ))}
+        <footer className={styles.footer}>
+          <p>You&rsquo;ve reached the end&hellip;</p>
+          <button onClick={onAllUnread} type="button">
+            Mark All Unseen
+          </button>
+        </footer>
+      </div>
     </div>
   );
 };
