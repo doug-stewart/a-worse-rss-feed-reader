@@ -32,8 +32,12 @@ export const useCategories = () => {
     onSuccess: () => query.refetch(),
   });
 
+  const categories = (query.data || []).sort((a: Category, b: Category) =>
+    a.name.localeCompare(b.name),
+  ) as Array<Category>;
+
   return {
-    categories: (query.data || []) as Array<Category>,
+    categories,
     createCategory: createFn,
     deleteCategory: deleteFn,
     updateCategory: updateFn,

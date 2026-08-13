@@ -32,8 +32,12 @@ export const useFeeds = () => {
     onSuccess: () => query.refetch(),
   });
 
+  const feeds = (query.data || []).sort((a: Feed, b: Feed) =>
+    a.name.localeCompare(b.name),
+  ) as Array<Feed>;
+
   return {
-    feeds: (query.data || []) as Array<Feed>,
+    feeds,
     createFeed: createFn,
     deleteFeed: deleteFn,
     updateFeed: updateFn,
