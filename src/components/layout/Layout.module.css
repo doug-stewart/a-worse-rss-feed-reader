@@ -1,10 +1,26 @@
 .header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+  display: grid;
   grid-area: header;
+  grid-template:
+    "logo . menu" auto
+    / auto 1fr auto;
   container-type: inline-size;
 
+  h1 {
+    display: grid;
+    place-items: center;
+    width: calc(var(--space) * 2);
+    height: calc(var(--space) * 2);
+  }
+
   svg {
-    width: 2rem;
-    height: 2rem;
+    width: 50%;
+    height: 50%;
   }
 }
 
