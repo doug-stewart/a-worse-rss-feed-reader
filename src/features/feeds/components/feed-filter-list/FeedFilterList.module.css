@@ -31,8 +31,24 @@
 
 .title {
   float: left; /* Required to position the legend correctly */
-  display: block;
+  display: grid;
   grid-area: label;
+  place-items: center;
+  width: calc(var(--space) * 1.5);
+  height: calc(var(--space) * 1.5);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    oklch(from currentcolor l c h / 0.12) 0,
+    oklch(from currentcolor l c h / 0.12) 1px,
+    transparent 1px,
+    transparent 0.24rem
+  );
+  border-right: 1px solid color-mix(black, currentcolor 40%);
+  box-shadow: inset -4px 4px 0 oklch(from black l c h / 0.8);
+
+  svg {
+    fill: color-mix(black, white);
+  }
 }
 
 .items {
@@ -68,11 +84,12 @@
 
 .item {
   position: relative;
-  display: block;
+  display: flex;
   flex: 0 0 auto;
+  align-items: center;
   max-width: 66vw;
-  padding-block: 1.44em;
-  padding-inline: 1.8em;
+  height: calc(var(--space) * 1.5);
+  padding-inline: calc(var(--space) * 0.5);
   overflow: hidden;
   text-overflow: ellipsis;
   line-height: 1;
@@ -82,7 +99,8 @@
   border-right: 1px solid oklch(from currentcolor l c h / 20%);
 
   &:has(:checked) {
-    background: green;
+    color: black;
+    background: white;
   }
 
   input {

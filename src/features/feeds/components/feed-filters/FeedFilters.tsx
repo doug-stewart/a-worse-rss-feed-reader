@@ -83,7 +83,7 @@ export const FeedFilters = () => {
   const collatedFeeds = feeds
     .filter((feed) => {
       if (searchCategory.length > 0) {
-        return searchCategory.includes(feed.category);
+        return searchCategory.includes(feed.category || -1);
       }
       return true;
     })
