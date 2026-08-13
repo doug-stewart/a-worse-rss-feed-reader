@@ -1,0 +1,8 @@
+.feed {
+  display: grid;
+  grid-template-columns: var(--space) 1fr auto auto;
+  gap: calc(var(--space) * 0.5);
+  align-items: center;
+  padding: calc(var(--space) * 0.25);
+  background-color: black;
+}
