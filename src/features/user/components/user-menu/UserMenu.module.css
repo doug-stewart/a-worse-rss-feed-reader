@@ -1,0 +1,84 @@
+.wrapper {
+  grid-area: menu;
+  anchor-scope: --user-menu;
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  anchor-name: --user-menu;
+  padding: unset;
+  height: calc(var(--space) * 2);
+  width: calc(var(--space) * 2);
+
+  &:not(:hover, :focus-visible) {
+    color: var(--color-on-primary);
+    background-color: transparent;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    padding: calc(var(--spacing) * 0.12);
+  }
+}
+
+.menu {
+  background-color: var(--color-on-primary);
+  color: var(--color-bg-primary);
+  position-anchor: --user-menu;
+  position: absolute;
+  inset: unset;
+  position-area: bottom span-left;
+  flex-direction: column;
+  padding: calc(var(--spacing) * 0.48);
+  gap: calc(var(--spacing) * 0.24);
+  text-align: center;
+
+  &:popover-open {
+    display: flex;
+  }
+}
+
+.title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.themes {
+  display: flex;
+  flex-direction: row;
+  gap: calc(var(--spacing) * 0.24);
+}
+
+.theme,
+.btn {
+  padding: calc(var(--spacing) * 0.24) calc(var(--spacing) * 0.36);
+  font-weight: 600;
+  border-radius: calc(var(--spacing) * 0.24);
+
+  &.active,
+  &:hover {
+    color: var(--color-on-primary-action);
+    background-color: var(--color-bg-primary-action);
+  }
+
+  &:focus-within {
+    outline-color: currentColor;
+  }
+}
+
+.theme {
+  display: flex;
+  align-items: center;
+  aspect-ratio: 1;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: oklch(from currentcolor l c h / 12%);
+  border: unset;
+}
