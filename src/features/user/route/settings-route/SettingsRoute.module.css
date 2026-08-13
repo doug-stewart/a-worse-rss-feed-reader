@@ -1,0 +1,14 @@
+/*background-image: repeating-linear-gradient(
+    -45deg,
+    oklch(from currentcolor l c h / 0.12) 0,
+    oklch(from currentcolor l c h / 0.12) 1px,
+    transparent 1px,
+    transparent 0.24rem
+  );*/
+
+.list {
+  display: grid;
+  gap: 1px;
+  padding: 1px;
+  background-color: color-mix(black, currentcolor 40%);
+}
