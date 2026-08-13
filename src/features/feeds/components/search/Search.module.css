@@ -1,0 +1,21 @@
+.wrapper {
+  grid-template: "input" auto "results" 1fr / 1fr;
+  width: 100%;
+  max-width: unset;
+  height: 100%;
+  max-height: unset;
+
+  &[open] {
+    display: grid;
+  }
+}
+
+.input {
+  grid-area: input;
+  width: 100%;
+}
+
+.results {
+  grid-area: results;
+  overflow-y: auto;
+}
