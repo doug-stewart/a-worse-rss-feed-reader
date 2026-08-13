@@ -1,4 +1,6 @@
 import clsx from "clsx";
+import { formatDistanceToNowStrict } from "date-fns";
+import DOMPurify from "dompurify";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useScrollContext } from "@/hooks/useScrollContext";
 import type { LayoutConsts } from "@/types";
@@ -6,7 +8,6 @@ import { useArticles } from "../../hooks/useArticles";
 import { useFeeds } from "../../hooks/useFeeds";
 import type { Article } from "../../types";
 import styles from "./ArticleCard.module.css";
-import { Content } from "./Content";
 
 type ArticleCardProps = {
   article: Article;
@@ -28,6 +29,10 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
   const [isRead, setIsRead] = useState(article.viewed || false);
   const [isVisible, setVisible] = useState(false);
   const [keepUnread, setKeepUnread] = useState(false);
+  const [showImage, setShowImage] = useState(true);
+
+  const cleanSummary = DOMPurify.sanitize(summary, { RETURN_DOM: true })?.textContent;
+  const time = formatDistanceToNowStrict(new Date(published_at), { addSuffix: true });
 
   const markArticleRead = () => {
     if (keepUnread) return;
@@ -113,38 +118,76 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
       style={{ ["--h" as string]: isVisible ? false : `${height}px` }}
     >
       {isVisible ? (
-        <Content
-          body={body}
-          cover={cover ?? ""}
-          date={published_at}
-          layout={layout}
-          onRead={() => onRead(article.id)}
-          parent={parent}
-          summary={summary || ""}
-          title={title}
-          url={url}
-        />
-      ) : null}
-      <menu className={styles.actions}>
-        {isRead ? (
-          <button disabled={keepUnread} onClick={markArticleUnread} type="button">
-            Unread
-          </button>
-        ) : (
-          <button disabled={keepUnread} onClick={markArticleRead} type="button">
-            Read
-          </button>
-        )}
-        {keepUnread ? (
-          <button onClick={unlockUnread} type="button">
-            Unlock
-          </button>
-        ) : (
-          <button onClick={lockUnread} type="button">
-            Lock
-          </button>
-        )}
-      </menu>
+        <>
+          <h3 className={styles.title}>
+            <a href={url} onClick={markArticleRead} rel="noopener" target="_blank">
+              {title}
+            </a>
+          </h3>
+
+          {["full", "card"].includes(layout) ? (
+            <span className={styles.categoryTime}>
+              <time className={styles.date} dateTime={published_at}>
+                {time}
+              </time>
+
+              <span className={styles.category}>{parent}</span>
+            </span>
+          ) : (
+            <>
+              <time className={styles.date} dateTime={published_at}>
+                {time}
+              </time>
+              <span className={styles.category}>{parent}</span>
+            </>
+          )}
+
+          {layout === "full" ? null : showImage && cover ? (
+            <img alt="" className={styles.cover} onError={() => setShowImage(false)} src={cover} />
+          ) : (
+            <span className={styles.cover} />
+          )}
+
+          {layout === "full" && body ? (
+            <div
+              className={styles.body}
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: Trusted content
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(body),
+              }}
+            />
+          ) : (
+            cleanSummary && <p className={styles.summary}>{cleanSummary}</p>
+          )}
+          <menu className={styles.actions}>
+            {isRead ? (
+              <button disabled={keepUnread} onClick={markArticleUnread} type="button">
+                Unread
+              </button>
+            ) : (
+              <button disabled={keepUnread} onClick={markArticleRead} type="button">
+                Read
+              </button>
+            )}
+            {keepUnread ? (
+              <button onClick={unlockUnread} type="button">
+                Unlock
+              </button>
+            ) : (
+              <button onClick={lockUnread} type="button">
+                Lock
+              </button>
+            )}
+          </menu>
+        </>
+      ) : (
+        <>
+          <div className={styles.cover} />
+          <div className={styles.title} />
+          <div className={styles.categoryTime} />
+          <div className={styles.summary} />
+        </>
+      )}
     </article>
   );
 };

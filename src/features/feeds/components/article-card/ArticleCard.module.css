@@ -4,7 +4,7 @@
   display: grid;
   align-content: start;
   min-height: var(--h);
-  padding: 1rem;
+  padding: var(--space);
   cursor: pointer;
   background-color: black;
 
@@ -12,6 +12,16 @@
   &:focus-visible {
     background-color: color-mix(in oklch, black, white 24%);
   }
+}
+
+.card,
+.full {
+  grid-template:
+    "cover" auto
+    "title" auto
+    "summary" 1fr
+    "category-date" auto
+    / 1fr;
 }
 
 .line {
@@ -38,9 +48,15 @@
   min-height: 1lh;
 }
 
+.category,
+.date {
+  font-size: 0.75em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
 .category {
   grid-area: category;
-  max-width: min(20ch, 100%);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -50,9 +66,34 @@
   grid-area: date;
 }
 
+.categoryTime {
+  display: flex;
+  grid-area: category-date;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  height: 1lh;
+  line-height: 1lh;
+
+  .date {
+    flex: 0 0 auto;
+
+    &::after {
+      margin-inline: 1ch;
+      content: "|";
+    }
+  }
+
+  .caetgory {
+    flex: 1;
+    max-width: unset;
+  }
+}
+
 .title {
   grid-area: title;
-  margin-block-end: 0.5rem;
+  font-size: 1em;
+  font-weight: 900;
 
   a {
     display: -webkit-box;
@@ -60,6 +101,7 @@
     overflow: hidden;
     -webkit-line-clamp: 2;
     line-clamp: 2;
+    text-decoration: none;
 
     &::before {
       position: absolute;
@@ -72,6 +114,10 @@
       outline: none;
     }
   }
+
+  &:empty {
+    line-height: 2lh;
+  }
 }
 
 .cover {
@@ -79,10 +125,14 @@
   grid-area: cover;
   width: 100%;
   height: auto;
-  aspect-ratio: 8 / 6;
+  aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: 50% 0;
   background-color: rgb(255 255 255 / 5%);
+}
+
+.body {
+  grid-area: summary;
 }
 
 .summary {
@@ -95,21 +145,17 @@
   line-clamp: 3;
 }
 
-.card,
-.full {
-  grid-template:
-    "cover" auto
-    "date" auto
-    "title" auto
-    "category" auto
-    "summary" auto
-    / 1fr;
-}
-
 .card {
   .cover {
     width: 100%;
-    aspect-ratio: 7 / 5;
+  }
+
+  .title {
+    margin-block: calc(var(--space) * 0.64) calc(var(--space) * 0.32);
+  }
+
+  .categoryTime {
+    margin-block-start: calc(var(--space) * 0.64);
   }
 }
 
