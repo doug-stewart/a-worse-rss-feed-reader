@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { type PropsWithChildren, useEffect } from "react";
 import { createPortal } from "react-dom";
-import CloseIcon from "@/assets/images/close.svg?react";
+import CloseIcon from "@/assets/close.svg?react";
 import { Button } from "../button/Button";
 import styles from "./Dialog.module.css";
 
