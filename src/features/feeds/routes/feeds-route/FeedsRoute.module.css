@@ -2,4 +2,34 @@
   position: sticky;
   top: 0;
   z-index: 1;
+  display: grid;
+  grid-template:
+    "filters filters filters" auto
+    "controls controls controls" auto
+    / calc(var(--space) * 2) 1fr calc(var(--space) * 2);
+  align-items: center;
+  background-color: black;
+  border-bottom: 1px solid oklch(from currentcolor l c h / 0.24);
+  box-shadow: 0 4px 0 oklch(from black l c h / 0.8);
+}
+
+.controls {
+  display: grid;
+  grid-area: controls;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  height: calc(var(--space) * 1.5);
+  padding-inline: calc(var(--space) * 0.5);
+}
+
+.layout.active {
+  color: red;
+}
+
+.actions {
+  grid-column: 3;
+}
+
+.layouts {
+  grid-column: 1;
 }

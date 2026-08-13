@@ -1,7 +1,8 @@
 import { Batcher } from "@tanstack/pacer";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useSearch } from "@tanstack/react-router";
-import { useCallback, useRef, useState } from "react";
+import clsx from "clsx";
+import { useCallback, useEffect, useRef, useState } from "react";
 import FullIcon from "@/assets/full.svg?react";
 import GridIcon from "@/assets/grid.svg?react";
 import ListIcon from "@/assets/list.svg?react";
@@ -12,13 +13,16 @@ import { FeedFilters } from "@/features/feeds/components/feed-filters/FeedFilter
 import { useArticles } from "@/features/feeds/hooks/useArticles";
 import { useCategories } from "@/features/feeds/hooks/useCategories";
 import { useFeeds } from "@/features/feeds/hooks/useFeeds";
+import { useTitle } from "@/hooks/useTitle";
 import type { LayoutConsts } from "@/types";
+import { Search } from "../../components/search/Search";
 import { scrollMainToTop } from "../../helpers/scrollMainToTop";
 import styles from "./FeedsRoute.module.css";
 
 export const FeedsRoute = () => {
   const searchParams = useSearch({ from: "/feeds" });
 
+  const { setTitle } = useTitle();
   const { feeds } = useFeeds();
   const { categories } = useCategories();
 
@@ -108,22 +112,19 @@ export const FeedsRoute = () => {
   useHotkey({ key: "r" }, refreshFeed);
   useHotkey({ key: "Backspace", shift: true }, handleMarkAllRead);
 
+  useEffect(() => {
+    const title = `${categoryName || feedName || "All Feeds"} (${unreadCount})`;
+    setTitle(title);
+  }, [setTitle, categoryName, feedName, unreadCount]);
+
   return (
     <>
+      <Search />
       <header className={styles.header}>
-        <h2>
-          <span>{categoryName || feedName || "All Feeds"}</span> ({unreadCount})
-        </h2>
         <FeedFilters />
-        <div>
-          <button onClick={refetchArticles} type="button">
-            <RefreshIcon title="Refresh Articles" />
-          </button>
-          <button onClick={handleMarkAllRead} type="button">
-            <MarkAllIcon title="Mark All Read" />
-          </button>
-          <form>
-            <label>
+        <div className={styles.controls}>
+          <form className={styles.layouts}>
+            <label className={clsx(styles.layout, layout === "row" && styles.active)}>
               <input
                 checked={layout === "row"}
                 name="layout"
@@ -132,7 +133,7 @@ export const FeedsRoute = () => {
               />
               <ListIcon title="Row" />
             </label>
-            <label>
+            <label className={clsx(styles.layout, layout === "card" && styles.active)}>
               <input
                 checked={layout === "card"}
                 name="layout"
@@ -141,7 +142,7 @@ export const FeedsRoute = () => {
               />
               <GridIcon title="Card" />
             </label>
-            <label>
+            <label className={clsx(styles.layout, layout === "full" && styles.active)}>
               <input
                 checked={layout === "full"}
                 name="layout"
@@ -151,6 +152,14 @@ export const FeedsRoute = () => {
               <FullIcon title="Full" />
             </label>
           </form>
+          <div className={styles.actions}>
+            <button onClick={refetchArticles} type="button">
+              <RefreshIcon title="Refresh Articles" />
+            </button>
+            <button onClick={handleMarkAllRead} type="button">
+              <MarkAllIcon title="Mark All Read" />
+            </button>
+          </div>
         </div>
       </header>
       {articlesQuery.isFetching === true ? (
