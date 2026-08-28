@@ -61,3 +61,12 @@ want.
     - [ ] Edit
     - [ ] Delete
   - [ ] Can reorder categories in sidebar.
+
+## Make This Shippable:
+
+Ideally we make this `pnpm sideload` and it gets your connected devices and installs it to that device.
+
+```
+xcrun devicectl list devices
+npm run build && npx cap run ios --target=<YOUR_DEVICE_UDID>
+```
