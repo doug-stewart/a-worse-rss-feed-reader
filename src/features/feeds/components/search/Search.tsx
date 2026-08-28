@@ -1,12 +1,12 @@
 import { useHotkey } from "@tanstack/react-hotkeys";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import clsx from "clsx";
 import Fuse from "fuse.js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Dialog } from "@/components/dialog/Dialog";
 import { useDialog } from "@/hooks/useDialog";
 import { useCategories } from "../../hooks/useCategories";
 import { useFeeds } from "../../hooks/useFeeds";
-import { SearchItem } from "../search-item/SearchItem";
 import styles from "./Search.module.css";
 
 export const Search = () => {
@@ -89,9 +89,10 @@ export const Search = () => {
     setSelected("");
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (selected) {
-      const element = document.querySelector(`.${styles.results} .${styles.selected}`);
+      const element = document.querySelector(`.${styles.selected}`);
+      console.log("element", element, selected);
       element?.scrollIntoView({ block: "nearest" });
     }
   }, [selected]);
@@ -108,43 +109,49 @@ export const Search = () => {
         className={styles.input}
         onChange={onSearch}
         onKeyDown={onInput}
-        placeholder="Search..."
+        placeholder="What do you want?"
         ref={input}
         type="search"
       />
       <div className={styles.results}>
         <ol>
           {categoriesResults.map((category) => (
-            <SearchItem
-              id={category.id}
-              key={category.id}
-              name={category.name}
-              onClick={closeDialog}
-              selected={selected === `category-${category.id}`}
-              type="category"
-            />
+            <li key={category.id}>
+              <Link
+                className={clsx(selected === `category-${category.id}` && styles.selected)}
+                onClick={closeDialog}
+                search={{ category: [category.id] }}
+                to={"/feeds"}
+              >
+                {category.name}
+              </Link>
+            </li>
           ))}
         </ol>
         <ol>
           {feedsResults.map((feed) => (
-            <SearchItem
-              id={feed.id}
-              key={feed.id}
-              name={feed.name}
-              onClick={closeDialog}
-              selected={selected === `feed-${feed.id}`}
-              type="feed"
-            />
+            <li key={feed.id}>
+              <Link
+                className={clsx(selected === `feed-${feed.id}` && styles.selected)}
+                onClick={closeDialog}
+                search={{ feed: [feed.id] }}
+                to={"/feeds"}
+              >
+                {feed.name}
+              </Link>
+            </li>
           ))}
           {categoryFeedResults.map((feed) => (
-            <SearchItem
-              id={feed.id}
-              key={feed.id}
-              name={feed.name}
-              onClick={closeDialog}
-              selected={selected === `category-feed-${feed.id}`}
-              type="feed"
-            />
+            <li key={feed.id}>
+              <Link
+                className={clsx(selected === `category-feed-${feed.id}` && styles.selected)}
+                onClick={closeDialog}
+                search={{ feed: [feed.id] }}
+                to={"/feeds"}
+              >
+                {feed.name}
+              </Link>
+            </li>
           ))}
         </ol>
       </div>

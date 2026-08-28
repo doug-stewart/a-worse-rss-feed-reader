@@ -13,9 +13,47 @@
 .input {
   grid-area: input;
   width: 100%;
+  padding-block: calc(var(--space) * 0.5);
+  padding-inline: calc(var(--space) * 1);
+  font-size: 2rem;
+  font-weight: 200;
+  text-align: center;
+  background-image: linear-gradient(
+    to bottom,
+    transparent calc(100% - 1px),
+    white calc(100% - 1px)
+  );
+  background-clip: padding-box;
+  background-origin: padding-box;
+  border: calc(var(--space) * 0.5) solid;
+  border-image: repeating-linear-gradient(
+      -45deg,
+      oklch(from currentcolor l c h / 0.12) 0,
+      oklch(from currentcolor l c h / 0.12) 1px,
+      transparent 1px,
+      transparent 0.24rem
+    )
+    10;
+
+  &:focus-visible,
+  &:hover {
+    outline: none;
+  }
+}
+
+.selected {
+  font-weight: 900;
 }
 
 .results {
   grid-area: results;
   overflow-y: auto;
+
+  ol {
+    padding: 0;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 200;
+    list-style: none;
+  }
 }
