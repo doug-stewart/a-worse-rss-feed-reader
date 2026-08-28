@@ -1,7 +1,12 @@
+export const articleListLayouts = ["row", "card", "full"] as const;
+
+export type ArticleListLayouts = (typeof articleListLayouts)[number];
+
 export type Category = {
   id: number;
   name: string;
   user_id: number;
+  user_layout: ArticleListLayouts | null;
 };
 
 export type Feed = {

@@ -1,12 +1,11 @@
 import clsx from "clsx";
-import type { LayoutConsts } from "@/types";
-import type { Article } from "../../types";
+import type { Article, ArticleListLayouts } from "../../types";
 import { ArticleCard } from "../article-card/ArticleCard";
 import styles from "./ArticleList.module.css";
 
 type ArticleCardListProps = {
   articles: Array<Article>;
-  layout: LayoutConsts;
+  layout: ArticleListLayouts;
   onRead: (id: number) => void;
   onAllUnread: () => void;
 };

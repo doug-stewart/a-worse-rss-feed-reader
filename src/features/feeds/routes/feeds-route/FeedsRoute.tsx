@@ -14,9 +14,9 @@ import { useArticles } from "@/features/feeds/hooks/useArticles";
 import { useCategories } from "@/features/feeds/hooks/useCategories";
 import { useFeeds } from "@/features/feeds/hooks/useFeeds";
 import { useTitle } from "@/hooks/useTitle";
-import type { LayoutConsts } from "@/types";
 import { Search } from "../../components/search/Search";
 import { scrollMainToTop } from "../../helpers/scrollMainToTop";
+import { type ArticleListLayouts, articleListLayouts } from "../../types";
 import styles from "./FeedsRoute.module.css";
 
 export const FeedsRoute = () => {
@@ -24,7 +24,7 @@ export const FeedsRoute = () => {
 
   const { setTitle } = useTitle();
   const { feeds } = useFeeds();
-  const { categories } = useCategories();
+  const { categories, updateCategoryLayout } = useCategories();
 
   const {
     articles,
@@ -38,12 +38,21 @@ export const FeedsRoute = () => {
 
   const [searchSnapshot, setSearchSnapshot] = useState("");
   const [articlesSnapshot, setArticlesSnapshot] = useState<Array<number>>([]);
-  const [layout, setLayout] = useState<LayoutConsts>("card");
+  const [layout, setLayout] = useState<ArticleListLayouts>("card");
 
   if (searchSnapshot !== JSON.stringify(searchParams)) {
     setSearchSnapshot(JSON.stringify(searchParams));
-    const ids = Array.from(articles).map(({ id }) => id);
-    setArticlesSnapshot(ids);
+    setArticlesSnapshot(Array.from(articles).map(({ id }) => id));
+
+    if (searchParams.category?.length === 1) {
+      const category = categories.find(
+        (category) => category.id === searchParams.category?.[0],
+      );
+      if (category?.user_layout) {
+        setLayout(category.user_layout);
+      }
+    }
+
     refetchArticles();
   }
 
@@ -62,13 +71,23 @@ export const FeedsRoute = () => {
     .map((feed) => feed.name)
     .join(", ");
 
-  const changeLayout = (newLayout: LayoutConsts) => setLayout(newLayout);
+  const changeLayout = (newLayout: ArticleListLayouts) => {
+    setLayout(newLayout);
+    console.log("changeLayout", newLayout, searchParams.category);
+    if (searchParams.category?.length === 1) {
+      updateCategoryLayout.mutate({
+        categortyId: searchParams.category[0],
+        layout: newLayout,
+      });
+    }
+  };
 
   const cycleLayout = () => {
-    const layouts: Array<LayoutConsts> = ["row", "card", "full"];
-    const currentIndex = layouts.indexOf(layout);
-    const nextIndex = (currentIndex + 1) % layouts.length;
-    setLayout(layouts[nextIndex]);
+    const newLayout =
+      articleListLayouts[
+        (articleListLayouts.indexOf(layout) + 1) % articleListLayouts.length
+      ];
+    changeLayout(newLayout);
   };
 
   const pendingRead = useRef(
@@ -124,7 +143,9 @@ export const FeedsRoute = () => {
         <FeedFilters />
         <div className={styles.controls}>
           <form className={styles.layouts}>
-            <label className={clsx(styles.layout, layout === "row" && styles.active)}>
+            <label
+              className={clsx(styles.layout, layout === "row" && styles.active)}
+            >
               <input
                 checked={layout === "row"}
                 name="layout"
@@ -133,7 +154,12 @@ export const FeedsRoute = () => {
               />
               <ListIcon title="Row" />
             </label>
-            <label className={clsx(styles.layout, layout === "card" && styles.active)}>
+            <label
+              className={clsx(
+                styles.layout,
+                layout === "card" && styles.active,
+              )}
+            >
               <input
                 checked={layout === "card"}
                 name="layout"
@@ -142,7 +168,12 @@ export const FeedsRoute = () => {
               />
               <GridIcon title="Card" />
             </label>
-            <label className={clsx(styles.layout, layout === "full" && styles.active)}>
+            <label
+              className={clsx(
+                styles.layout,
+                layout === "full" && styles.active,
+              )}
+            >
               <input
                 checked={layout === "full"}
                 name="layout"

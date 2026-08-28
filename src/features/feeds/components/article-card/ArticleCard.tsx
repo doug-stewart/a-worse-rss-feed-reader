@@ -3,15 +3,14 @@ import { formatDistanceToNowStrict } from "date-fns";
 import DOMPurify from "dompurify";
 import { useLayoutEffect, useRef, useState } from "react";
 import { useScrollContext } from "@/hooks/useScrollContext";
-import type { LayoutConsts } from "@/types";
 import { useArticles } from "../../hooks/useArticles";
 import { useFeeds } from "../../hooks/useFeeds";
-import type { Article } from "../../types";
+import type { Article, ArticleListLayouts } from "../../types";
 import styles from "./ArticleCard.module.css";
 
 type ArticleCardProps = {
   article: Article;
-  layout: LayoutConsts;
+  layout: ArticleListLayouts;
   onRead: (id: number) => void;
 };
 

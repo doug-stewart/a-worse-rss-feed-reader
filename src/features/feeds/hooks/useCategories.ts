@@ -5,6 +5,7 @@ import { apiFetch } from "@/helpers/apiFetch";
 import { createCategory } from "../api/createCategory";
 import { deleteCategory } from "../api/deleteCategory";
 import { updateCategory } from "../api/updateCategory";
+import { updateCategoryLayout } from "../api/updateCategoryLayout";
 import type { Category } from "../types";
 
 export const useCategories = () => {
@@ -32,6 +33,11 @@ export const useCategories = () => {
     onSuccess: () => query.refetch(),
   });
 
+  const updateLayoutFn = useMutation({
+    mutationFn: updateCategoryLayout,
+    onSuccess: () => query.refetch(),
+  });
+
   const categories = (query.data || []).sort((a: Category, b: Category) =>
     a.name.localeCompare(b.name),
   ) as Array<Category>;
@@ -41,6 +47,7 @@ export const useCategories = () => {
     createCategory: createFn,
     deleteCategory: deleteFn,
     updateCategory: updateFn,
+    updateCategoryLayout: updateLayoutFn,
     query,
   };
 };
