@@ -30,8 +30,12 @@ export const ArticleCard = ({ article, layout, onRead }: ArticleCardProps) => {
   const [keepUnread, setKeepUnread] = useState(false);
   const [showImage, setShowImage] = useState(true);
 
-  const cleanSummary = DOMPurify.sanitize(summary, { RETURN_DOM: true })?.textContent;
-  const time = formatDistanceToNowStrict(new Date(published_at), { addSuffix: true });
+  const cleanSummary = DOMPurify.sanitize(summary, {
+    RETURN_DOM: true,
+  })?.textContent;
+  const time = formatDistanceToNowStrict(new Date(published_at), {
+    addSuffix: true,
+  });
 
   const markArticleRead = () => {
     if (keepUnread) return;
