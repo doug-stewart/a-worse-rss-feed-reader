@@ -162,6 +162,13 @@ dialog:not([popover]) {
   }
 }
 
+input,
+textarea {
+  padding-block: calc(var(--space) * 0.5);
+  padding-inline: calc(var(--space) * 0.75);
+  background-color: transparent;
+}
+
 #root {
   display: grid;
   grid-template:
